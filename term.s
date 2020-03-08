@@ -11,10 +11,10 @@ _LIB_TERM_ = 1
     .import ACIA_STATUS
 
 ; Exported symbols
+    .export setup_term
     .export read
-
-; Zero Page pointers
-string_ptr = $00
+    .export write
+    .export string_ptr
 
 ; Macros
 .macro writeln  str_addr
@@ -26,6 +26,21 @@ string_ptr = $00
 .endmacro
 
     .segment "LIB"
+
+setup_term:
+    writeln x_set_fg_white          ; White on Blue is the KrisOS color
+    writeln x_set_bg_blue           ;
+
+    writeln x_home_position         ; Write out our welcome message
+    writeln x_erase_display         ;
+    writeln x_set_bold              ;
+    writeln x_set_underlined        ;
+    writeln welcome_msg             ;
+    writeln new_line                ;
+
+    writeln x_set_normal            ; Reset to a normal font
+    writeln x_set_not_underlined    ;
+    RTS
 
 write:
     LDY #00

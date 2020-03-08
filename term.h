@@ -4,6 +4,10 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
+
+; Zero Page pointers
+string_ptr = $00
+
 ;
 ; ASCII codes
 ; https://www.ascii-code.com/
@@ -35,5 +39,8 @@ x_erase_line:           .byte ESC, LB, '2', 'K', NULL
 ; Other
 new_line:               .byte CR, LF, NULL
 prompt:                 .byte "OK> ", NULL
+
+; Messages
+welcome_msg:    .byte "Welcome to KrisOS on the K64", CR, LF, NULL
 
 .endif
