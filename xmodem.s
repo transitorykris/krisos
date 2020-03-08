@@ -9,7 +9,7 @@
 ;
 ;**************************************************************************
 ; This implementation of XMODEM/CRC does NOT conform strictly to the
-; XMODEM protocol STA ndard in that it (1) does not accurately time character
+; XMODEM protocol standard in that it (1) does not accurately time character
 ; reception or (2) fall back to the Checksum mode.
 
 ; (1) For timing, it uses a crude timing loop to provide approximate
