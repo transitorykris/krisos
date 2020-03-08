@@ -358,22 +358,22 @@ RDone:
 ; You would call the ACIA_Init prior to running the xmodem transfer
 ; routine.
 ;
-ACIA_Data = $7F70               ; Adjust these addresses to point
-ACIA_Status = $7F71             ; to YOUR 6551!
-ACIA_Command = $7F72            ;
-ACIA_Control = $7F73            ;
+;ACIA_Data = $7F70               ; Adjust these addresses to point
+;ACIA_Status = $7F71             ; to YOUR 6551!
+;ACIA_Command = $7F72            ;
+;ACIA_Control = $7F73            ;
 
-ACIA_Init:
-    LDA #$1F                    ; 19.2K/8/1
-    STA ACIA_Control            ; control reg
-    LDA #$0B                    ; N parity/echo off/rx int off/ dtr active low
-    STA ACIA_Command            ; command reg
-    RTS                         ; done
+;ACIA_Init:
+;    LDA #$1F                    ; 19.2K/8/1
+;    STA ACIA_Control            ; control reg
+;    LDA #$0B                    ; N parity/echo off/rx int off/ dtr active low
+;    STA ACIA_Command            ; command reg
+;    RTS                         ; done
 ;
 ; input chr from ACIA (no waiting)
 ;
 Get_Chr:
-    clc   ; no chr present
+    CLC   ; no chr present
     LDA ACIA_Status             ; get Serial port STA tus
     AND #$08                    ; mask rcvr full bit
     BEQ Get_Chr2                ; if not chr, done
@@ -410,7 +410,7 @@ StartCrcLp:
     BNE StartCrcLp              ;
     dec retry2                  ; dec hi byte of counter
     BNE StartCrcLp              ; look for character again
-    clc                         ; if loop times out, CLC, else SEC  and return
+    CLC                         ; if loop times out, CLC, else SEC  and return
 GetByte1:
     RTS                         ; with character in "A"
 ;
