@@ -1,3 +1,6 @@
+; KrisOS ACIA Library
+; Copyright 2020 Kris Foster
+
 ; 6551 ACIA
 ACIA_DATA       = $4000
 ACIA_STATUS     = $4001
