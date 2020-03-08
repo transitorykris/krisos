@@ -30,7 +30,7 @@ string_ptr = $00
 .endmacro
 
     .setcpu "6502"
-
+    .PSC02
     .code
 
 reset:
