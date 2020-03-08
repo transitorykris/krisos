@@ -2,20 +2,20 @@
 ; Copyright 2020 Kris Foster
 
 ; 6551 ACIA
-ACIA_DATA = $4000
-ACIA_STATUS = $4001
-ACIA_COMMAND = $4002
-ACIA_CONTROL = $4003
+ACIA_DATA       = $4000
+ACIA_STATUS     = $4001
+ACIA_COMMAND    = $4002
+ACIA_CONTROL    = $4003
 
 ;
 ; https://www.xfree86.org/current/ctlseqs.html
 ; https://www.ascii-code.com/
 ; ASCII constants
-ESC = $1B
-LB  = $5B   ; [
-NULL = $00
-CR   = $0d
-LF   = $0a  ; Line feed, aka enter key?
+ESC     = $1B
+LB      = $5B                   ; [
+NULL    = $00
+CR      = $0d
+LF      = $0a                   ; Line feed, aka enter key?
 
 ; Pointers
 string_ptr = $00
@@ -35,9 +35,9 @@ string_ptr = $00
 
 reset:
     ; Set up 6551 ACIA
-    LDA #%00001011          ;No parity, no echo, no interrupt
+    LDA #%00001011              ; No parity, no echo, no interrupt
     STA ACIA_COMMAND
-    LDA #%00011111          ;1 stop bit, 8 data bits, 19200 baud
+    LDA #%00011111              ; 1 stop bit, 8 data bits, 19200 baud
     STA ACIA_CONTROL
 
     ; White on Blue is the KrisOS color
@@ -94,11 +94,9 @@ write_acia:
     CPX #CR
     BEQ write_line_feed
     JMP read
-    RTS ; I don't believe we ever hit this
-write_line_feed:    ; XXX: this is desctructive of string_ptr!
-    ; Write a line feed
+    RTS                         ; I don't believe we ever hit this
+write_line_feed:                ; XXX: this is desctructive of string_ptr!
     writeln new_line
-    ; Write a prompt
     writeln prompt
     JMP read
 
@@ -110,23 +108,23 @@ irq:
 
 ; Data
 
-x_set_bold: .byte ESC, LB, '1', 'm', NULL
-x_set_underlined: .byte ESC, LB, '4', 'm', NULL
-x_set_normal: .byte ESC, LB, '2', '2', 'm', NULL
-x_set_not_underlined: .byte ESC, LB, '2', '4', 'm', NULL
-x_set_bg_blue: .byte ESC, LB, '4', '4', 'm', NULL
-x_set_fg_white: .byte ESC, LB, '3', '7', 'm', NULL
+x_set_bold:             .byte ESC, LB, '1', 'm', NULL
+x_set_underlined:       .byte ESC, LB, '4', 'm', NULL
+x_set_normal:           .byte ESC, LB, '2', '2', 'm', NULL
+x_set_not_underlined:   .byte ESC, LB, '2', '4', 'm', NULL
+x_set_bg_blue:          .byte ESC, LB, '4', '4', 'm', NULL
+x_set_fg_white:         .byte ESC, LB, '3', '7', 'm', NULL
 
 ; Cursor
-x_home_position: .byte ESC, LB, 'H', NULL
+x_home_position:        .byte ESC, LB, 'H', NULL
 
 ; Erasing
-x_erase_display: .byte ESC, LB, '2', 'J', NULL
-x_erase_line: .byte ESC, LB, '2', 'K', NULL
+x_erase_display:        .byte ESC, LB, '2', 'J', NULL
+x_erase_line:           .byte ESC, LB, '2', 'K', NULL
  
-new_line: .byte CR, LF, NULL
-welcome_msg: .byte "Welcome to KrisOS on the K64", CR, LF, NULL
-prompt: .byte "OK> ", NULL
+new_line:               .byte CR, LF, NULL
+welcome_msg:            .byte "Welcome to KrisOS on the K64", CR, LF, NULL
+prompt:                 .byte "OK> ", NULL
 
     .segment "VECTORS"
     .word nmi
