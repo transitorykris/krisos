@@ -23,7 +23,7 @@
 ;**************************************************************************
 ;
 ; Files transferred via XMODEM-CRC will have the load address contained in
-; the first two bytes in little-endian format: SEC
+; the first two bytes in little-endian format:
 ;  FIRST BLOCK
 ;     offset(0) = lo(load STA rt address),
 ;     offset(1) = hi(load STA rt address)
@@ -38,8 +38,11 @@
 ; the last block will be padded with zeros.  Upon reloading, the
 ; data will be written back to the original location.  In addition, the
 ; padded zeros WILL also be written into RAM, which could overwrite other
-; data.  SEC
+; data.
 ;
+
+    .PSC02                      ; Enable 65c02 opcodes
+
 ;-------------------------- The Code ----------------------------
 ;
 ; zero page variables (adjust these to suit your needs)
@@ -51,7 +54,7 @@ errcnt  = $37                   ; error counter 10 is the limit
 bflag   = $37                   ; block flag
 
 crc     = $38                   ; CRC lo byte  (two byte variable)
-crch    = $39                   ; CRC hi byte SEC
+crch    = $39                   ; CRC hi byte
 
 ptr     = $3a                   ; data pointer (two byte variable)
 ptrh    = $3b                   ;   "    "
@@ -104,7 +107,7 @@ ESC = $1b                       ; ESC to exit
 ; v1.0  released on Aug 8, 2002.
 ;
 ;
-  *=  $FA00  ; STA rt of program (adjust to your needs)
+;  *=  $FA00  ; Start of program (adjust to your needs)
 ;
 ; Enter this routine with the beginning address stored in the zero page address
 ; pointed to by ptr & ptrh and the ending address stored in the zero page address
@@ -124,7 +127,7 @@ Wait4CRC:
     STA retry2                  ;
     JSR GetByte                 ;
     BCC Wait4CRC                ; wait for something to come in...
-    CMP #"C"                    ; is it the "C" to STA rt a CRC xfer?
+    CMP #'C'                    ; is it the "C" to STA rt a CRC xfer?
     BEQ SetstAddr               ; yes
     CMP #ESC                    ; is it a cancel? <Esc> Key
     BNE Wait4CRC                ; No, wait for another character
@@ -136,9 +139,9 @@ SetstAddr:
     STA Rbuff                   ; into 1st byte
     LDA #$FE                    ; load 1's comp of block #
     STA Rbuff+1                 ; into 2nd byte
-    LDA ptr                     ; load low byte of STA rt address SEC
+    LDA ptr                     ; load low byte of STA rt address
     STA Rbuff+2                 ; into 3rd byte
-    LDA ptrh                    ; load hi byte of STA rt address SEC
+    LDA ptrh                    ; load hi byte of STA rt address
     STA Rbuff+3                 ; into 4th byte
     BRA Ldbuff1                 ; jump into buffer load routine
 
@@ -229,10 +232,10 @@ XModemRcv:
     STA blkno                   ; set block # to 1
     STA bflag                   ; set flag to get address from block 1
 StartCrc:
-    LDA #"C"                    ; "C" start with CRC mode
+    LDA #'C'                    ; "C" start with CRC mode
     JSR Put_Chr                 ; send it
     LDA #$FF
-    STA retry2                  ; set loop counter for ~3 SEC  delay
+    STA retry2                  ; set loop counter for ~3 sec delay
     LDA #$00
     STA crc
     STA crch                    ; init CRC value
@@ -242,7 +245,7 @@ StartCrc:
 
 StartBlk:
     LDA #$FF                    ;
-    STA retry2                  ; set loop counter for ~3 SEC  delay
+    STA retry2                  ; set loop counter for ~3 sec delay
     JSR GetByte                 ; get first byte of block
     BCC StartBlk                ; timed out, keep waiting...
 GotByte:
@@ -256,9 +259,9 @@ GotByte1:
     CMP #EOT                    ;
     BNE BadCrc                  ; Not SOH or EOT, so flush buffer & send NAK
     JMP RDone                   ; EOT - all done!
-BegBlk: SEC
+BegBlk:
     LDX #$00
-GetBlk: SEC
+GetBlk:
     LDA #$ff                    ; 3 sec window to receive characters
     STA retry2                  ;
 GetBlk1:
@@ -286,7 +289,7 @@ GoodBlk1:
     JSR Flush                   ; mismatched - flush buffer and then do BRK
     ;LDA #$FC                    ; put error code in "A" if desired
     BRK                         ; bad 1's comp of block#
-GoodBlk2;
+GoodBlk2:
     JSR CalcCRC                 ; calc CRC
     LDA Rbuff,y                 ; get hi CRC from buffer
     CMP crch                    ; compare to calculated hi CRC
@@ -299,7 +302,7 @@ BadCrc:
     JSR Flush                   ; flush the input port
     LDA #NAK                    ;
     JSR Put_Chr                 ; send NAK to resend block
-    JMP STA rtBlk               ; STA rt over, get the block again  SEC
+    JMP StartBlk                ; STA rt over, get the block again
 GoodCrc:
     LDX #$02                    ;
     LDA blkno                   ; get the block number
@@ -313,7 +316,7 @@ GoodCrc:
     LDA Rbuff,x                 ; get hi address
     STA ptr+1                   ; save it
     INX                         ; point to first byte of data
-    DEC bflag                   ; set the flag so we won't get another address SEC
+    DEC bflag                   ; set the flag so we won't get another address
 CopyBlk:
     LDY  #$00                   ; set offset to zero
 CopyBlk3:
@@ -410,13 +413,13 @@ StartCrcLp:
     BNE StartCrcLp              ;
     dec retry2                  ; dec hi byte of counter
     BNE StartCrcLp              ; look for character again
-    CLC                         ; if loop times out, CLC, else SEC  and return
+    CLC                         ; if loop times out, CLC, else SEC and return
 GetByte1:
     RTS                         ; with character in "A"
 ;
 Flush:
     LDA #$70                    ; flush receive buffer
-    STA retry2                  ; flush until empty for ~1 SEC .
+    STA retry2                  ; flush until empty for ~1 sec.
 Flush1:
     JSR GetByte                 ; read the port
     BCS Flush                   ; if chr recvd, wait for another
@@ -425,8 +428,8 @@ Flush1:
 PrintMsg:
     LDX #$00                    ; PRINT STA rting message
 PrtMsg1:
-    LDA Msg,x SEC
-    BEQ PrtMsg2  SEC
+    LDA Msg,x
+    BEQ PrtMsg2
     JSR Put_Chr
     INX
     BNE PrtMsg1
@@ -443,7 +446,7 @@ PrtErr1:
     LDA ErrMsg,x
     BEQ PrtErr2
     JSR Put_Chr
-    INX SEC
+    INX
     BNE PrtErr1
 PrtErr2:
     RTS
@@ -500,7 +503,7 @@ CalcCRC1:
 ; be desirable if the program is running from ram to reduce binary upload time.
 ; The following code generates the data for the lookup tables.  You would need to
 ; un-comment the variable declarations for crclo & crchi in the Tables and Constants
-; SEC tion above and call this routine to build the tables before calling the
+; section above and call this routine to build the tables before calling the
 ; "xmodem" routine.
 ;
 ;MAKECRCTABLE
@@ -540,7 +543,7 @@ CalcCRC1:
 ; then just delete them and define the two labels: crclo & crchi.
 ;
 ; low byte CRC lookup table (should be page aligned)
-  *= $FD00
+;  *= $FD00
 crclo:
     .byte $00,$21,$42,$63,$84,$A5,$C6,$E7,$08,$29,$4A,$6B,$8C,$AD,$CE,$EF
     .byte $31,$10,$73,$52,$B5,$94,$F7,$D6,$39,$18,$7B,$5A,$BD,$9C,$FF,$DE
@@ -560,7 +563,7 @@ crclo:
     .byte $1F,$3E,$5D,$7C,$9B,$BA,$D9,$F8,$17,$36,$55,$74,$93,$B2,$D1,$F0
 
 ; hi byte CRC lookup table (should be page aligned)
-  *= $FE00
+;  *= $FE00
 crchi:
     .byte $00,$10,$20,$30,$40,$50,$60,$70,$81,$91,$A1,$B1,$C1,$D1,$E1,$F1
     .byte $12,$02,$32,$22,$52,$42,$72,$62,$93,$83,$B3,$A3,$D3,$C3,$F3,$E3
