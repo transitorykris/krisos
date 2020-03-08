@@ -43,6 +43,8 @@
 
     .PSC02                      ; Enable 65c02 opcodes
 
+    .include "acia.s"
+
 ;-------------------------- The Code ----------------------------
 ;
 ; zero page variables (adjust these to suit your needs)
@@ -114,7 +116,7 @@ ESC = $1b                       ; ESC to exit
 ; pointed to by eofp & eofph.
 ;
 ;
-    JMP XmodemRcv               ; quick JMP  table
+    JMP XModemRcv               ; quick JMP  table
 XModemSend:
     JSR PrintMsg                ; send prompt and info
     LDA #$00                    ;
@@ -143,17 +145,17 @@ SetstAddr:
     STA Rbuff+2                 ; into 3rd byte
     LDA ptrh                    ; load hi byte of STA rt address
     STA Rbuff+3                 ; into 4th byte
-    BRA Ldbuff1                 ; jump into buffer load routine
+    BRA LdBuff1                 ; jump into buffer load routine
 
 LdBuffer:
-    LDA Lastblk                 ; Was the last block sent?
+    LDA lastblk                 ; Was the last block sent?
     BEQ LdBuff0                 ; no, send the next one
     JMP Done                    ; yes, we're done
 LdBuff0:
     LDX #$02                    ; init pointers
     LDY #$00                    ;
-    INC Blkno                   ; INC  block counter
-    LDA Blkno                   ;
+    INC blkno                   ; INC  block counter
+    LDA blkno                   ;
     STA Rbuff                   ; save in 1st byte of buffer
     EOR #$FF                    ;
     STA Rbuff+1                 ; save 1's comp of blkno next
@@ -168,7 +170,7 @@ LdBuff2:
     LDA eofph                   ;
     SBC ptrh                    ;
     BNE LdBuff4                 ;
-    INC LastBlk                 ; Yes, Set last byte flag
+    INC lastblk                 ; Yes, Set last byte flag
 LdBuff3:
     INX                         ;
     CPX #$82                    ; Are we at the end of the 128 byte block?
@@ -194,10 +196,10 @@ SCalcCRC:
 Resend:
     LDX #$00                    ;
     LDA #SOH
-    JSR Put_chr                 ; send SOH
+    JSR Put_Chr                 ; send SOH
 SendBlk:
     LDA Rbuff,x                 ; Send 132 bytes in buffer to the console
-    JSR Put_chr                 ;
+    JSR Put_Chr                 ;
     INX                         ;
     CPX #$84                    ; last byte?
     BNE SendBlk                 ; no, get next
@@ -361,8 +363,8 @@ RDone:
 ; You would call the ACIA_Init prior to running the xmodem transfer
 ; routine.
 ;
-;ACIA_Data = $7F70               ; Adjust these addresses to point
-;ACIA_Status = $7F71             ; to YOUR 6551!
+;ACIA_DATA = $7F70               ; Adjust these addresses to point
+;ACIA_STATUS = $7F71             ; to YOUR 6551!
 ;ACIA_Command = $7F72            ;
 ;ACIA_Control = $7F73            ;
 
@@ -377,10 +379,10 @@ RDone:
 ;
 Get_Chr:
     CLC   ; no chr present
-    LDA ACIA_Status             ; get Serial port STA tus
+    LDA ACIA_STATUS             ; get Serial port STA tus
     AND #$08                    ; mask rcvr full bit
     BEQ Get_Chr2                ; if not chr, done
-    LDA ACIA_Data               ; else get chr
+    LDA ACIA_DATA               ; else get chr
     SEC                         ; and set the Carry Flag
 Get_Chr2:
     RTS                         ; done
@@ -390,11 +392,11 @@ Get_Chr2:
 Put_Chr:
     PHA                         ; save registers
 Put_Chr1:
-    LDA ACIA_Status             ; serial port STA tus
+    LDA ACIA_STATUS             ; serial port STA tus
     AND #$10                    ; is tx buffer empty
     BEQ Put_Chr1                ; no, go back and test it again
     PLA                         ; yes, get chr to send
-    STA ACIA_Data               ; put character to Port
+    STA ACIA_DATA               ; put character to Port
     RTS                         ; done
 
 ;=========================================================================
@@ -407,7 +409,7 @@ GetByte:
     LDA #$00                    ; wait for chr input and cycle timing loop
     STA retry                   ; set low value of timing loop
 StartCrcLp:
-    JSR Get_chr                 ; get chr from serial port, don't wait
+    JSR Get_Chr                 ; get chr from serial port, don't wait
     BCS GetByte1                ; got one, so exit
     DEC retry                   ; no character received, so dec counter
     BNE StartCrcLp              ;
@@ -490,9 +492,9 @@ CalcCRC1:
     EOR crc+1                   ; Quick CRC computation with lookup tables
     TAX                         ; updates the two bytes at crc & crc+1
     LDA crc                     ; with the byte send in the "A" register
-    EOR CRCHI,X
+    EOR crchi,X
     STA crc+1
-    LDA CRCLO,X
+    LDA crclo,X
     STA crc
     INY                         ;
     CPY #$82                    ; done yet?

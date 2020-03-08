@@ -1,11 +1,7 @@
 ; KrisOS for the K64
 ; Copyright 2020 Kris Foster
 
-; 6551 ACIA
-ACIA_DATA       = $4000
-ACIA_STATUS     = $4001
-ACIA_COMMAND    = $4002
-ACIA_CONTROL    = $4003
+    .include "acia.s"
 
 ;
 ; https://www.xfree86.org/current/ctlseqs.html
@@ -30,7 +26,7 @@ string_ptr = $00
 .endmacro
 
     .setcpu "6502"
-    .PSC02
+    ;.PSC02                      ; Enable 65c02 opcodes
     .code
 
 reset:
