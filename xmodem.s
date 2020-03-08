@@ -45,6 +45,7 @@
 
     .include "acia.s"
 
+    .segment "LIB"
 ;-------------------------- The Code ----------------------------
 ;
 ; zero page variables (adjust these to suit your needs)
