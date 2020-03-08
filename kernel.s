@@ -1,10 +1,10 @@
 ; KrisOS for the K64
 ; Copyright 2020 Kris Foster
 
-    .include "term.h"
-
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
+
+    .include "term.h"
 
 ; External imports
     .import acia_init

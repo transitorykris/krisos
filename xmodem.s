@@ -44,9 +44,10 @@
 .ifndef _LIB_XMODEM_
 _LIB_XMODEM_ = 1
 
-    .include "term.h"
-
+    .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
+
+    .include "term.h"
 
 ; External imports
     .import ACIA_DATA

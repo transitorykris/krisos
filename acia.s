@@ -4,6 +4,9 @@
 .ifndef _LIB_ACIA_
 _LIB_ACIA_ = 1
 
+    .setcpu "6502"
+    .PSC02                      ; Enable 65c02 opcodes
+
 ; Exported symbols
     .export ACIA_DATA
     .export ACIA_STATUS
