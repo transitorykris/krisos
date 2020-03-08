@@ -26,7 +26,7 @@ string_ptr = $00
 .endmacro
 
     .setcpu "6502"
-    ;.PSC02                      ; Enable 65c02 opcodes
+    .PSC02                      ; Enable 65c02 opcodes
     .code
 
 reset:
