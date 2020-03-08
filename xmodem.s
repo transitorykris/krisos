@@ -25,8 +25,8 @@
 ; Files transferred via XMODEM-CRC will have the load address contained in
 ; the first two bytes in little-endian format:
 ;  FIRST BLOCK
-;     offset(0) = lo(load STA rt address),
-;     offset(1) = hi(load STA rt address)
+;     offset(0) = lo(load start address),
+;     offset(1) = hi(load start address)
 ;     offset(2) = data byte (0)
 ;     offset(n) = data byte (n-2)
 ;
