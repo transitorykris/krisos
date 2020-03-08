@@ -4,16 +4,20 @@
 .ifndef _LIB_ACIA_
 _LIB_ACIA_ = 1
 
+; Exported symbols
+    .export ACIA_DATA
+    .export ACIA_STATUS
+    .export acia_init
+
 ; 6551 ACIA
-    .export ACIA_DATA       = $4000
-    .export ACIA_STATUS     = $4001
+ACIA_DATA       = $4000
+ACIA_STATUS     = $4001
 ACIA_COMMAND    = $4002
 ACIA_CONTROL    = $4003
 
     .segment "LIB"
 
 ; Set up 6551 ACIA
-    .export acia_init
 acia_init:
     LDA #%00001011              ; No parity, no echo, no interrupt
     STA ACIA_COMMAND

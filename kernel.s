@@ -1,18 +1,17 @@
 ; KrisOS for the K64
 ; Copyright 2020 Kris Foster
 
-    ;.include "term.s"
-    ;.include "xmodem.s"
-
     .include "term.h"
 
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
-    .code
 
+; External imports
     .import acia_init
     .import XModemRcv
-    ;.import writeln
+    .import read
+
+    .code
 
 reset:
     JSR acia_init
@@ -38,7 +37,7 @@ reset:
 
     ; Get some input
     JSR XModemRcv
-    ;JSR read
+    JSR read
 
 halt:
     JMP halt

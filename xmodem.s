@@ -48,12 +48,12 @@ _LIB_XMODEM = 1
 
     .PSC02                      ; Enable 65c02 opcodes
 
-;    .include "acia.s"
+; External imports
     .import ACIA_DATA
     .import ACIA_STATUS
-    ;.import ESC
-    ;.import CR
-    ;.import LF
+
+; Exported symbols
+    .export XModemRcv
 
     .segment "LIB"
 ;-------------------------- The Code ----------------------------
@@ -237,7 +237,6 @@ Done:
 ;
 ;
 ;
-    .export XModemRcv
 XModemRcv:
     JSR PrintMsg                ; send prompt and info
     LDA #$01

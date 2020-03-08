@@ -4,42 +4,14 @@
 .ifndef _LIB_TERM_
 _LIB_TERM_ = 1
 
-    ;.include "acia.s"
     .include "term.h"
 
-    .segment "LIB"
-
-; https://www.xfree86.org/current/ctlseqs.html
-; https://www.ascii-code.com/
-; ASCII constant
-
-;ESC     = $1B
-;LB      = $5B                   ; [
-;NULL    = $00
-;CR      = $0d
-;LF      = $0a                   ; Line feed, aka enter key?
-
+; External imports
     .import ACIA_DATA
     .import ACIA_STATUS
 
-; xterm control sequences
-x_set_bold:             .byte ESC, LB, '1', 'm', NULL
-x_set_underlined:       .byte ESC, LB, '4', 'm', NULL
-x_set_normal:           .byte ESC, LB, '2', '2', 'm', NULL
-x_set_not_underlined:   .byte ESC, LB, '2', '4', 'm', NULL
-x_set_bg_blue:          .byte ESC, LB, '4', '4', 'm', NULL
-x_set_fg_white:         .byte ESC, LB, '3', '7', 'm', NULL
-
-; Cursor
-x_home_position:        .byte ESC, LB, 'H', NULL
-
-; Erasing
-x_erase_display:        .byte ESC, LB, '2', 'J', NULL
-x_erase_line:           .byte ESC, LB, '2', 'K', NULL
-
-; Other
-new_line:               .byte CR, LF, NULL
-prompt:                 .byte "OK> ", NULL
+; Exported symbols
+    .export read
 
 ; Zero Page pointers
 string_ptr = $00
@@ -52,6 +24,8 @@ string_ptr = $00
     STA string_ptr+1
     JSR write
 .endmacro
+
+    .segment "LIB"
 
 write:
     LDY #00
@@ -81,8 +55,7 @@ write_acia:
     CPX #CR
     BEQ write_line_feed
     JMP read
-    RTS                         ; I don't believe we ever hit this
-write_line_feed:                ; XXX: this is desctructive of string_ptr!
+write_line_feed:
     writeln new_line
     writeln prompt
     JMP read
