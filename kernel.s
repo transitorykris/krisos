@@ -35,10 +35,10 @@ string_ptr = $00
 
 reset:
     ; Set up 6551 ACIA
-    lda #%00001011          ;No parity, no echo, no interrupt
-    sta ACIA_COMMAND
-    lda #%00011111          ;1 stop bit, 8 data bits, 19200 baud
-    sta ACIA_CONTROL
+    LDA #%00001011          ;No parity, no echo, no interrupt
+    STA ACIA_COMMAND
+    LDA #%00011111          ;1 stop bit, 8 data bits, 19200 baud
+    STA ACIA_CONTROL
 
     ; White on Blue is the KrisOS color
     writeln x_set_fg_white
