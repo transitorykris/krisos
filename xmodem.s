@@ -42,7 +42,7 @@
 ;
 
 .ifndef _LIB_XMODEM_
-_LIB_XMODEM = 1
+_LIB_XMODEM_ = 1
 
     .include "term.h"
 
