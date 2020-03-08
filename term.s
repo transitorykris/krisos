@@ -1,19 +1,26 @@
 ; KrisOS Terminal Library
 ; Copyright 2020 Kris Foster
 
-    .include "acia.s"
-    
+.ifndef _LIB_TERM_
+_LIB_TERM_ = 1
+
+    ;.include "acia.s"
+    .include "term.h"
+
     .segment "LIB"
 
 ; https://www.xfree86.org/current/ctlseqs.html
 ; https://www.ascii-code.com/
 ; ASCII constant
 
-ESC     = $1B
-LB      = $5B                   ; [
-NULL    = $00
-CR      = $0d
-LF      = $0a                   ; Line feed, aka enter key?
+;ESC     = $1B
+;LB      = $5B                   ; [
+;NULL    = $00
+;CR      = $0d
+;LF      = $0a                   ; Line feed, aka enter key?
+
+    .import ACIA_DATA
+    .import ACIA_STATUS
 
 ; xterm control sequences
 x_set_bold:             .byte ESC, LB, '1', 'm', NULL
@@ -79,3 +86,5 @@ write_line_feed:                ; XXX: this is desctructive of string_ptr!
     writeln new_line
     writeln prompt
     JMP read
+
+.endif

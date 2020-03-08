@@ -1,36 +1,44 @@
 ; KrisOS for the K64
 ; Copyright 2020 Kris Foster
 
-    .include "term.s"
+    ;.include "term.s"
+    ;.include "xmodem.s"
+
+    .include "term.h"
 
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
     .code
 
+    .import acia_init
+    .import XModemRcv
+    ;.import writeln
+
 reset:
     JSR acia_init
 
     ; White on Blue is the KrisOS color
-    writeln x_set_fg_white
-    writeln x_set_bg_blue
+    ;writeln x_set_fg_white
+    ;writeln x_set_bg_blue
 
     ; Write out our welcome message
-    writeln x_home_position
-    writeln x_erase_display
-    writeln x_set_bold
-    writeln x_set_underlined
-    writeln welcome_msg
-    writeln new_line
+    ;writeln x_home_position
+    ;writeln x_erase_display
+    ;writeln x_set_bold
+    ;writeln x_set_underlined
+    ;writeln welcome_msg
+    ;writeln new_line
 
     ; Reset to a normal font
-    writeln x_set_normal
-    writeln x_set_not_underlined
+    ;writeln x_set_normal
+    ;writeln x_set_not_underlined
 
     ; Display the command prompt
-    writeln prompt
+    ;writeln prompt
 
     ; Get some input
-    JSR read
+    JSR XModemRcv
+    ;JSR read
 
 halt:
     JMP halt
@@ -42,7 +50,7 @@ irq:
     RTI
 
 ; Data
-welcome_msg:            .byte "Welcome to KrisOS on the K64", CR, LF, NULL
+welcome_msg:    .byte "Welcome to KrisOS on the K64", CR, LF, NULL
 
     .segment "VECTORS"
     .word nmi

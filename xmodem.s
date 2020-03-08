@@ -41,9 +41,19 @@
 ; data.
 ;
 
+.ifndef _LIB_XMODEM_
+_LIB_XMODEM = 1
+
+    .include "term.h"
+
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "acia.s"
+;    .include "acia.s"
+    .import ACIA_DATA
+    .import ACIA_STATUS
+    ;.import ESC
+    ;.import CR
+    ;.import LF
 
     .segment "LIB"
 ;-------------------------- The Code ----------------------------
@@ -92,17 +102,16 @@ Rbuff   = $0300                 ; temp 132 byte receive buffer
 ;
 ;
 ; XMODEM Control Character Constants
-SOH = $01                       ; STA rt block
+SOH = $01                       ; Start block
 EOT = $04                       ; end of text marker
 ACK = $06                       ; good block acknowledged
 NAK = $15                       ; bad block acknowledged
 CAN = $18                       ; cancel (not STA ndard, not supported)
-CR  = $0d                       ; carriage return
-LF  = $0a                       ; line feed
-ESC = $1b                       ; ESC to exit
+;CR  = $0d                       ; carriage return
+;LF  = $0a                       ; line feed
+;ESC = $1b                       ; ESC to exit
 
-;
-;^^^^^^^^^^^^^^^^^^^^^^ STA rt of Program ^^^^^^^^^^^^^^^^^^^^^^
+;^^^^^^^^^^^^^^^^^^^^^^ Start of Program ^^^^^^^^^^^^^^^^^^^^^^
 ;
 ; Xmodem/CRC transfer routines
 ; By Daryl Rictor, August 8, 2002
@@ -117,7 +126,7 @@ ESC = $1b                       ; ESC to exit
 ; pointed to by eofp & eofph.
 ;
 ;
-    JMP XModemRcv               ; quick JMP  table
+    JMP XModemRcv               ; quick JMP table
 XModemSend:
     JSR PrintMsg                ; send prompt and info
     LDA #$00                    ;
@@ -228,7 +237,7 @@ Done:
 ;
 ;
 ;
-
+    .export XModemRcv
 XModemRcv:
     JSR PrintMsg                ; send prompt and info
     LDA #$01
@@ -588,3 +597,5 @@ crchi:
 ;
 ; End of File
 ;
+
+.endif
