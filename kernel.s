@@ -20,6 +20,7 @@ reset:
 
     ; Get some input
     JSR XModemRcv
+    JMP $3B3A
     JSR read
 
 halt:
