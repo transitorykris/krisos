@@ -10,3 +10,6 @@ clean:
 
 burn:
 	minipro -p AT28C256 -w kernel.bin
+
+terminal:
+	picocom -b 19200 --send-cmd 'sz -X' /dev/cu.usbserial-DN05JN76
