@@ -20,29 +20,31 @@ _LIB_BINHEX_ = 1
     .segment "LIB"
 
 binhex:  
-         pha                   ;save byte
-         and #%00001111        ;extract LSN
-         tax                   ;save it
-         pla                   ;recover byte
-         lsr                   ;extract...
-         lsr                   ;MSN
-         lsr
-         lsr
-         pha                   ;save MSN
-         txa                   ;LSN
-         jsr convert           ;generate ASCII LSN
-         tax                   ;save
-         pla                   ;get MSN & fall thru
+    PHA                   ;save byte
+    AND #%00001111        ;extract LSN
+    TAX                   ;save it
+    PLA                   ;recover byte
+    LSR                   ;extract...
+    LSR                   ;MSN
+    LSR
+    LSR
+    PHA                   ;save MSN
+    TXA                   ;LSN
+    JSR convert           ;generate ASCII LSN
+    TAX                   ;save
+    PLA                   ;get MSN & fall thru
 ;
 ;
 ;   convert nybble to hex ASCII equivalent...
 ;
-convert: cmp #$0a
-         bcc final          ;in decimal range
-;
-         adc #$66           ;hex compensate
+convert:
+    CMP #$0a
+    BCC final          ;in decimal range
+    ;
+    ADC #$66           ;hex compensate
 ;         
-final:   eor #%00110000     ;finalize nybble
-         rts                ;done
+final:
+    EOR #%00110000     ;finalize nybble
+    RTS                ;done
 ;
 .endif
