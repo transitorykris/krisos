@@ -1,6 +1,9 @@
 ; KrisOS - via.h
 ; Copyright 2020 Kris Foster
 
+.ifndef _VIA_H_
+_VIA_H_ = 1
+
 VIA1_PORTB   = $6000             ; Port B
 VIA1_PORTA   = $6001             ; Port A
 VIA1_DDRB    = $6002             ; Port B data direction register
@@ -33,3 +36,5 @@ VIA2_PCR     = $600C             ; Peripheral control register
 VIA2_IFR     = $600D             ; Interrupt flag register
 VIA2_IER     = $600E             ; Interrupt enable register
 VIA2_ORA     = $6001             ; Port A without handshake
+
+.endif

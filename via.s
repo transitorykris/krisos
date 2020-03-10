@@ -1,6 +1,9 @@
 ; KrisOS VIA Library
 ; Copyright 2020 Kris Foster
 
+.ifndef _LIB_VIA_
+_LIB_VIA_ = 1
+
 ; Takes:
 ; A - data direction for port A
 ; X - data direction for port B
@@ -22,3 +25,5 @@ via2_init_ports:
     STA VIA2_PORTA
     STA VIA2_PORTB
     RTS
+
+.endif
