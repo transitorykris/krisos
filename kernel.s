@@ -21,6 +21,8 @@
 user_code_segment = $1000       ; The user's program will be stored here
 
 reset:
+    SEI                         ; Disable interrupts while we initialize
+
     JSR acia_init               ; Set up the serial port
     JSR setup_term              ; Pretty up the user's terminal
 
@@ -33,6 +35,8 @@ clear_page:                     ; Give the user's code clean space to run in
     INX
     JMP clear_page
 clear_done:
+
+    CLI                         ; Re-enable interrupts
 
 load_program:
     JSR XModemRcv               ; Retrieve a file using xmodem
