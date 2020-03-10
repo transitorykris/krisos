@@ -47,6 +47,9 @@ setup_term:
     writeln x_set_not_underlined    ;
     RTS
 
+; Code below has been cribbed from
+; https://www.grappendorf.net/projects/6502-home-computer/acia-serial-interface-hello-world.html
+
 write:
     LDY #00
 next_char:
