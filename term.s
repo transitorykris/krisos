@@ -12,6 +12,7 @@ _LIB_TERM_ = 1
 ; External imports
     .import ACIA_DATA
     .import ACIA_STATUS
+    .import binhex
 
 ; Exported symbols
     .export setup_term
@@ -78,6 +79,34 @@ write_line_feed:
     writeln new_line
     writeln prompt
     JMP read
+
+dump:
+    LDX #$FF
+dump_loop:
+    INX
+    CPX #$FF
+    BEQ dump_done
+    LDA $1000,x
+    PHX
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    PLX
+    JMP dump_loop
+dump_done:
+
+write_char:
+wait_txd_empty_char:
+    LDA ACIA_STATUS
+    AND #$10
+    BEQ wait_txd_empty_char
+    LDA $01
+    BEQ write_char_done
+    STA ACIA_DATA
+write_char_done:
+    RTS
 
 panic:
     writeln panic_msg
