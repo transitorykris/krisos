@@ -18,15 +18,15 @@
 
     .code
 
-user_code_segment = $1000
+user_code_segment = $1000       ; The user's program will be stored here
 
 reset:
-    JSR acia_init
-    JSR setup_term
+    JSR acia_init               ; Set up the serial port
+    JSR setup_term              ; Pretty up the user's terminal
 
     LDA #$00
     LDX #$00
-clear_page:
+clear_page:                     ; Give the user's code clean space to run in
     STA user_code_segment,X
     CPX #$FF
     BEQ clear_done
@@ -35,18 +35,18 @@ clear_page:
 clear_done:
 
 load_program:
-    JSR XModemRcv
+    JSR XModemRcv               ; Retrieve a file using xmodem
 
 start_program:
     LDA #<calling_msg
     STA $00
     LDA #>calling_msg
     STA $01  
-    JSR write
-    JSR user_code_segment
+    JSR write                   ; Indicate that we're starting the user's code
+    JSR user_code_segment       ; Start it!
 
 get_next_command:
-    JSR read
+    JSR read                    ; Read in our next command
 
 calling_msg: .byte "Starting",CR,LF,LF,LF,NULL
 
