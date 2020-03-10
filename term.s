@@ -18,6 +18,7 @@ _LIB_TERM_ = 1
     .export read
     .export write
     .export string_ptr
+    .export panic
 
 ; Macros
 .macro writeln  str_addr
@@ -77,5 +78,11 @@ write_line_feed:
     writeln new_line
     writeln prompt
     JMP read
+
+panic:
+    writeln panic_msg
+    RTS
+
+
 
 .endif

@@ -314,7 +314,7 @@ BadCrc:
     JSR Flush                   ; flush the input port
     LDA #NAK                    ;
     JSR Put_Chr                 ; send NAK to resend block
-    JMP StartBlk                ; STA rt over, get the block again
+    JMP StartBlk                ; Start over, get the block again
 GoodCrc:
     LDX #$02                    ;
     LDA blkno                   ; get the block number
@@ -342,7 +342,7 @@ CopyBlk4:
     CPX #$82                    ; is it the last byte
     BNE CopyBlk3                ; no, get the next one
 IncBlk:
-    INC blkno                   ; done.  INC  the block #
+    INC blkno                   ; done. INC the block #
     LDA #ACK                    ; send ACK
     JSR Put_Chr                 ;
     JMP StartBlk                ; get next block

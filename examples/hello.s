@@ -2,13 +2,15 @@
 ; Copyright 2020 Kris Foster
 ; A simple Hello, World! that uses the KrisOS kernel
 
-    .include "term.h"
-
-    ;.import ACIA_DATA
-    ;.import ACIA_STATUS
-
 ACIA_DATA       = $4000
 ACIA_STATUS     = $4001
+
+LF      = $0a
+NULL    = $00
+CR      = $0d
+
+; Zero Page pointers
+string_ptr = $00
 
     .code
 
@@ -19,6 +21,10 @@ hello:
     STA string_ptr+1
     JSR write
 
+    NOP
+    NOP
+    NOP
+    NOP
 write:
     LDY #00
 next_char:
