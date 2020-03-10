@@ -40,6 +40,8 @@
 ; padded zeros WILL also be written into RAM, which could overwrite other
 ; data.
 ;
+; Modified to run on KrisOS, Kris Foster March 2020
+;
 
 .ifndef _LIB_XMODEM_
 _LIB_XMODEM_ = 1

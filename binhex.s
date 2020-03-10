@@ -1,6 +1,3 @@
-;
-; Adapted from: http://forum.6502.org/viewtopic.php?f=2&t=3164
-;
 ;binhex: CONVERT BINARY BYTE TO HEX ASCII CHARS
 ;
 ;   ————————————————————————————————————
@@ -11,6 +8,8 @@
 ;                    .Y: entry value
 ;   ————————————————————————————————————
 ;
+; Adapted from: http://forum.6502.org/viewtopic.php?f=2&t=3164 
+; to run on KrisOS, Kris Foster March 2020
 
 .ifndef _LIB_BINHEX_
 _LIB_BINHEX_ = 1

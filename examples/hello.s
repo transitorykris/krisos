@@ -1,6 +1,7 @@
 ; KrisOS - hello.s
 ; Copyright 2020 Kris Foster
-; A simple Hello, World! that uses the KrisOS kernel
+;
+; A simple Hello, World! example for KrisOS
 
 ACIA_DATA       = $4000
 ACIA_STATUS     = $4001
