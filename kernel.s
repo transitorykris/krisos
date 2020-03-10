@@ -45,11 +45,7 @@ load_program:
     JSR XModemRcv               ; Retrieve a file using xmodem
 
 start_program:
-    LDA #<calling_msg
-    STA $00
-    LDA #>calling_msg
-    STA $01  
-    JSR write                   ; Indicate that we're starting the user's code
+    writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
 
 get_next_command:

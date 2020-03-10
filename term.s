@@ -21,15 +21,6 @@ _LIB_TERM_ = 1
     .export string_ptr
     .export panic
 
-; Macros
-.macro writeln  str_addr
-    LDA #<str_addr
-    STA string_ptr
-    LDA #>str_addr
-    STA string_ptr+1
-    JSR write
-.endmacro
-
     .segment "LIB"
 
 setup_term:
