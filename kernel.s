@@ -22,9 +22,9 @@ user_code_segment = $1000       ; The user's program will be stored here
 
 reset:
     SEI                         ; Disable interrupts while we initialize
-
     LDX #$FF                    ; Initialize our stack pointer
     TXS
+    CLD                         ; Explicitly do not use decimal mode
 
     JSR acia_init               ; Set up the serial port
     JSR setup_term              ; Pretty up the user's terminal
