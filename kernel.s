@@ -57,8 +57,6 @@ nmi:
     RTI
 
 irq:
-    ;JSR panic
-    ;JSR halt
     RTI
 
     .segment "VECTORS"
