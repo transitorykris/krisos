@@ -22,6 +22,8 @@ ACIA_CONTROL    = $4003
 
 ; Set up 6551 ACIA
 acia_init:
+    STZ ACIA_STATUS             ; Soft reset
+    LDA ACIA_DATA               ; Clear errors
     LDA #%00001011              ; No parity, no echo, no interrupt
     STA ACIA_COMMAND
     LDA #%00011111              ; 1 stop bit, 8 data bits, 19200 baud
