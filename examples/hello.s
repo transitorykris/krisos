@@ -21,10 +21,8 @@ hello:
     STA string_ptr+1
     JSR write
 
-    NOP
-    NOP
-    NOP
-    NOP
+    RTS
+
 write:
     LDY #00
 next_char:
