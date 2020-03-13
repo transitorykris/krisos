@@ -3,9 +3,6 @@
 ;
 ; A simple Hello, World! example for KrisOS
 
-ACIA_DATA       = $4000
-ACIA_STATUS     = $4001
-
 LF      = $0a
 NULL    = $00
 CR      = $0d
@@ -13,7 +10,7 @@ CR      = $0d
 ; Zero Page pointers
 string_ptr = $00
 
-    .include "stdlib.h"
+    .include "../stdlib.h"
 
     .code
 
