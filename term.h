@@ -4,7 +4,6 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
-
 ; Zero Page pointers
 string_ptr = $00
 

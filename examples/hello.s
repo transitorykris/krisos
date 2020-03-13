@@ -13,6 +13,8 @@ CR      = $0d
 ; Zero Page pointers
 string_ptr = $00
 
+    .include "stdlib.h"
+
     .code
 
 hello:
@@ -22,21 +24,6 @@ hello:
     STA string_ptr+1
     JSR write
 
-    RTS
-
-write:
-    LDY #00
-next_char:
-wait_txd_empty:
-    LDA ACIA_STATUS
-    AND #$10
-    BEQ wait_txd_empty
-    LDA (string_ptr), y
-    BEQ write_done
-    STA ACIA_DATA
-    INY
-    JMP next_char
-write_done:
-    RTS
+    RTS                         ; Return control to KrisOS
 
 hello_msg:  .byte   "Hello, World!", CR, LF, NULL

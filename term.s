@@ -13,11 +13,11 @@ _LIB_TERM_ = 1
     .import ACIA_DATA
     .import ACIA_STATUS
     .import binhex
+    .import write
 
 ; Exported symbols
     .export setup_term
     .export read
-    .export write
     .export string_ptr
     .export panic
 
@@ -40,21 +40,6 @@ setup_term:
 
 ; Code below has been cribbed from
 ; https://www.grappendorf.net/projects/6502-home-computer/acia-serial-interface-hello-world.html
-
-write:
-    LDY #00
-next_char:
-wait_txd_empty:
-    LDA ACIA_STATUS
-    AND #$10
-    BEQ wait_txd_empty
-    LDA (string_ptr), y
-    BEQ write_done
-    STA ACIA_DATA
-    INY
-    JMP next_char
-write_done:
-    RTS
 
 read:
     LDA ACIA_STATUS
