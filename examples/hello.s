@@ -10,7 +10,7 @@ CR      = $0d
 ; Zero Page pointers
 string_ptr = $00
 
-    .include "../stdlib.h"
+    .include "stdlib.h"
 
     .code
 
