@@ -20,6 +20,7 @@ _LIB_TERM_ = 1
     .export read
     .export string_ptr
     .export panic
+    .export reset_user_input
 
     .segment "LIB"
 
@@ -46,18 +47,16 @@ read:
     AND #$08
     BEQ read
     LDX ACIA_DATA
-    JSR write_acia
+    JMP echo_char
     JMP read
-
-write_acia:
+echo_char:
     STX ACIA_DATA
     CPX #CR
-    BEQ write_line_feed
+    BEQ read_done
     JMP read
-write_line_feed:
+read_done:
     writeln new_line
-    writeln prompt
-    JMP read
+    RTS
 
 dump:
     LDX #$FF
@@ -91,6 +90,25 @@ panic:
     writeln panic_msg
     RTS
 
+reset_user_input:
+    LDA #<user_input
+    STA user_input_ptr
+    LDA #>user_input
+    STA user_input_ptr          ; Point or repoint at our user_input array
+    LDY #$00
+clear_user_input_loop:
+    LDA #NULL
+    STA (user_input_ptr), y     ; Zero it out
+    CPY #$0f                    ; 16 bytes in user_input
+    BEQ reset_user_input_done
+    INY
+    JMP clear_user_input_loop
+reset_user_input_done:
+    RTS
+
+
+; 16 byte placeholder for user input
+user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 
 
 .endif

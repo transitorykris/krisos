@@ -13,6 +13,7 @@
     .import read
     .import write
     .import panic
+    .import reset_user_input
     .import ACIA_DATA
     .import ACIA_STATUS
 
@@ -40,6 +41,18 @@ clear_page:                     ; Give the user's code clean space to run in
 clear_done:
 
     CLI                         ; Re-enable interrupts
+
+repl:                           ; Not really a repl but I don't have a better name
+    ; Show prompt
+    writeln new_line
+    writeln prompt
+    JSR reset_user_input
+    JSR read
+    ; Read command
+    ; Parse command
+    ; Error if bad command
+    ; Execute command
+    ;JMP repl                    ; Get our next command
 
 load_program:
     JSR XModemRcv               ; Retrieve a file using xmodem
