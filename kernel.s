@@ -5,6 +5,7 @@
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.h"
+    .include "command.h"
 
 ; External imports
     .import acia_init
@@ -14,6 +15,7 @@
     .import write
     .import panic
     .import reset_user_input
+    .import parse_command
     .import user_input
     .import ACIA_DATA
     .import ACIA_STATUS
@@ -51,23 +53,35 @@ repl:                           ; Not really a repl but I don't have a better na
     writeln new_line
     writeln prompt
     JSR read
-    JSR parse
+
     ; Parse command
-    ; Error if bad command
+    JSR parse_command
+    CMP #ERROR_CMD
+    BEQ error
+
     ; Execute command
-    ;JMP repl                    ; Get our next command
+    CMP #LOAD_CMD
+    BEQ load_program
+    CMP #RUN_CMD
+    BEQ run_program
+
+    JMP repl                    ; Do it all again!
+
+error:
+    writeln bad_command_msg
+    JMP repl
 
 load_program:
     JSR XModemRcv               ; Retrieve a file using xmodem
+    JMP repl
 
-start_program:
+run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
-
-get_next_command:
-    JSR read                    ; Read in our next command
+    JMP repl
 
 calling_msg: .byte "Starting",CR,LF,LF,LF,NULL
+bad_command_msg: .byte "Unknown command",CR,LF,NULL
 
 halt:
     JMP halt

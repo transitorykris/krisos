@@ -7,6 +7,8 @@ _TERM_H_ = 1
 ; Zero Page pointers
 string_ptr = $00
 user_input_ptr = $02            ; Where we can find our raw user input
+strcmp_first_ptr = $F0
+strcmp_second_ptr = $F2
 
 ;
 ; ASCII codes

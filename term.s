@@ -54,16 +54,19 @@ read_next:
     AND #$08
     BEQ read_next
     LDA ACIA_DATA
-echo_char:                      ; Echo it back to the user
-    STA ACIA_DATA
-    STA (user_input_ptr), y
-    INY
-    CPY #$0f                    ; Our 16 char buffer full? (incl null)
-    BEQ read_done
+enter_pressed:
     CMP #CR                     ; User pressed enter?
-    BEQ read_done
+    BEQ read_done               ; Yes, don't save the CR
+echo_char:
+    STA ACIA_DATA               ; Otherwise, echo the char
+save_char:
+    STA (user_input_ptr), y     ; And save it
+    CPY #$0e                    ; Our 16 char buffer full? (incl null)
+    BEQ read_done               ; Yes, get out of here
+    INY
     JMP read_next               ; Otherwise read the next key
 read_done:
+    INY                         ; Add a NULL in the next position
     LDA #NULL
     STA (user_input_ptr),y      ; Make sure the last char is null
     writeln new_line
@@ -105,7 +108,7 @@ reset_user_input:
     LDA #<user_input
     STA user_input_ptr
     LDA #>user_input
-    STA user_input_ptr          ; Point or repoint at our user_input array
+    STA user_input_ptr+1          ; Point or repoint at our user_input array
     LDY #$00
 clear_user_input_loop:
     LDA #NULL
