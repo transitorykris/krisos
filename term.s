@@ -18,6 +18,7 @@ _LIB_TERM_ = 1
 ; Exported symbols
     .export setup_term
     .export read
+    .export dump
     .export string_ptr
     .export panic
     .export reset_user_input

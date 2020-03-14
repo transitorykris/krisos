@@ -13,6 +13,7 @@
     .import setup_term
     .import read
     .import write
+    .import dump
     .import panic
     .import reset_user_input
     .import parse_command
@@ -64,6 +65,8 @@ repl:                           ; Not really a repl but I don't have a better na
     BEQ load_program
     CMP #RUN_CMD
     BEQ run_program
+    CMP #DUMP_CMD
+    BEQ dump_program
 
     JMP repl                    ; Do it all again!
 
@@ -78,6 +81,10 @@ load_program:
 run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
+    JMP repl
+
+dump_program:
+    JSR dump
     JMP repl
 
 calling_msg: .byte "Starting",CR,LF,LF,NULL

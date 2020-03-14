@@ -40,8 +40,18 @@ check_run:
     STA strcmp_second_ptr+1
     JSR strcmp
     CMP #EQUAL
-    BNE error
+    BNE check_dump
     LDA #RUN_CMD
+    RTS
+check_dump:
+    LDA #<DUMP
+    STA strcmp_second_ptr
+    LDA #>DUMP
+    STA strcmp_second_ptr+1
+    JSR strcmp
+    CMP #EQUAL
+    BNE error
+    LDA #DUMP_CMD
     RTS
 error:
     LDA #ERROR_CMD
