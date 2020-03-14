@@ -92,6 +92,7 @@ DIS1    = $FB
 DIS2    = $FA 
 DIS3	= $F9 
 temp	= $FC
+CR		= $0D					; Enter key / Carriage Return
 ;
 ;
 ;
@@ -116,7 +117,7 @@ OUT:		JSR	POUT            ; DISPLAY AND
 ;			BEQ	OUT             ; (DEBOUNCE)
 ;			STA	OLDKY
 ;		
-			CMP	#$43			; [C]
+			CMP	#'C'			; [C]
 			BNE	NOSET			; SET UP
 			LDX	#$1F			; BOARD
 WHSET:		LDA	SETW,X          ; FROM
@@ -128,7 +129,7 @@ WHSET:		LDA	SETW,X          ; FROM
 			LDA	#$CC			; Display CCC
 			BNE	CLDSP
 ;		
-NOSET:		CMP	#$45            ; [E]
+NOSET:		CMP	#'E'            ; [E]
 			BNE	NOREV			; REVERSE
 			JSR	REVERSE         ; BOARD IS
 			SEC
@@ -138,7 +139,7 @@ NOSET:		CMP	#$45            ; [E]
 			LDA	#$EE            ; IS
 			BNE	CLDSP
 ;		
-NOREV:		CMP	#$40			; [P]
+NOREV:		CMP	#'P'			; [P]
 			BNE	NOGO            ; PLAY CHESS
 			JSR	GO
 CLDSP:		STA	DIS1            ; DISPLAY
@@ -146,14 +147,14 @@ CLDSP:		STA	DIS1            ; DISPLAY
 			STA	DIS3            ; DISPLAY
 			BNE	CHESS
 ;		
-NOGO:		CMP	#$0D            ; [Enter]
+NOGO:		CMP	#CR            ; [Enter]
 			BNE	NOMV            ; MOVE MAN
 			JSR	MOVE            ; AS ENTERED
 			JMP	DISP
-NOMV:		CMP #$41			; [Q] ***Added to allow game exit***
+NOMV:		CMP #'Q'			; [Q] ***Added to allow game exit***
 			BEQ DONE			; quit the game, exit back to system.  
 			JMP	INPUT			; process move
-DONE:		JMP $FF00			; *** MUST set this to YOUR OS starting address
+DONE:		JMP $8000			; *** MUST set this to YOUR OS starting address
 ;		
 ;       THE ROUTINE JANUS DIRECTS THE
 ;       ANALYSIS BY DETERMINING WHAT

@@ -21,6 +21,8 @@
     .import ACIA_DATA
     .import ACIA_STATUS
 
+    .export reset
+
     .code
 
 user_code_segment = $1000       ; The user's program will be stored here
