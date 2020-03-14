@@ -44,21 +44,28 @@ setup_term:
 ; https://www.grappendorf.net/projects/6502-home-computer/acia-serial-interface-hello-world.html
 
 read:
+    LDA #<user_input
+    STA user_input_ptr          ; Lo address
+    LDA #>user_input
+    STA user_input_ptr+1        ; Hi address
     LDY #$00                    ; Counter used for tracking where we are in buffer
 read_next:
     LDA ACIA_STATUS
     AND #$08
-    BEQ read
+    BEQ read_next
     LDA ACIA_DATA
 echo_char:                      ; Echo it back to the user
     STA ACIA_DATA
-    CMP #CR
-    BEQ read_done
-store_char:                     ; Save it in our command buffer
     STA (user_input_ptr), y
     INY
-    JMP read_next
+    CPY #$0f                    ; Our 16 char buffer full? (incl null)
+    BEQ read_done
+    CMP #CR                     ; User pressed enter?
+    BEQ read_done
+    JMP read_next               ; Otherwise read the next key
 read_done:
+    LDA #NULL
+    STA (user_input_ptr),y      ; Make sure the last char is null
     writeln new_line
     RTS
 
@@ -110,9 +117,9 @@ clear_user_input_loop:
 reset_user_input_done:
     RTS
 
+    .org $0200                  ; temp hack to put this in RAM
 
 ; 16 byte placeholder for user input
 user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-
-
+;user_input: .byte $21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$00
 .endif

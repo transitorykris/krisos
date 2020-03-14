@@ -45,12 +45,13 @@ clear_done:
 
 repl:                           ; Not really a repl but I don't have a better name
     ; Show prompt
+    JSR reset_user_input
+
+    ; Read command
     writeln new_line
     writeln prompt
-    JSR reset_user_input
     JSR read
-    writeln user_input
-    ; Read command
+    JSR parse
     ; Parse command
     ; Error if bad command
     ; Execute command
