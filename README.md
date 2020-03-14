@@ -9,7 +9,7 @@ An operating system for the K64
 
 ## The Hardware
 
-This is based off a [Ben Eater 6502 Single Board Computer](https://eater.net/).
+This is based off a [Ben Eater 6502 Single Board Computer](https://eater.net/6502).
 
 The K64 adds a (non-WDC) 6551 ACIA for serial communication.
 
