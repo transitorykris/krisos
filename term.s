@@ -122,8 +122,7 @@ reset_user_input_done:
     RTS
 
     .org $0200                  ; temp hack to put this in RAM
-
 ; 16 byte placeholder for user input
 user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-;user_input: .byte $21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$21,$00
+
 .endif

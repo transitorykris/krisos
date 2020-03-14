@@ -69,6 +69,8 @@ repl:                           ; Not really a repl but I don't have a better na
     BEQ dump_program
     CMP #HELP_CMD
     BEQ help
+    CMP #SHUTDOWN_CMD
+    BEQ shutdown
 
     JMP repl                    ; Do it all again!
 
@@ -94,19 +96,22 @@ help:
     writeln RUN_HELP
     writeln DUMP_HELP
     writeln HELP_HELP
+    writeln SHUTDOWN_HELP
     JMP repl
 
-calling_msg: .byte "Starting",CR,LF,LF,NULL
-bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
-
-halt:
-    JMP halt
+shutdown:
+    writeln shutdown_msg
+    .byte $DB                   ; STP opcode not in ca65?
 
 nmi:
     RTI
 
 irq:
     RTI
+
+calling_msg: .byte "Starting",CR,LF,LF,NULL
+bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
+shutdown_msg: .byte "Shutting down...",CR,LF,NULL
 
     .segment "VECTORS"
     .word nmi

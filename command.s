@@ -27,6 +27,7 @@ parse_command:
     check_command RUN, RUN_CMD
     check_command DUMP, DUMP_CMD
     check_command HELP, HELP_CMD
+    check_command SHUTDOWN, SHUTDOWN_CMD
 error:
     LDA #ERROR_CMD
     RTS
