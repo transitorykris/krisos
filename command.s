@@ -23,36 +23,9 @@ parse_command:
     STA strcmp_first_ptr
     LDA #>user_input
     STA strcmp_first_ptr+1
-check_load:
-    LDA #<LOAD
-    STA strcmp_second_ptr
-    LDA #>LOAD
-    STA strcmp_second_ptr+1
-    JSR strcmp
-    CMP #EQUAL
-    BNE check_run
-    LDA #LOAD_CMD
-    RTS
-check_run:
-    LDA #<RUN
-    STA strcmp_second_ptr
-    LDA #>RUN
-    STA strcmp_second_ptr+1
-    JSR strcmp
-    CMP #EQUAL
-    BNE check_dump
-    LDA #RUN_CMD
-    RTS
-check_dump:
-    LDA #<DUMP
-    STA strcmp_second_ptr
-    LDA #>DUMP
-    STA strcmp_second_ptr+1
-    JSR strcmp
-    CMP #EQUAL
-    BNE error
-    LDA #DUMP_CMD
-    RTS
+    check_command LOAD, LOAD_CMD
+    check_command RUN, RUN_CMD
+    check_command DUMP, DUMP_CMD
 error:
     LDA #ERROR_CMD
     RTS

@@ -20,4 +20,18 @@ LOAD: .byte "load",NULL
 RUN: .byte "run",NULL
 DUMP: .byte "dump",NULL
 
+.macro check_command command, number
+    .local next
+    LDA #<command
+    STA strcmp_second_ptr
+    LDA #>command
+    STA strcmp_second_ptr+1
+    JSR strcmp
+    CMP #EQUAL
+    BNE next
+    LDA #number
+    RTS
+next:
+.endmacro
+
 .endif
