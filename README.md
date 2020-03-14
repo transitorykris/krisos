@@ -5,6 +5,13 @@ An operating system for the K64
 ## Dependencies
 
  * Requires ca65 and ld65 to build
+ * This will only run on a WDC 65c02 CPU
+
+## The Hardware
+
+This is based off a [Ben Eater 6502 Single Board Computer](https://eater.net/).
+
+The K64 adds a (non-WDC) 6551 ACIA for serial communication.
 
 ## Building
 
