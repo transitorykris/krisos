@@ -80,7 +80,7 @@ run_program:
     JSR user_code_segment       ; Start it!
     JMP repl
 
-calling_msg: .byte "Starting",CR,LF,LF,LF,NULL
+calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command",CR,LF,NULL
 
 halt:

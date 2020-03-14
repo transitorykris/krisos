@@ -480,7 +480,7 @@ Prtgood1:
 Prtgood2:
     RTS
 GoodMsg:
-    .byte EOT,CR,LF,EOT,CR,LF,EOT,CR,LF,CR,LF
+    .byte EOT,CR,LF
     .byte "Transfer Successful!"
     .byte CR, LF
     .byte 0
