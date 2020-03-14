@@ -53,7 +53,6 @@ repl:                           ; Not really a repl but I don't have a better na
     JSR reset_user_input
 
     ; Read command
-    writeln new_line
     writeln prompt
     JSR read
 
