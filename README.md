@@ -9,7 +9,7 @@ An operating system for the K64
 ## Building
 
 ```
-make
+$ make
 ```
 
 And copy `kernel.bin` to your EEPROM.
