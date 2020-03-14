@@ -67,6 +67,8 @@ repl:                           ; Not really a repl but I don't have a better na
     BEQ run_program
     CMP #DUMP_CMD
     BEQ dump_program
+    CMP #HELP_CMD
+    BEQ help
 
     JMP repl                    ; Do it all again!
 
@@ -87,8 +89,15 @@ dump_program:
     JSR dump
     JMP repl
 
+help:
+    writeln LOAD_HELP
+    writeln RUN_HELP
+    writeln DUMP_HELP
+    writeln HELP_HELP
+    JMP repl
+
 calling_msg: .byte "Starting",CR,LF,LF,NULL
-bad_command_msg: .byte "Unknown command",CR,LF,NULL
+bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 
 halt:
     JMP halt
