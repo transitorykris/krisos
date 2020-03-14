@@ -21,6 +21,7 @@ _LIB_TERM_ = 1
     .export string_ptr
     .export panic
     .export reset_user_input
+    .export user_input
 
     .segment "LIB"
 
@@ -43,17 +44,20 @@ setup_term:
 ; https://www.grappendorf.net/projects/6502-home-computer/acia-serial-interface-hello-world.html
 
 read:
+    LDY #$00                    ; Counter used for tracking where we are in buffer
+read_next:
     LDA ACIA_STATUS
     AND #$08
     BEQ read
-    LDX ACIA_DATA
-    JMP echo_char
-    JMP read
-echo_char:
-    STX ACIA_DATA
-    CPX #CR
+    LDA ACIA_DATA
+echo_char:                      ; Echo it back to the user
+    STA ACIA_DATA
+    CMP #CR
     BEQ read_done
-    JMP read
+store_char:                     ; Save it in our command buffer
+    STA (user_input_ptr), y
+    INY
+    JMP read_next
 read_done:
     writeln new_line
     RTS

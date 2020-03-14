@@ -14,6 +14,7 @@
     .import write
     .import panic
     .import reset_user_input
+    .import user_input
     .import ACIA_DATA
     .import ACIA_STATUS
 
@@ -48,6 +49,7 @@ repl:                           ; Not really a repl but I don't have a better na
     writeln prompt
     JSR reset_user_input
     JSR read
+    writeln user_input
     ; Read command
     ; Parse command
     ; Error if bad command
