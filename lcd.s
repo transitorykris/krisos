@@ -7,6 +7,6 @@ _LIB_LCD = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "sound.h"
+    .include "lcd.h"
 
 .endif
