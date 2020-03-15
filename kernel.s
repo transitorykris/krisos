@@ -168,30 +168,30 @@ assembler_version_msg: .byte "Assembler version ca65 ",NULL
 
 write_build_time:
     writeln build_time_msg
-    LDA build_time
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
     LDA build_time+3
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
+    JSR write_char
     LDA build_time+2
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
-    JSR write_char
     LDA build_time+1
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    writeln new_line+0
+    LDA build_time+0
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    writeln new_line
     RTS
 
 write_assembler_version:
