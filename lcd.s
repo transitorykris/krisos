@@ -68,7 +68,7 @@ send_lcd_command:
 
 ; Need to write proper busy checking code
 wait:
-    ;LDX #$00
+    LDX #$00
 wait_loop:
     CPX #$0F
     BEQ wait_done
