@@ -9,9 +9,10 @@ _LIB_LCD = 1
 
     .include "lcd.h"
     .include "via.h"
+    .include "term.h"
 
     .export lcd_init
-    .export lcd_hello
+    .export lcd_write
 
     .segment "LIB"
 
@@ -22,35 +23,6 @@ lcd_init:
     JSR send_lcd_command
     LDA #(LCD_DISPLAY_CTRL|LCD_LEFTRIGHT|LCD_SHIFT)
     JSR send_lcd_command
-    RTS
-
-lcd_hello:
-    lda #'H'
-    JSR write_lcd
-    lda #'e'
-    JSR write_lcd
-    lda #'l'
-    JSR write_lcd
-    lda #'l'
-    JSR write_lcd
-    lda #'o'
-    JSR write_lcd
-    lda #','
-    JSR write_lcd
-    lda #' '
-    JSR write_lcd
-    lda #'w'
-    JSR write_lcd
-    lda #'o'
-    JSR write_lcd
-    lda #'r'
-    JSR write_lcd
-    lda #'l'
-    JSR write_lcd
-    lda #'d'
-    JSR write_lcd
-    lda #'!'
-    JSR write_lcd
     RTS
 
 send_lcd_command:
@@ -74,6 +46,18 @@ wait_loop:
     BEQ wait_done
     INX
 wait_done:
+    RTS
+
+lcd_write:
+    LDY #00
+lcd_write_loop:
+    JSR wait
+    LDA (string_ptr), y
+    BEQ lcd_write_done          ; NULL will make us branch
+    JSR write_lcd
+    INY
+    JMP lcd_write_loop
+lcd_write_done:
     RTS
 
 write_lcd:

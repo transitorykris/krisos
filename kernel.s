@@ -5,6 +5,7 @@
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.h"
+    .include "lcd.h"
     .include "command.h"
 
 ; External imports
@@ -21,8 +22,8 @@
     .import ACIA_DATA
     .import ACIA_STATUS
     .import lcd_init
-    .import lcd_hello
     .import via1_init_ports
+    .import lcd_write
 
     .export reset
 
@@ -50,7 +51,7 @@ reset:
 
     writeln init_lcd_msg
     JSR lcd_init                ; Set up the LCD display
-    JSR lcd_hello
+    writeln_lcd krisos_lcd_message
     writeln init_done_msg
 
     writeln init_clear_userspace_msg
@@ -145,6 +146,8 @@ init_reenable_irq_msg: .byte "Re-enabling interrupts...",NULL
 init_terminal_msg: .byte "Initializing terminal...",NULL
 init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
 init_done_msg: .byte "Done!",CR,LF,NULL
+
+krisos_lcd_message: .byte "KrisOS/K64",NULL
 
 calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
