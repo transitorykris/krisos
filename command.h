@@ -10,6 +10,7 @@ RUN_CMD         = $02
 DUMP_CMD        = $03
 HELP_CMD        = $04
 SHUTDOWN_CMD    = $05
+EMPTY_CMD       = $06
 
 FALSE   = 0
 TRUE    = 1
@@ -23,6 +24,7 @@ RUN:        .byte "run",NULL
 DUMP:       .byte "dump",NULL
 HELP:       .byte "help",NULL
 SHUTDOWN:   .byte "shutdown",NULL
+EMPTY:      .byte "", NULL
 
 HEADER_HELP:    .byte "Available commands in KrisOS:",CR,LF,NULL
 LOAD_HELP:      .byte "load - Begins an XMODEM receive",CR,LF,NULL
