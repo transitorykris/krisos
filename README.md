@@ -6,6 +6,7 @@ An operating system for the K64
 
  * Requires ca65 and ld65 to build
  * This will only run on a WDC 65c02 CPU
+ * `make terminal` uses picoterm, but any terminal software will do
 
 ## The Hardware
 
