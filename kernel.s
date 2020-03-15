@@ -43,7 +43,7 @@ reset:
     JSR setup_term              ; Pretty up the user's terminal
 
     writeln init_via_msg
-    LDA #%11100001              ; LCD signals
+    LDA #%11100001              ; LCD signals + 1 pin for LED
     LDX #%11111111              ; LCD databus lines
     JSR via1_init_ports         ; Initialize VIA
     writeln init_done_msg    

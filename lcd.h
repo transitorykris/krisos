@@ -15,13 +15,16 @@ LCD_EIGHTBIT       = %00010000   ; 8 bit mode
 LCD_TWOLINE        = %00001000   ; 2 line mode
 LCD_FIVEEIGHTFONT  = %00000100   ; 5x8 font
 
-LCD_DISPLAY_CTRL   = %00001000
+LCD_CURSOR_DISPLAY = %00001000
 LCD_DISPLAY_ON     = %00000100
 LCD_CURSOR_ON      = %00000010
 LCD_BLINK_ON       = %00000001
+LCD_BLINK_OFF      = %00000000
 
-LCD_CURSOR_DISPLAY = %00000100
-LCD_RIGHTLEFT      = %00000010   ; Direction is right to left
-LCD_DISPLAY_SHIFT  = %00000001   ; Don't shift the display
+LCD_DISPLAY_CTRL   = %00000100
+LCD_LEFTRIGHT      = %00000010   ; Direction is left to right
+LCD_RIGHTLEFT      = %00000000
+LCD_DONT_SHIFT     = %00000001   ; Don't shift the display
+LCD_SHIFT          = %00000000
 
 .endif

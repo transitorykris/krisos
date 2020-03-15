@@ -16,12 +16,13 @@ _LIB_LCD = 1
     .segment "LIB"
 
 lcd_init:
-    LDA #%00111000 ; Set 8-bit mode; 2-line display; 5x8 font
+    LDA #(LCD_FUNCTION_SET|LCD_EIGHTBIT|LCD_TWOLINE)
     JSR send_lcd_command
-    LDA #%00001110 ; Display on; cursor on; blink off
+    LDA #(LCD_CURSOR_DISPLAY|LCD_DISPLAY_ON|LCD_CURSOR_ON|LCD_BLINK_OFF)
     JSR send_lcd_command
-    LDA #%00000110 ; Increment and shift cursor; don't shift display
+    LDA #(LCD_DISPLAY_CTRL|LCD_LEFTRIGHT|LCD_SHIFT)
     JSR send_lcd_command
+    RTS
 
 lcd_hello:
     lda #'H'
@@ -50,41 +51,40 @@ lcd_hello:
     JSR write_lcd
     lda #'!'
     JSR write_lcd
+    RTS
 
 send_lcd_command:
     JSR wait
     STA VIA1_PORTB
-
     LDA #$01                    ; Clear RS/RW/E bits
     STA VIA1_PORTA
-
+    JSR wait
     LDA #LCD_ENABLE             ; Set E bit to send instruction
     STA VIA1_PORTA
-
+    JSR wait
     LDA #$01                    ; Clear RS/RW/E bits
     STA VIA1_PORTA
     RTS
 
 ; Need to write proper busy checking code
 wait:
-    LDX #$00
+    ;LDX #$00
 wait_loop:
-    CPX #$FF
+    CPX #$0F
     BEQ wait_done
-    INC
+    INX
 wait_done:
     RTS
 
 write_lcd:
     JSR wait
     STA VIA1_PORTB
-
     LDA #LCD_RS                 ; Set RS; Clear RW/E bits
     STA VIA1_PORTA
-
+    JSR wait
     LDA #(LCD_RS|LCD_ENABLE)    ; Set E bit to send instruction
     STA VIA1_PORTA
-
+    JSR wait
     LDA #LCD_RS                 ; Clear E bits
     STA VIA1_PORTA
     RTS
