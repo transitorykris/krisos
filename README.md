@@ -2,6 +2,8 @@
 
 An operating system for the K64
 
+![Screenshot](https://raw.githubusercontent.com/transitorykris/krisos/master/documentation/screenshot.png)
+
 ## Dependencies
 
  * Requires ca65 and ld65 to build
