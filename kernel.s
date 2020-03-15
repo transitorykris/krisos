@@ -14,6 +14,7 @@
     .import setup_term
     .import read
     .import write
+    .import write_char
     .import dump
     .import panic
     .import reset_user_input
@@ -24,6 +25,7 @@
     .import lcd_init
     .import via1_init_ports
     .import lcd_write
+    .import binhex              ; For build time and ca65 version
 
     .export reset
 
@@ -69,6 +71,11 @@ clear_done:
     writeln init_reenable_irq_msg
     CLI                         ; Re-enable interrupts
     writeln init_done_msg
+
+    ;writeln build_time_msg
+    JSR write_build_time
+    JSR write_assembler_version
+    ;writeln assembler_version_msg
 
     writeln init_start_cli_msg
     writeln welcome_msg
@@ -152,6 +159,69 @@ krisos_lcd_message: .byte "KrisOS/K64",NULL
 calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 shutdown_msg: .byte "Shutting down...",CR,LF,NULL
+
+build_time: .dword .time
+assembler_version: .dword .version
+
+build_time_msg: .byte "Build time ",NULL
+assembler_version_msg: .byte "Assembler version ca65 ",NULL
+
+write_build_time:
+    writeln build_time_msg
+    LDA build_time
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    LDA build_time+1
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    LDA build_time+2
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    LDA build_time+3
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    writeln new_line
+    RTS
+
+write_assembler_version:
+    writeln assembler_version_msg
+    LDA assembler_version
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    LDA assembler_version+1
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    LDA assembler_version+2
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    LDA assembler_version+3
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    writeln new_line
+    RTS
 
     .segment "VECTORS"
     .word nmi

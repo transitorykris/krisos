@@ -23,6 +23,7 @@ _LIB_TERM_ = 1
     .export panic
     .export reset_user_input
     .export user_input
+    .export write_char
 
     .segment "LIB"
 
