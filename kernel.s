@@ -161,7 +161,7 @@ bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 shutdown_msg: .byte "Shutting down...",CR,LF,NULL
 
 build_time: .dword .time
-assembler_version: .dword .version
+assembler_version: .word .version
 
 build_time_msg: .byte "Build time ",NULL
 assembler_version_msg: .byte "Assembler version ca65 ",NULL
@@ -203,18 +203,6 @@ write_assembler_version:
     STX $01 ; LSN
     JSR write_char
     LDA assembler_version+1
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
-    LDA assembler_version+2
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
-    LDA assembler_version+3
     JSR binhex
     STA $01 ; MSN
     JSR write_char
