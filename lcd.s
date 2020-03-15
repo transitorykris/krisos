@@ -23,6 +23,38 @@ lcd_init:
     JSR send_lcd_command
     LDA #(LCD_DISPLAY_CTRL|LCD_LEFTRIGHT|LCD_SHIFT)
     JSR send_lcd_command
+    LDA #(LCD_RETURN_HOME)
+    JSR send_lcd_command
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    LDA #(LCD_CLEAR_DISPLAY)
+    JSR send_lcd_command
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
+    jsr wait
     RTS
 
 send_lcd_command:

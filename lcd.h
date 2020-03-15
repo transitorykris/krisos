@@ -27,6 +27,9 @@ LCD_RIGHTLEFT      = %00000000
 LCD_DONT_SHIFT     = %00000001   ; Don't shift the display
 LCD_SHIFT          = %00000000
 
+LCD_CLEAR_DISPLAY  = %00000001
+LCD_RETURN_HOME    = %00000010
+
 .macro writeln_lcd str_addr
     LDA #<str_addr
     STA string_ptr

@@ -174,7 +174,7 @@ write_build_time:
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    LDA build_time+1
+    LDA build_time+3
     JSR binhex
     STA $01 ; MSN
     JSR write_char
@@ -185,24 +185,24 @@ write_build_time:
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    LDA build_time+3
+    LDA build_time+1
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    writeln new_line
+    writeln new_line+0
     RTS
 
 write_assembler_version:
     writeln assembler_version_msg
-    LDA assembler_version
+    LDA assembler_version+1
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    LDA assembler_version+1
+    LDA assembler_version+0
     JSR binhex
     STA $01 ; MSN
     JSR write_char
