@@ -9,15 +9,17 @@ _LIB_VIA_ = 1
 
     .include "via.h"
 
+    .export via1_init_ports
+    .export via2_init_ports
+
 ; Takes:
 ; A - data direction for port A
 ; X - data direction for port B
 via1_init_ports:
     STA VIA1_DDRA
     STX VIA1_DDRB
-    LDA #$00                    ; Set all port outputs to low
-    STA VIA1_PORTA
-    STA VIA1_PORTB
+    STZ VIA1_PORTA              ; Set all port outputs to low
+    STZ VIA1_PORTB              ; Set all port outputs to low
     RTS
 
 ; Takes:
@@ -26,9 +28,8 @@ via1_init_ports:
 via2_init_ports:
     STA VIA2_DDRA
     STX VIA2_DDRB
-    LDA #$00                    ; Set all port outputs to low
-    STA VIA2_PORTA
-    STA VIA2_PORTB
+    STZ VIA2_PORTA              ; Set all port outputs to low
+    STZ VIA2_PORTB              ; Set all port outputs to low
     RTS
 
 .endif

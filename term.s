@@ -34,8 +34,6 @@ setup_term:
     writeln x_erase_display         ;
     writeln x_set_bold              ;
     writeln x_set_underlined        ;
-    writeln welcome_msg             ;
-    writeln new_line                ;
 
     writeln x_set_normal            ; Reset to a normal font
     writeln x_set_not_underlined    ;

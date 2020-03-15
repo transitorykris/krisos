@@ -44,7 +44,7 @@ new_line:               .byte CR, LF, NULL
 prompt:                 .byte "OK> ", NULL
 
 ; Messages
-welcome_msg:    .byte "Welcome to KrisOS on the K64", CR, LF, NULL
+welcome_msg:    .byte "Welcome to KrisOS on the K64", CR, LF, LF, NULL
 panic_msg:      .byte "Something went wrong. BRK called or executed $00?", CR, LF, NULL
 
 ; Macros
