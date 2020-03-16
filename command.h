@@ -43,7 +43,16 @@ help_commands_msg:
     .byte "shutdown - Stop the K64",CR,LF
     .byte "clear - Clears the screen",CR,LF
     .byte "reset - Soft resets the computer",CR,LF
+help_copyright_msg:
+    .byte "------------------------------------------------",CR,LF
+    .byte "KrisOS is licensed under the MIT License",CR,LF
+    .byte "XMODEM Copyright 2002 Daryl Rictor",CR,LF
+    .byte "Some ACIA code by Dirk Grappendorf",CR,LF
+    .byte "binhex by BigDumbDinosaur on 6502.org",CR,LF
+    .byte "strcmp by Michael H. Potter",CR,LF
+    .byte "See github.com/transitorykris/krisos for details",CR,LF
     .byte NULL
+
 
 ; The STP opcode is not available in ca65
 .macro STP
