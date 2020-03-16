@@ -99,6 +99,9 @@ load_and_write:
     JSR write_char
     STX $01 ; LSN
     JSR write_char
+    LDA #SPACE
+    STA $01
+    JSR write_char
     PLX                         ; Get our index back
 check_new_line:
     TXA
