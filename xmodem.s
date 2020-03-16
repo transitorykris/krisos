@@ -60,7 +60,6 @@ _LIB_XMODEM_ = 1
 ;
 ; zero page variables (adjust these to suit your needs)
 ;
-;
 lastblk = $35                   ; flag for last block
 blkno   = $36                   ; block number
 errcnt  = $37                   ; error counter 10 is the limit
@@ -79,25 +78,10 @@ retry   = $3e                   ; retry counter
 retry2  = $3f                   ; 2nd counter
 
 ;
-;
 ; non-zero page variables and buffers
-;
 ;
 Rbuff   = $0300                 ; temp 132 byte receive buffer
 ;(place anywhere, page aligned)
-;
-;
-;  tables and constants
-;
-;
-; The crclo & crchi labels are used to point to a lookup table to calculate
-; the CRC for the 128 byte data blocks.  There are two implementations of these
-; tables.  One is to use the tables INC luded (defined towards the end of this
-; file) and the other is to build them at run-time.  If building at run-time,
-; then these two labels will need to be un-commented and declared in RAM.
-;
-;crclo  = $7D00       ; Two 256-byte tables for quick lookup
-;crchi  =  $7E00       ; (should be page-aligned for speed)
 
 ;^^^^^^^^^^^^^^^^^^^^^^ Start of Program ^^^^^^^^^^^^^^^^^^^^^^
 ;
@@ -105,9 +89,6 @@ Rbuff   = $0300                 ; temp 132 byte receive buffer
 ; By Daryl Rictor, August 8, 2002
 ;
 ; v1.0  released on Aug 8, 2002.
-;
-;
-;  *=  $FA00  ; Start of program (adjust to your needs)
 ;
 ; Enter this routine with the beginning address stored in the zero page address
 ; pointed to by ptr & ptrh and the ending address stored in the zero page address
@@ -356,24 +337,11 @@ RDone:
 ; if this routine waits for the port to be ready.  its assumed that the
 ; character was send upon return from this routine.
 ;
-; Here is an example of the routines used for a STA ndard 6551 ACIA.
+; Here is an example of the routines used for a standard 6551 ACIA.
 ; You would call the ACIA_Init prior to running the xmodem transfer
 ; routine.
 ;
-;ACIA_DATA = $7F70               ; Adjust these addresses to point
-;ACIA_STATUS = $7F71             ; to YOUR 6551!
-;ACIA_Command = $7F72            ;
-;ACIA_Control = $7F73            ;
 
-;ACIA_Init:
-;    LDA #$1F                    ; 19.2K/8/1
-;    STA ACIA_Control            ; control reg
-;    LDA #$0B                    ; N parity/echo off/rx int off/ dtr active low
-;    STA ACIA_Command            ; command reg
-;    RTS                         ; done
-;
-; input chr from ACIA (no waiting)
-;
 Get_Chr:
     CLC   ; no chr present
     LDA ACIA_STATUS             ; get Serial port STA tus
@@ -399,8 +367,6 @@ Put_Chr1:
 ;=========================================================================
 ;
 ; subroutines
-;
-;
 ;
 GetByte:
     LDA #$00                    ; wait for chr input and cycle timing loop
@@ -470,14 +436,9 @@ GoodMsg:
     .byte CR, LF
     .byte 0
 
-
-;
-;
 ;=========================================================================
 ;
-;
 ;  CRC subroutines
-;
 ;
 CalcCRC:
     LDA #$00                    ; yes, calculate the CRC for the 128 bytes
@@ -497,52 +458,13 @@ CalcCRC1:
     CPY #$82                    ; done yet?
     BNE CalcCRC1                ; no, get next
     RTS                         ; y=82 on exit
-;
-; Alternate solution is to build the two lookup tables at run-time.  This might
-; be desirable if the program is running from ram to reduce binary upload time.
-; The following code generates the data for the lookup tables.  You would need to
-; un-comment the variable declarations for crclo & crchi in the Tables and Constants
-; section above and call this routine to build the tables before calling the
-; "xmodem" routine.
-;
-;MAKECRCTABLE
-;   LDX #$00
-;   LDA #$00
-;zeroloop:
-;   STA crclo,x
-;   STA crchi,x
-;   INX
-;   BNE zeroloop
-;   LDX #$00
-;fetch:
-;   TXA
-;   EOR crchi,x
-;   STA crchi,x
-;   LDY #$08
-;fetch1:
-;   ASL crclo,x
-;   ROL crchi,x
-;   BCC fetch2
-;   LDA crchi,x
-;   EOR #$10
-;   STA crchi,x
-;   LDA crclo,x
-;   EOR #$21
-;   STA crclo,x
-;fetch2:
-;   DEY
-;   BNE fetch1
-;   INX
-;   BNE fetch
-;   RTS
-;
+
 ; The following tables are used to calculate the CRC for the 128 bytes
 ; in the xmodem data blocks.  You can use these tables if you plan to
 ; store this program in ROM.  If you choose to build them at run-time,
 ; then just delete them and define the two labels: crclo & crchi.
 ;
 ; low byte CRC lookup table (should be page aligned)
-;  *= $FD00
 crclo:
     .byte $00,$21,$42,$63,$84,$A5,$C6,$E7,$08,$29,$4A,$6B,$8C,$AD,$CE,$EF
     .byte $31,$10,$73,$52,$B5,$94,$F7,$D6,$39,$18,$7B,$5A,$BD,$9C,$FF,$DE
@@ -562,7 +484,6 @@ crclo:
     .byte $1F,$3E,$5D,$7C,$9B,$BA,$D9,$F8,$17,$36,$55,$74,$93,$B2,$D1,$F0
 
 ; hi byte CRC lookup table (should be page aligned)
-;  *= $FE00
 crchi:
     .byte $00,$10,$20,$30,$40,$50,$60,$70,$81,$91,$A1,$B1,$C1,$D1,$E1,$F1
     .byte $12,$02,$32,$22,$52,$42,$72,$62,$93,$83,$B3,$A3,$D3,$C3,$F3,$E3
