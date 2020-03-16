@@ -89,11 +89,9 @@ read_done:
 dump:
     PHA
     PHX
-    LDX #$FF
+    LDX #$00
 dump_loop:
-    INX
-    CPX #$FF
-    BEQ dump_done
+load_and_write:
     LDA $1000,x
     PHX                         ; Save our index on the stack, binhex destroys it
     JSR binhex
@@ -102,9 +100,19 @@ dump_loop:
     STX $01 ; LSN
     JSR write_char
     PLX                         ; Get our index back
+check_new_line:
+    TXA
+    AND #$0F
+    CMP #$0F
+    BNE dump_next
+    writeln new_line            ; This also covers a new_line at the end of the page
+check_end_of_page:
+    CPX #$FF
+    BEQ dump_done
+dump_next:
+    INX
     JMP dump_loop
 dump_done:
-    writeln new_line
     PLX
     PLA
     RTS
