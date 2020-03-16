@@ -108,11 +108,8 @@ error:
     RTS
 
 help:
-    writeln LOAD_HELP
-    writeln RUN_HELP
-    writeln DUMP_HELP
-    writeln HELP_HELP
-    writeln SHUTDOWN_HELP
+    writeln help_header_msg
+    writeln help_commands_msg
     RTS
 
 shutdown:

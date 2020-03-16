@@ -28,13 +28,18 @@ SHUTDOWN:   .byte "shutdown",NULL
 EMPTY:      .byte "",NULL
 CLEAR:      .byte "clear",NULL
 
-HEADER_HELP:    .byte "Available commands in KrisOS:",CR,LF,NULL
-LOAD_HELP:      .byte "load - Begins an XMODEM receive",CR,LF,NULL
-RUN_HELP:       .byte "run - Starts the program located at $1000",CR,LF,NULL
-DUMP_HELP:      .byte "dump - Displays the first page of data at $1000",CR,LF,NULL
-HELP_HELP:      .byte "help - Displays this helpful help message",CR,LF,NULL
-SHUTDOWN_HELP:  .byte "shutdown - Stop the K64",CR,LF,NULL
-CLEAR_HELP:     .byte "clear - Clears the screen",CR,LF,NULL
+help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
+    .byte "Available commands in KrisOS:",CR,LF
+    .byte "------------------------------------------------",CR,LF
+    .byte NULL
+help_commands_msg:
+    .byte "load - Begins an XMODEM receive",CR,LF
+    .byte "run - Starts the program located at $1000",CR,LF
+    .byte "dump - Displays the first page of data at $1000",CR,LF
+    .byte "help - Displays this helpful help message",CR,LF
+    .byte "shutdown - Stop the K64",CR,LF
+    .byte "clear - Clears the screen",CR,LF
+    .byte NULL
 
 .macro check_command command, number
     .local next
