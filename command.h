@@ -11,6 +11,7 @@ DUMP_CMD        = $03
 HELP_CMD        = $04
 SHUTDOWN_CMD    = $05
 EMPTY_CMD       = $06
+CLEAR_CMD       = $07
 
 FALSE   = 0
 TRUE    = 1
@@ -24,7 +25,8 @@ RUN:        .byte "run",NULL
 DUMP:       .byte "dump",NULL
 HELP:       .byte "help",NULL
 SHUTDOWN:   .byte "shutdown",NULL
-EMPTY:      .byte "", NULL
+EMPTY:      .byte "",NULL
+CLEAR:      .byte "clear",NULL
 
 HEADER_HELP:    .byte "Available commands in KrisOS:",CR,LF,NULL
 LOAD_HELP:      .byte "load - Begins an XMODEM receive",CR,LF,NULL
@@ -32,6 +34,7 @@ RUN_HELP:       .byte "run - Starts the program located at $1000",CR,LF,NULL
 DUMP_HELP:      .byte "dump - Displays the first page of data at $1000",CR,LF,NULL
 HELP_HELP:      .byte "help - Displays this helpful help message",CR,LF,NULL
 SHUTDOWN_HELP:  .byte "shutdown - Stop the K64",CR,LF,NULL
+CLEAR_HELP:     .byte "clear - Clears the screen",CR,LF,NULL
 
 .macro check_command command, number
     .local next

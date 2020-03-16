@@ -26,6 +26,7 @@
     .import via1_init_ports
     .import lcd_write
     .import binhex              ; For build time and ca65 version
+    .import clear_screen
 
     .export reset
 
@@ -104,6 +105,8 @@ repl:                           ; Not really a repl but I don't have a better na
     BEQ help
     CMP #SHUTDOWN_CMD
     BEQ shutdown
+    CMP #CLEAR_CMD
+    JSR clear_screen
 
     JMP repl                    ; Do it all again!
 

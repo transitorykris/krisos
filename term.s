@@ -24,20 +24,12 @@ _LIB_TERM_ = 1
     .export reset_user_input
     .export user_input
     .export write_char
+    .export clear_screen
 
     .segment "LIB"
 
 setup_term:
-    writeln x_set_fg_white          ; White on Blue is the KrisOS color
-    writeln x_set_bg_blue           ;
-
-    writeln x_home_position         ; Write out our welcome message
-    writeln x_erase_display         ;
-    writeln x_set_bold              ;
-    writeln x_set_underlined        ;
-
-    writeln x_set_normal            ; Reset to a normal font
-    writeln x_set_not_underlined    ;
+    JSR clear_screen
     RTS
 
 ; Code below has been cribbed from
@@ -171,6 +163,15 @@ clear_user_input_loop:
     JMP clear_user_input_loop
 reset_user_input_done:
     PLA
+    RTS
+
+clear_screen:
+    writeln x_set_fg_white          ; White on Blue is the KrisOS color
+    writeln x_set_bg_blue           ;
+    writeln x_home_position         ; Write out our welcome message
+    writeln x_erase_display         ;
+    writeln x_set_normal            ; Reset to a normal font
+    writeln x_set_not_underlined    ;
     RTS
 
     .org $0200                  ; temp hack to put this in RAM
