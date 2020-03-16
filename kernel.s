@@ -145,12 +145,12 @@ irq:
 ; Kernel messages
 init_interrupts_disabled: .byte "Interrupts disabled",CR,LF,NULL
 init_via_msg: .byte "Initializing 6521 VIA...",NULL
-init_acia_msg: .byte "Initializing 6551 ACIA...",NULL
+init_acia_msg: .byte "Initializing 6551 ACIA...",CR,LF,NULL
 init_cld_msg: .byte "Disabling BCD mode...",NULL
 init_lcd_msg: .byte "Initializing Hitachi LCD....",NULL
 init_clear_userspace_msg: .byte "Clearing userspace memory...",NULL
 init_reenable_irq_msg: .byte "Re-enabling interrupts...",NULL
-init_terminal_msg: .byte "Initializing terminal...",NULL
+init_terminal_msg: .byte "Initializing terminal...",CR,LF,NULL
 init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
 init_done_msg: .byte "Done!",CR,LF,NULL
 

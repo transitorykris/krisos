@@ -104,6 +104,7 @@ dump_loop:
     PLX                         ; Get our index back
     JMP dump_loop
 dump_done:
+    writeln new_line
     PLX
     PLA
     RTS
