@@ -32,9 +32,6 @@
     .export reset
 
     .code
-
-user_code_segment = $1000       ; The user's program will be stored here
-
 reset:
     SEI                         ; Disable interrupts while we initialize
     LDX #$FF                    ; Initialize our stack pointer

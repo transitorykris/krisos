@@ -4,7 +4,7 @@
 .ifndef _KERNEL_H_
 _KERNEL_H_ = 1
 
-; Kernel messages
+user_code_segment = $1000       ; The user's program will be stored here
 
     .RODATA
 ; Kernel messages
