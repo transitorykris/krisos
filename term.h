@@ -19,7 +19,8 @@ LB                  = $5B       ; [
 NULL                = $00
 CR                  = $0d
 LF                  = $0a       ; Line feed, aka enter key?
-BS                  = $08
+BS                  = $7F       ; At least on my Mac
+SPACE               = $20
 
 ;
 ; xterm control sequences
@@ -34,6 +35,8 @@ x_set_fg_white:         .byte ESC, LB, '3', '7', 'm', NULL
 
 ; Cursor
 x_home_position:        .byte ESC, LB, 'H', NULL
+x_left:                 .byte ESC, LB, 'D', NULL
+x_backspace:            .byte ESC, LB, 'D', ' ', ESC, LB, 'D', NULL
 
 ; Erasing
 x_erase_display:        .byte ESC, LB, '2', 'J', NULL

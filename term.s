@@ -57,18 +57,28 @@ read_next:
 enter_pressed:
     CMP #CR                     ; User pressed enter?
     BEQ read_done               ; Yes, don't save the CR
+is_backspace:
+    CMP #BS
+    BNE echo_char               ; Nope
+    CPY #$00                    ; Already at the start of the buffer?
+    BEQ read_next               ; Yep
+    writeln x_backspace         ; left, space, left to delete the character
+    DEY                         ; Back up a position in our buffer, need to check for $00
+    LDA #NULL
+    STA (user_input_ptr),y      ; Delete the character in our buffer
+    JMP read_next               ; Get the next character
 echo_char:
     STA ACIA_DATA               ; Otherwise, echo the char
 save_char:
-    STA (user_input_ptr), y     ; And save it
+    STA (user_input_ptr),y      ; And save it
     CPY #$0e                    ; Our 16 char buffer full? (incl null)
     BEQ read_done               ; Yes, get out of here
-    INY
-    JMP read_next               ; Otherwise read the next key
+    INY                         ; Otherwise, move to the next position in the buffer
+    JMP read_next               ; And read the next key
 read_done:
     INY                         ; Add a NULL in the next position
     LDA #NULL
-    STA (user_input_ptr),y      ; Make sure the last char is null
+    STA (user_input_ptr),y       ; Make sure the last char is null
     writeln new_line
     RTS
 

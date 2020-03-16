@@ -17,7 +17,9 @@ _LIB_STD_ = 1
     .segment "STDLIB"           ; This is the segment
 
     .org $d000                  ; Location of the write subroutine
+
 write:
+    PHY
     LDY #00
 next_char:
 wait_txd_empty:
@@ -30,6 +32,7 @@ wait_txd_empty:
     INY
     JMP next_char
 write_done:
+    PLY
     RTS
 
 .endif
