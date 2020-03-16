@@ -20,6 +20,7 @@ EQUAL   = $0
 LT      = $FF
 GT      = $1
 
+    .RODATA
 LOAD:       .byte "load",NULL
 RUN:        .byte "run",NULL
 DUMP:       .byte "dump",NULL

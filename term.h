@@ -22,6 +22,7 @@ LF                  = $0a       ; Line feed, aka enter key?
 BS                  = $7F       ; At least on my Mac
 SPACE               = $20
 
+    .RODATA
 ;
 ; xterm control sequences
 ; https://www.xfree86.org/current/ctlseqs.html

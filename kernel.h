@@ -6,7 +6,7 @@ _KERNEL_H_ = 1
 
 ; Kernel messages
 
-    .segment "LIB"  ; Todo, make a data segment
+    .RODATA
 ; Kernel messages
 init_interrupts_disabled: .byte "Interrupts disabled",CR,LF,NULL
 init_via_msg: .byte "Initializing 6521 VIA...",NULL
