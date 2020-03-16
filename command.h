@@ -50,6 +50,7 @@ help_copyright_msg:
     .byte "Some ACIA code by Dirk Grappendorf",CR,LF
     .byte "binhex by BigDumbDinosaur on 6502.org",CR,LF
     .byte "strcmp by Michael H. Potter",CR,LF
+    .byte "The K64 is based on a design by Ben Eater",CR,LF
     .byte "See github.com/transitorykris/krisos for details",CR,LF
     .byte NULL
 
