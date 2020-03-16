@@ -98,18 +98,6 @@ Rbuff   = $0300                 ; temp 132 byte receive buffer
 ;
 ;crclo  = $7D00       ; Two 256-byte tables for quick lookup
 ;crchi  =  $7E00       ; (should be page-aligned for speed)
-;
-;
-;
-; XMODEM Control Character Constants
-SOH = $01                       ; Start block
-EOT = $04                       ; end of text marker
-ACK = $06                       ; good block acknowledged
-NAK = $15                       ; bad block acknowledged
-CAN = $18                       ; cancel (not STA ndard, not supported)
-;CR  = $0d                       ; carriage return
-;LF  = $0a                       ; line feed
-;ESC = $1b                       ; ESC to exit
 
 ;^^^^^^^^^^^^^^^^^^^^^^ Start of Program ^^^^^^^^^^^^^^^^^^^^^^
 ;
