@@ -87,4 +87,13 @@ panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,
     JSR write
 .endmacro
 
+.macro write_hex char_addr
+    LDA char_addr
+    JSR binhex
+    STA $01                     ; Most significant number
+    JSR write_char
+    STX $01                     ; Least significant numbers
+    JSR write_char
+.endmacro
+
 .endif

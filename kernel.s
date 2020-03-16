@@ -122,46 +122,17 @@ irq:
 
 write_build_time:
     writeln build_time_msg
-    LDA build_time+3
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
-    LDA build_time+2
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    LDA build_time+1
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
-    LDA build_time+0
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
+    write_hex build_time+3
+    write_hex build_time+2
+    write_hex build_time+1
+    write_hex build_time
     writeln new_line
     RTS
 
 write_assembler_version:
     writeln assembler_version_msg
-    LDA assembler_version+1
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
-    LDA assembler_version+0
-    JSR binhex
-    STA $01 ; MSN
-    JSR write_char
-    STX $01 ; LSN
-    JSR write_char
+    write_hex assembler_version+1
+    write_hex assembler_version
     writeln new_line
     RTS
 
