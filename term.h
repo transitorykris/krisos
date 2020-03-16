@@ -54,29 +54,29 @@ BS      = $7F   ; Backspace on Mac
 ; xterm control sequences
 ; https://www.xfree86.org/current/ctlseqs.html
 ;
-x_set_bold:             .byte ESC, '[', '1', 'm', NULL
-x_set_underlined:       .byte ESC, '[', '4', 'm', NULL
-x_set_normal:           .byte ESC, '[', '2', '2', 'm', NULL
-x_set_not_underlined:   .byte ESC, '[', '2', '4', 'm', NULL
-x_set_bg_blue:          .byte ESC, '[', '4', '4', 'm', NULL
-x_set_fg_white:         .byte ESC, '[', '3', '7', 'm', NULL
+x_set_bold:             .byte ESC,"[1m",NULL
+x_set_underlined:       .byte ESC,"[4m",NULL
+x_set_normal:           .byte ESC,"[22m",NULL
+x_set_not_underlined:   .byte ESC,"[24m",NULL
+x_set_bg_blue:          .byte ESC,"[44m",NULL
+x_set_fg_white:         .byte ESC,"[37m",NULL
 
 ; Cursor
-x_home_position:        .byte ESC, '[', 'H', NULL
-x_left:                 .byte ESC, '[', 'D', NULL
-x_backspace:            .byte ESC, '[', 'D', ' ', ESC, '[', 'D', NULL
+x_home_position:        .byte ESC,"[H",NULL
+x_left:                 .byte ESC,"[D",NULL
+x_backspace:            .byte ESC,"[D",SPACE,ESC,"[D", NULL
 
 ; Erasing
-x_erase_display:        .byte ESC, '[', '2', 'J', NULL
-x_erase_line:           .byte ESC, '[', '2', 'K', NULL
+x_erase_display:        .byte ESC,"[2J", NULL
+x_erase_line:           .byte ESC,"[2K", NULL
 
 ; Other
-new_line:               .byte CR, LF, NULL
-prompt:                 .byte "OK> ", NULL
+new_line:               .byte CR,LF,NULL
+prompt:                 .byte "OK>",SPACE,NULL
 
 ; Messages
-welcome_msg:    .byte "Welcome to KrisOS on the K64", CR, LF, LF, NULL
-panic_msg:      .byte "Something went wrong. BRK called or executed $00?", CR, LF, NULL
+welcome_msg:    .byte "Welcome to KrisOS on the K64",CR,LF,LF,NULL
+panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,NULL
 
 ; Macros
 .macro writeln  str_addr
