@@ -114,7 +114,7 @@ help:
 
 shutdown:
     writeln shutdown_msg
-    .byte $DB                   ; STP opcode not in ca65?
+    STP
     ; We do not return from this, ever.
 
 nmi:

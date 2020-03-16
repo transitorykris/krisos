@@ -41,6 +41,11 @@ help_commands_msg:
     .byte "clear - Clears the screen",CR,LF
     .byte NULL
 
+; The STP opcode is not available in ca65
+.macro STP
+    .byte $DB
+.endmacro
+
 .macro check_command command, number
     .local next
     LDA #<command
