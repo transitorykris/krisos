@@ -7,16 +7,9 @@ _LIB_ACIA_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-; Exported symbols
-    .export ACIA_DATA
-    .export ACIA_STATUS
-    .export acia_init
+    .include "acia.h"
 
-; 6551 ACIA
-ACIA_DATA       = $4000
-ACIA_STATUS     = $4001
-ACIA_COMMAND    = $4002
-ACIA_CONTROL    = $4003
+    .export acia_init
 
     .segment "LIB"
 

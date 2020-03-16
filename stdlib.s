@@ -8,9 +8,7 @@ _LIB_STD_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.h"
-
-    .import ACIA_DATA
-    .import ACIA_STATUS
+    .include "acia.h"
 
     .export write
 

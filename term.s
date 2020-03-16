@@ -8,10 +8,9 @@ _LIB_TERM_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.h"
+    .include "acia.h"
 
 ; External imports
-    .import ACIA_DATA
-    .import ACIA_STATUS
     .import binhex
     .import write
 

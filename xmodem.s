@@ -50,10 +50,7 @@ _LIB_XMODEM_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.h"
-
-; External imports
-    .import ACIA_DATA
-    .import ACIA_STATUS
+    .include "acia.h"
 
 ; Exported symbols
     .export XModemRcv
