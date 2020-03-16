@@ -17,6 +17,7 @@ _LIB_LCD = 1
     .segment "LIB"
 
 lcd_init:
+    PHA
     LDA #(LCD_FUNCTION_SET|LCD_EIGHTBIT|LCD_TWOLINE)
     JSR send_lcd_command
     LDA #(LCD_CURSOR_DISPLAY|LCD_DISPLAY_ON|LCD_CURSOR_ON|LCD_BLINK_OFF)
@@ -55,6 +56,7 @@ lcd_init:
     jsr wait
     jsr wait
     jsr wait
+    PLA
     RTS
 
 send_lcd_command:
@@ -72,15 +74,18 @@ send_lcd_command:
 
 ; Need to write proper busy checking code
 wait:
+    PHX
     LDX #$00
 wait_loop:
     CPX #$0F
     BEQ wait_done
     INX
 wait_done:
+    PLX
     RTS
 
 lcd_write:
+    PHY
     LDY #00
 lcd_write_loop:
     JSR wait
@@ -90,6 +95,7 @@ lcd_write_loop:
     INY
     JMP lcd_write_loop
 lcd_write_done:
+    PLY
     RTS
 
 write_lcd:

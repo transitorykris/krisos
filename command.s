@@ -43,22 +43,26 @@ error:
 ; 0: Strings are equal
 ; 1; First string is greater than second
 strcmp:
+    PHY
     LDY #$00
 strcmp_load:
     LDA (strcmp_first_ptr), Y
     CMP (strcmp_second_ptr), Y
-    BNE strcmp_done
+    BNE strcmp_lesser
     INY
     CMP #NULL
     BNE strcmp_load
     LDA #EQUAL
-    RTS
-strcmp_done:
+    JMP strcmp_done
+strcmp_lesser:
     BCS strcmp_greater
     LDA #LT
-    RTS
+    JMP strcmp_done
 strcmp_greater:
     LDA #GT
+    JMP strcmp_done
+strcmp_done:
+    PLY
     RTS
 
 .endif

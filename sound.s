@@ -12,6 +12,7 @@ _LIB_SOUND_ = 1
 
 sound_init:
     ; Set up our 6522 for the SN76489
+    PHA
     LDA #%10000110          ; CE and WE pins to output, READY to input
     STA VIA2_DDRB
     LDA #%11111111          ; Default to setting the SN data bus to output
@@ -22,6 +23,7 @@ sound_init:
     STA VIA2_PORTB
     JSR silence_all         ; Stop it from making noise
     
+    PLA
     RTS
 
 ; Register A first byte of note

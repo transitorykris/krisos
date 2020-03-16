@@ -44,6 +44,8 @@ setup_term:
 ; https://www.grappendorf.net/projects/6502-home-computer/acia-serial-interface-hello-world.html
 
 read:
+    PHA
+    PHY
     LDA #<user_input
     STA user_input_ptr          ; Lo address
     LDA #>user_input
@@ -80,26 +82,34 @@ read_done:
     LDA #NULL
     STA (user_input_ptr),y       ; Make sure the last char is null
     writeln new_line
+    PLY
+    PLA
     RTS
 
 dump:
+    PHA
+    PHX
     LDX #$FF
 dump_loop:
     INX
     CPX #$FF
     BEQ dump_done
     LDA $1000,x
-    PHX
+    PHX                         ; Save our index on the stack, binhex destroys it
     JSR binhex
     STA $01 ; MSN
     JSR write_char
     STX $01 ; LSN
     JSR write_char
-    PLX
+    PLX                         ; Get our index back
     JMP dump_loop
 dump_done:
+    PLX
+    PLA
+    RTS
 
 write_char:
+    PHA
 wait_txd_empty_char:
     LDA ACIA_STATUS
     AND #$10
@@ -108,6 +118,7 @@ wait_txd_empty_char:
     BEQ write_char_done
     STA ACIA_DATA
 write_char_done:
+    PLA
     RTS
 
 panic:
@@ -115,6 +126,7 @@ panic:
     RTS
 
 reset_user_input:
+    PHA
     LDA #<user_input
     STA user_input_ptr
     LDA #>user_input
@@ -128,6 +140,7 @@ clear_user_input_loop:
     INY
     JMP clear_user_input_loop
 reset_user_input_done:
+    PLA
     RTS
 
     .org $0200                  ; temp hack to put this in RAM
