@@ -4,6 +4,7 @@
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
+    .include "kernel.h"
     .include "term.h"
     .include "lcd.h"
     .include "command.h"
@@ -82,50 +83,29 @@ clear_done:
     writeln welcome_msg
 
 repl:                           ; Not really a repl but I don't have a better name
-    ; Show prompt
-    JSR reset_user_input
-
-    ; Read command
-    writeln prompt
-    JSR read
-
-    ; Parse command
+    JSR reset_user_input        ; Show a fresh prompt
+    writeln prompt              ;
+    JSR read                    ; Read command
     JSR parse_command
-    CMP #ERROR_CMD
-    BEQ error
-
-    ; Execute command
-    CMP #LOAD_CMD
-    BEQ load_program
-    CMP #RUN_CMD
-    BEQ run_program
-    CMP #DUMP_CMD
-    BEQ dump_program
-    CMP #HELP_CMD
-    BEQ help
-    CMP #SHUTDOWN_CMD
-    BEQ shutdown
-    CMP #CLEAR_CMD
-    JSR clear_screen
-
+    ; Switch
+    case_command #ERROR_CMD,    error
+    case_command #LOAD_CMD,     XModemRcv
+    case_command #RUN_CMD,      run_program
+    case_command #DUMP_CMD,     dump
+    case_command #HELP_CMD,     help
+    case_command #SHUTDOWN_CMD, shutdown
+    case_command #CLEAR_CMD,    clear_screen
+repl_done:
     JMP repl                    ; Do it all again!
-
-error:
-    writeln bad_command_msg
-    JMP repl
-
-load_program:
-    JSR XModemRcv               ; Retrieve a file using xmodem
-    JMP repl
 
 run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
-    JMP repl
+    RTS
 
-dump_program:
-    JSR dump
-    JMP repl
+error:
+    writeln bad_command_msg
+    RTS
 
 help:
     writeln LOAD_HELP
@@ -133,41 +113,18 @@ help:
     writeln DUMP_HELP
     writeln HELP_HELP
     writeln SHUTDOWN_HELP
-    JMP repl
+    RTS
 
 shutdown:
     writeln shutdown_msg
     .byte $DB                   ; STP opcode not in ca65?
+    ; We do not return from this, ever.
 
 nmi:
     RTI
 
 irq:
     RTI
-
-; Kernel messages
-init_interrupts_disabled: .byte "Interrupts disabled",CR,LF,NULL
-init_via_msg: .byte "Initializing 6521 VIA...",NULL
-init_acia_msg: .byte "Initializing 6551 ACIA...",CR,LF,NULL
-init_cld_msg: .byte "Disabling BCD mode...",NULL
-init_lcd_msg: .byte "Initializing Hitachi LCD....",NULL
-init_clear_userspace_msg: .byte "Clearing userspace memory...",NULL
-init_reenable_irq_msg: .byte "Re-enabling interrupts...",NULL
-init_terminal_msg: .byte "Initializing terminal...",CR,LF,NULL
-init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
-init_done_msg: .byte "Done!",CR,LF,NULL
-
-krisos_lcd_message: .byte "KrisOS/K64",NULL
-
-calling_msg: .byte "Starting",CR,LF,LF,NULL
-bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
-shutdown_msg: .byte "Shutting down...",CR,LF,NULL
-
-build_time: .dword .time
-assembler_version: .word .version
-
-build_time_msg: .byte "Build time ",NULL
-assembler_version_msg: .byte "Assembler version ca65 ",NULL
 
 write_build_time:
     writeln build_time_msg

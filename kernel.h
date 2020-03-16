@@ -1,13 +1,42 @@
 ; KrisOS - kernel.h
 ; Copyright 2020 Kris Foster
 
-.ifndef _LCD_H_
-_LCD_H_ = 1
+.ifndef _KERNEL_H_
+_KERNEL_H_ = 1
 
 ; Kernel messages
 
+    .segment "LIB"  ; Todo, make a data segment
+; Kernel messages
+init_interrupts_disabled: .byte "Interrupts disabled",CR,LF,NULL
+init_via_msg: .byte "Initializing 6521 VIA...",NULL
+init_acia_msg: .byte "Initializing 6551 ACIA...",CR,LF,NULL
+init_cld_msg: .byte "Disabling BCD mode...",NULL
+init_lcd_msg: .byte "Initializing Hitachi LCD....",NULL
+init_clear_userspace_msg: .byte "Clearing userspace memory...",NULL
+init_reenable_irq_msg: .byte "Re-enabling interrupts...",NULL
+init_terminal_msg: .byte "Initializing terminal...",CR,LF,NULL
+init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
+init_done_msg: .byte "Done!",CR,LF,NULL
+
+krisos_lcd_message: .byte "KrisOS/K64",NULL
+
+build_time: .dword .time
+assembler_version: .word .version
+
+build_time_msg: .byte "Build time ",NULL
+assembler_version_msg: .byte "Assembler version ca65 ",NULL
 calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 shutdown_msg: .byte "Shutting down...",CR,LF,NULL
+
+.macro case_command command,routine
+    .local skip
+    CMP command
+    BNE skip
+    JSR routine
+    JMP repl_done
+skip:
+.endmacro
 
 .endif
