@@ -11,12 +11,5 @@
  readable files a file that includes the above string in a human readable form
  e.g. not as a comment in an HTML file.
 
- For commercial use please contact me,  Lee Davison, at leeedavison@lycos.co.uk
+ For commercial use please contact Lee Davison at leeedavison@googlemail.com
  for conditions.
-
- For more information on EhBASIC, other versions of EhBASIC and other projects
- please visit my site at ..
-
-	 http://members.lycos.co.uk/leeedavison/index.html
-
-
