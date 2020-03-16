@@ -12,6 +12,7 @@ HELP_CMD        = $04
 SHUTDOWN_CMD    = $05
 EMPTY_CMD       = $06
 CLEAR_CMD       = $07
+RESET_CMD       = $08
 
 FALSE   = 0
 TRUE    = 1
@@ -28,6 +29,7 @@ HELP:       .byte "help",NULL
 SHUTDOWN:   .byte "shutdown",NULL
 EMPTY:      .byte "",NULL
 CLEAR:      .byte "clear",NULL
+RESET:      .byte "reset",NULL
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF
@@ -40,6 +42,7 @@ help_commands_msg:
     .byte "help - Displays this helpful help message",CR,LF
     .byte "shutdown - Stop the K64",CR,LF
     .byte "clear - Clears the screen",CR,LF
+    .byte "reset - Soft resets the computer",CR,LF
     .byte NULL
 
 ; The STP opcode is not available in ca65

@@ -29,10 +29,8 @@
     .import binhex              ; For build time and ca65 version
     .import clear_screen
 
-    .export reset
-
     .code
-reset:
+main:
     SEI                         ; Disable interrupts while we initialize
     LDX #$FF                    ; Initialize our stack pointer
     TXS
@@ -92,6 +90,7 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #HELP_CMD,     help
     case_command #SHUTDOWN_CMD, shutdown
     case_command #CLEAR_CMD,    clear_screen
+    case_command #RESET_CMD,    main
 repl_done:
     JMP repl                    ; Do it all again!
 
@@ -138,5 +137,5 @@ write_assembler_version:
 
     .segment "VECTORS"
     .word nmi
-    .word reset
+    .word main
     .word irq

@@ -30,6 +30,7 @@ parse_command:
     check_command SHUTDOWN, SHUTDOWN_CMD
     check_command EMPTY, EMPTY_CMD
     check_command CLEAR, CLEAR_CMD
+    check_command RESET, RESET_CMD
 error:
     LDA #ERROR_CMD
     RTS
