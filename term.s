@@ -91,6 +91,24 @@ dump:
     PHX
     LDX #$00
 dump_loop:
+prefix_new_lines:
+    TXA
+    AND #$0F                    ; Note, this destroys the A register
+    BNE load_and_write
+    TXA
+    PHX                         ; write_char destroys the X register
+    JSR binhex
+    STA $01 ; MSN
+    JSR write_char
+    STX $01 ; LSN
+    JSR write_char
+    PLX    
+    LDA #':'
+    STA $01
+    JSR write_char
+    LDA #SPACE
+    STA $01
+    JSR write_char
 load_and_write:
     LDA $1000,x
     PHX                         ; Save our index on the stack, binhex destroys it
