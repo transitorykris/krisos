@@ -43,6 +43,7 @@ help_commands_msg:
     .byte "shutdown - Stop the K64",CR,LF
     .byte "clear - Clears the screen",CR,LF
     .byte "reset - Soft resets the computer",CR,LF
+    .byte NULL
 help_copyright_msg:
     .byte "------------------------------------------------",CR,LF
     .byte "KrisOS is licensed under the MIT License",CR,LF

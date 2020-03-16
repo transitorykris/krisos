@@ -106,6 +106,7 @@ error:
 help:
     writeln help_header_msg
     writeln help_commands_msg
+    writeln help_copyright_msg
     RTS
 
 shutdown:
