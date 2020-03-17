@@ -5,6 +5,8 @@
 _KERNEL_H_ = 1
 
 user_code_segment = $1000       ; The user's program will be stored here
+nmi_ptr = $FC                   ; Location of NMI routine
+irq_ptr = $FE                   ; Location of IRQ routine
 
     .RODATA
 ; Kernel messages
@@ -18,6 +20,7 @@ init_reenable_irq_msg: .byte "Re-enabling interrupts...",NULL
 init_terminal_msg: .byte "Initializing terminal...",CR,LF,NULL
 init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
 init_done_msg: .byte "Done!",CR,LF,NULL
+init_default_interrupt_handlers: .byte "Setting default interrupt handlers...",CR,LF,NULL
 
 krisos_lcd_message: .byte "KrisOS/K64",NULL
 
@@ -29,6 +32,9 @@ assembler_version_msg: .byte "Assembler version ca65 ",NULL
 calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 shutdown_msg: .byte "Shutting down...",CR,LF,NULL
+
+default_nmi_msg: .byte "Default NMI handler called",CR,LF,NULL
+default_irq_msg: .byte "Default IRQ handler called",CR,LF,NULL
 
 .macro case_command command,routine
     .local skip

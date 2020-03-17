@@ -65,14 +65,22 @@ clear_page:                     ; Give the user's code clean space to run in
 clear_done:
     writeln init_done_msg
 
+    writeln init_default_interrupt_handlers
+    LDA #<default_nmi
+    STA nmi_ptr
+    LDA #>default_nmi
+    STA nmi_ptr+1
+    LDA #<default_irq
+    STA irq_ptr
+    LDA #>default_irq
+    STA irq_ptr+1
+    writeln init_done_msg
     writeln init_reenable_irq_msg
     CLI                         ; Re-enable interrupts
     writeln init_done_msg
 
-    ;writeln build_time_msg
     JSR write_build_time
     JSR write_assembler_version
-    ;writeln assembler_version_msg
 
     writeln init_start_cli_msg
     writeln welcome_msg
@@ -115,9 +123,17 @@ shutdown:
     ; We do not return from this, ever.
 
 nmi:
+    JMP (nmi_ptr)
+
+default_nmi:
+    writeln default_nmi_msg
     RTI
 
 irq:
+    JMP (irq_ptr)
+
+default_irq:
+    writeln default_irq_msg
     RTI
 
 write_build_time:
