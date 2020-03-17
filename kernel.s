@@ -32,9 +32,9 @@
     .code
 main:
     SEI                         ; Disable interrupts while we initialize
+    CLD                         ; Explicitly do not use decimal mode
     LDX #$FF                    ; Initialize our stack pointer
     TXS
-    CLD                         ; Explicitly do not use decimal mode
 
     JSR acia_init               ; Set up the serial port
     writeln init_acia_msg
