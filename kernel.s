@@ -66,14 +66,7 @@ clear_done:
     writeln init_done_msg
 
     writeln init_default_interrupt_handlers
-    LDA #<default_nmi
-    STA nmi_ptr
-    LDA #>default_nmi
-    STA nmi_ptr+1
-    LDA #<default_irq
-    STA irq_ptr
-    LDA #>default_irq
-    STA irq_ptr+1
+    JSR set_interrupt_handlers
     writeln init_done_msg
     writeln init_reenable_irq_msg
     CLI                         ; Re-enable interrupts
@@ -106,6 +99,7 @@ repl_done:
 run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
+    JSR set_interrupt_handlers  ; Reset our default interrupt handlers
     RTS
 
 error:
@@ -128,6 +122,17 @@ soft_irq:
     .byte $00                   ; RTI sends us to second byte after BRK
     RTS
 
+set_interrupt_handlers:
+    LDA #<default_nmi
+    STA nmi_ptr
+    LDA #>default_nmi
+    STA nmi_ptr+1
+    LDA #<default_irq
+    STA irq_ptr
+    LDA #>default_irq
+    STA irq_ptr+1
+    RTS
+
 nmi:
     JMP (nmi_ptr)
 
@@ -144,17 +149,13 @@ default_irq:
 
 write_build_time:
     writeln build_time_msg
-    write_hex build_time+3
-    write_hex build_time+2
-    write_hex build_time+1
-    write_hex build_time
+    write_hex_dword build_time
     writeln new_line
     RTS
 
 write_assembler_version:
     writeln assembler_version_msg
-    write_hex assembler_version+1
-    write_hex assembler_version
+    write_hex_word assembler_version
     writeln new_line
     RTS
 
