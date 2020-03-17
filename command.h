@@ -13,6 +13,7 @@ SHUTDOWN_CMD    = $05
 EMPTY_CMD       = $06
 CLEAR_CMD       = $07
 RESET_CMD       = $08
+BREAK_CMD       = $09
 
 FALSE   = 0
 TRUE    = 1
@@ -30,11 +31,13 @@ SHUTDOWN:   .byte "shutdown",NULL
 EMPTY:      .byte "",NULL
 CLEAR:      .byte "clear",NULL
 RESET:      .byte "reset",NULL
+BREAK:      .byte "break",NULL
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF
     .byte "------------------------------------------------",CR,LF
     .byte NULL
+
 help_commands_msg:
     .byte "load - Begins an XMODEM receive",CR,LF
     .byte "run - Starts the program located at $1000",CR,LF
@@ -43,7 +46,9 @@ help_commands_msg:
     .byte "shutdown - Stop the K64",CR,LF
     .byte "clear - Clears the screen",CR,LF
     .byte "reset - Soft resets the computer",CR,LF
+    .byte "break - Trigger a soft IRQ",CR,LF
     .byte NULL
+
 help_copyright_msg:
     .byte "------------------------------------------------",CR,LF
     .byte "KrisOS is licensed under the MIT License",CR,LF

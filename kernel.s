@@ -99,6 +99,7 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #SHUTDOWN_CMD, shutdown
     case_command #CLEAR_CMD,    clear_screen
     case_command #RESET_CMD,    main
+    case_command #BREAK_CMD,    soft_irq
 repl_done:
     JMP repl                    ; Do it all again!
 
@@ -121,6 +122,11 @@ shutdown:
     writeln shutdown_msg
     STP
     ; We do not return from this, ever.
+
+soft_irq:
+    BRK
+    .byte $00                   ; RTI sends us to second byte after BRK
+    RTS
 
 nmi:
     JMP (nmi_ptr)
