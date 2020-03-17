@@ -72,8 +72,13 @@ clear_done:
     CLI                         ; Re-enable interrupts
     writeln init_done_msg
 
-    JSR write_build_time
-    JSR write_assembler_version
+    writeln build_time_msg
+    write_hex_dword build_time
+    writeln new_line
+
+    writeln assembler_version_msg
+    write_hex_word assembler_version
+    writeln new_line
 
     writeln init_start_cli_msg
     writeln welcome_msg
@@ -146,18 +151,6 @@ irq:
 default_irq:
     writeln default_irq_msg
     RTI
-
-write_build_time:
-    writeln build_time_msg
-    write_hex_dword build_time
-    writeln new_line
-    RTS
-
-write_assembler_version:
-    writeln assembler_version_msg
-    write_hex_word assembler_version
-    writeln new_line
-    RTS
 
     .segment "VECTORS"
     .word nmi

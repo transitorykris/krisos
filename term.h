@@ -96,4 +96,18 @@ panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,
     JSR write_char
 .endmacro
 
+; Assumes little endian
+.macro write_hex_word word_addr
+    write_hex word_addr+1
+    write_hex word_addr
+.endmacro
+
+; Assume little endian
+.macro write_hex_dword dword_addr
+    write_hex dword_addr+3
+    write_hex dword_addr+2
+    write_hex dword_addr+1
+    write_hex dword_addr
+.endmacro
+
 .endif
