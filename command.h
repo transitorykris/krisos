@@ -49,16 +49,16 @@ help_commands_msg:
     .byte "break - Trigger a soft IRQ",CR,LF
     .byte NULL
 
-help_copyright_msg:
-    .byte "------------------------------------------------",CR,LF
-    .byte "KrisOS is licensed under the MIT License",CR,LF
-    .byte "XMODEM Copyright 2002 Daryl Rictor",CR,LF
-    .byte "Some ACIA code by Dirk Grappendorf",CR,LF
-    .byte "binhex by BigDumbDinosaur on 6502.org",CR,LF
-    .byte "strcmp by Michael H. Potter",CR,LF
-    .byte "The K64 is based on a design by Ben Eater",CR,LF
-    .byte "See github.com/transitorykris/krisos for details",CR,LF
-    .byte NULL
+;help_copyright_msg:
+;    .byte "------------------------------------------------",CR,LF
+;    .byte "KrisOS is licensed under the MIT License",CR,LF
+;    .byte "XMODEM Copyright 2002 Daryl Rictor",CR,LF
+;    .byte "Some ACIA code by Dirk Grappendorf",CR,LF
+;    .byte "binhex by BigDumbDinosaur on 6502.org",CR,LF
+;    .byte "strcmp by Michael H. Potter",CR,LF
+;    .byte "The K64 is based on a design by Ben Eater",CR,LF
+;    .byte "See github.com/transitorykris/krisos for details",CR,LF
+;    .byte NULL
 
 
 ; The STP opcode is not available in ca65
