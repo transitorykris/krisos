@@ -13,6 +13,11 @@ chess:
 	ld65 -C examples.cfg -o chess.raw chess.o
 	printf "\x00\x10" | cat - chess.raw > chess.bin
 
+break:
+	ca65 -I ../ break.s
+	ld65 -C examples.cfg -o break.raw break.o
+	printf "\x00\x10" | cat - break.raw > break.bin
+
 clean:
 	rm *.o
 	rm *.raw
