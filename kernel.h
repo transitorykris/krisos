@@ -4,9 +4,11 @@
 .ifndef _KERNEL_H_
 _KERNEL_H_ = 1
 
-user_code_segment = $1000       ; The user's program will be stored here
-nmi_ptr = $FC                   ; Location of NMI routine
-irq_ptr = $FE                   ; Location of IRQ routine
+    .import __USER_START__
+
+user_code_segment = __USER_START__  ; The user's program will be stored here
+nmi_ptr = $FC                       ; Location of NMI routine
+irq_ptr = $FE                       ; Location of IRQ routine
 
     .RODATA
 ; Kernel messages

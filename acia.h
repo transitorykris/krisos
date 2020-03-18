@@ -4,11 +4,13 @@
 .ifndef _ACIA_H_
 _ACIA_H_ = 1
 
+    .import __ACIA_START__
+
 ; 6551 ACIA
-ACIA_DATA       = $4000
-ACIA_STATUS     = $4001
-ACIA_COMMAND    = $4002
-ACIA_CONTROL    = $4003
+ACIA_DATA       = __ACIA_START__ + $0
+ACIA_STATUS     = __ACIA_START__ + $1
+ACIA_COMMAND    = __ACIA_START__ + $2
+ACIA_CONTROL    = __ACIA_START__ + $3
 
 ; Control Register
 ACIA_1_STOP_BIT     = %00000000
