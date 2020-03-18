@@ -11,9 +11,8 @@ all:
 	ca65 kernel.s
 	ld65 -C krisos.cfg \
 		-m krisos.map -v \
-		-o kernel.bin via.o sound.o lcd.o \
+		-o kernel.bin kernel.o via.o sound.o lcd.o \
 		acia.o binhex.o stdlib.o term.o command.o xmodem.o \
-		kernel.o
 
 clean:
 	rm *.o
