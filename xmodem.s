@@ -71,7 +71,6 @@ _LIB_XMODEM_ = 1
 ; pointed to by eofp & eofph.
 ;
 ;
-    JMP XModemRcv               ; quick JMP table
 XModemSend:
     JSR PrintMsg                ; send prompt and info
     LDA #$00                    ;
