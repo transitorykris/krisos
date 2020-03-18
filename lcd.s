@@ -11,6 +11,8 @@ _LIB_LCD = 1
     .include "via.h"
     .include "term.h"
 
+    .importzp string_ptr
+
     .export lcd_init
     .export lcd_write
 

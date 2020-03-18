@@ -10,15 +10,14 @@ _LIB_TERM_ = 1
     .include "term.h"
     .include "acia.h"
 
-; External imports
+    .importzp string_ptr
+
     .import binhex
     .import write
 
-; Exported symbols
     .export setup_term
     .export read
     .export dump
-    .export string_ptr
     .export panic
     .export reset_user_input
     .export user_input
@@ -172,9 +171,5 @@ clear_screen:
     writeln x_set_normal            ; Reset to a normal font
     writeln x_set_not_underlined    ;
     RTS
-
-    .org $0200                  ; temp hack to put this in RAM
-; 16 byte placeholder for user input
-user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 
 .endif

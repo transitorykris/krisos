@@ -4,12 +4,13 @@
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "kernel.h"
     .include "term.h"
+    .include "kernel.h"
     .include "lcd.h"
     .include "command.h"
 
-; External imports
+    .importzp string_ptr
+
     .import acia_init
     .import XModemRcv
     .import setup_term
@@ -20,7 +21,6 @@
     .import panic
     .import reset_user_input
     .import parse_command
-    .import user_input
     .import ACIA_DATA
     .import ACIA_STATUS
     .import lcd_init
@@ -31,6 +31,7 @@
 
     .code
 main:
+    LDA string_ptr
     SEI                         ; Disable interrupts while we initialize
     CLD                         ; Explicitly do not use decimal mode
     LDX #$FF                    ; Initialize our stack pointer

@@ -10,11 +10,14 @@ _LIB_STD_ = 1
     .include "term.h"
     .include "acia.h"
 
+    .importzp string_ptr
+
     .export write
 
     .segment "STDLIB"           ; This is the segment
 
-    .org $d000                  ; Location of the write subroutine
+    ;.org $d000                  ; Location of the write subroutine
+    .segment "STDLIB"
 
 write:
     PHY

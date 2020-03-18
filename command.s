@@ -10,8 +10,6 @@ _LIB_COMMAND_ = 1
     .include "term.h"
     .include "command.h"
 
-    .import user_input
-
     .export parse_command
 
     .segment "LIB"

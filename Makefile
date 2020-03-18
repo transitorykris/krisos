@@ -1,4 +1,5 @@
 all:
+	ca65 zeropage.s
 	ca65 via.s
 	ca65 sound.s
 	ca65 lcd.s
@@ -11,7 +12,7 @@ all:
 	ca65 kernel.s
 	ld65 -C krisos.cfg \
 		-m krisos.map -v \
-		-o kernel.bin kernel.o via.o sound.o lcd.o \
+		-o kernel.bin zeropage.o kernel.o via.o sound.o lcd.o \
 		acia.o binhex.o stdlib.o term.o command.o xmodem.o \
 
 clean:
