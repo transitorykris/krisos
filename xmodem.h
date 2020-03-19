@@ -7,24 +7,6 @@
 .ifndef _XMODEM_H_
 _XMODEM_H_ = 1
 
-; zero page variables (adjust these to suit your needs)
-lastblk = $35                   ; flag for last block
-blkno   = $36                   ; block number
-errcnt  = $37                   ; error counter 10 is the limit
-bflag   = $37                   ; block flag
-
-crc     = $38                   ; CRC lo byte  (two byte variable)
-crch    = $39                   ; CRC hi byte
-
-ptr     = $3a                   ; data pointer (two byte variable)
-ptrh    = $3b                   ;   "    "
-
-eofp    = $3c                   ; end of file address pointer (2 bytes)
-eofph   = $3d                   ;  " " " "
-
-retry   = $3e                   ; retry counter
-retry2  = $3f                   ; 2nd counter
-
 ; non-zero page variables and buffers
 Rbuff   = $0300                 ; temp 132 byte receive buffer
 ;(place anywhere, page aligned)

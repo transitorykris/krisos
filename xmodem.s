@@ -52,7 +52,19 @@ _LIB_XMODEM_ = 1
     .include "term.h"
     .include "acia.h"
 
-; Exported symbols
+    .importzp lastblk
+    .importzp blkno 
+    .importzp errcnt
+    .importzp bflag
+    .importzp crc
+    .importzp crch
+    .importzp ptr
+    .importzp ptrh
+    .importzp eofp
+    .importzp eofph
+    .importzp retry
+    .importzp retry2
+
     .export XModemRcv
 
     .include "xmodem.h"

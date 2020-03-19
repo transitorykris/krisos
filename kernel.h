@@ -7,8 +7,6 @@ _KERNEL_H_ = 1
     .import __USER_START__
 
 user_code_segment = __USER_START__  ; The user's program will be stored here
-nmi_ptr = $FC                       ; Location of NMI routine
-irq_ptr = $FE                       ; Location of IRQ routine
 
     .RODATA
 ; Kernel messages
@@ -26,8 +24,8 @@ init_default_interrupt_handlers: .byte "Setting default interrupt handlers...",N
 
 krisos_lcd_message: .byte "KrisOS/K64",NULL
 
-build_time: .dword .time
-assembler_version: .word .version
+build_time: .dword .time            ; .time is provided by ca65
+assembler_version: .word .version   ; .version is provided by ca65
 
 build_time_msg: .byte "Build time ",NULL
 assembler_version_msg: .byte "Assembler version ca65 ",NULL

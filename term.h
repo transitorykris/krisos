@@ -4,14 +4,6 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
-    .segment "RAM"
-; 16 byte placeholder for user input
-user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-
-user_input_ptr = $02            ; Where we can find our raw user input
-strcmp_first_ptr = $F0
-strcmp_second_ptr = $F2
-
 ; Non-visible ASCII codes
 ; https://www.ascii-code.com/
 ;

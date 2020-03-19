@@ -11,6 +11,7 @@ _LIB_TERM_ = 1
     .include "acia.h"
 
     .importzp string_ptr
+    .importzp user_input_ptr
 
     .import binhex
     .import write
@@ -23,6 +24,10 @@ _LIB_TERM_ = 1
     .export user_input
     .export write_char
     .export clear_screen
+
+   .segment "RAM"
+; 16 byte placeholder for user input
+user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 
     .segment "LIB"
 

@@ -10,6 +10,13 @@ _LIB_COMMAND_ = 1
     .include "term.h"
     .include "command.h"
 
+    .import string_ptr
+    .import write
+    .importzp strcmp_first_ptr
+    .importzp strcmp_second_ptr
+
+    .import user_input
+
     .export parse_command
 
     .segment "LIB"

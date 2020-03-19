@@ -9,6 +9,8 @@
     .include "lcd.h"
     .include "command.h"
 
+    .importzp nmi_ptr
+    .importzp irq_ptr
     .importzp string_ptr
 
     .import acia_init
@@ -31,7 +33,6 @@
 
     .code
 main:
-    LDA string_ptr
     SEI                         ; Disable interrupts while we initialize
     CLD                         ; Explicitly do not use decimal mode
     LDX #$FF                    ; Initialize our stack pointer

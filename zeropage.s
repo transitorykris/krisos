@@ -3,11 +3,11 @@
 
 .ifndef _LIB_ZEROPAGE_
 _LIB_ZEROPAGE_ = 1
-
-    .exportzp string_ptr
-
-; Zero Page pointers
     .ZEROPAGE
-string_ptr: .res 2
+
+    .include "term_zp.s"
+    .include "commands_zp.s"
+    .include "xmodem_zp.s"
+    .include "kernel_zp.s"
 
 .endif
