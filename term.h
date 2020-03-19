@@ -4,6 +4,8 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
+    .importzp
+
 ; Non-visible ASCII codes
 ; https://www.ascii-code.com/
 ;
@@ -84,9 +86,9 @@ panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,
 .macro write_hex char_addr
     LDA char_addr
     JSR binhex
-    STA $01                     ; Most significant number
+    STA char_ptr                ; Most significant number
     JSR write_char
-    STX $01                     ; Least significant numbers
+    STX char_ptr                ; Least significant numbers
     JSR write_char
 .endmacro
 
