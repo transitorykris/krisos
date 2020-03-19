@@ -6,8 +6,10 @@ _TERM_ZP_ = 1
 
     .exportzp string_ptr
     .exportzp user_input_ptr
+    .exportzp char_ptr
 
 string_ptr:         .res 2
 user_input_ptr:     .res 2           ; Where we can find our raw user input
+char_ptr:        .res 2
 
 .endif

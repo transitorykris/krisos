@@ -12,6 +12,7 @@ _LIB_TERM_ = 1
 
     .importzp string_ptr
     .importzp user_input_ptr
+    .importzp char_ptr
 
     .import binhex
     .import write
@@ -93,27 +94,27 @@ prefix_new_lines:
     TXA
     PHX                         ; write_char destroys the X register
     JSR binhex
-    STA $01 ; MSN
+    STA char_ptr             ; MSN
     JSR write_char
-    STX $01 ; LSN
+    STX char_ptr             ; LSN
     JSR write_char
     PLX    
     LDA #':'
-    STA $01
+    STA char_ptr
     JSR write_char
     LDA #SPACE
-    STA $01
+    STA char_ptr
     JSR write_char
 load_and_write:
     LDA $1000,x
     PHX                         ; Save our index on the stack, binhex destroys it
     JSR binhex
-    STA $01 ; MSN
+    STA char_ptr             ; MSN
     JSR write_char
-    STX $01 ; LSN
+    STX char_ptr             ; LSN
     JSR write_char
     LDA #SPACE
-    STA $01
+    STA char_ptr
     JSR write_char
     PLX                         ; Get our index back
 check_new_line:
@@ -139,7 +140,7 @@ wait_txd_empty_char:
     LDA ACIA_STATUS
     AND #$10
     BEQ wait_txd_empty_char
-    LDA $01
+    LDA char_ptr
     BEQ write_char_done
     STA ACIA_DATA
 write_char_done:
