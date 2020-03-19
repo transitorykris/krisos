@@ -65,6 +65,9 @@ _LIB_XMODEM_ = 1
     .importzp retry
     .importzp retry2
 
+    .import acia_get_char
+    .import acia_put_char
+
     .export XModemRcv
 
     .include "xmodem.h"
@@ -162,10 +165,10 @@ SCalcCRC:
 Resend:
     LDX #$00                    ;
     LDA #SOH
-    JSR Put_Chr                 ; send SOH
+    JSR acia_put_char                 ; send SOH
 SendBlk:
     LDA Rbuff,x                 ; Send 132 bytes in buffer to the console
-    JSR Put_Chr                 ;
+    JSR acia_put_char                 ;
     INX                         ;
     CPX #$84                    ; last byte?
     BNE SendBlk                 ; no, get next
@@ -200,7 +203,7 @@ XModemRcv:
     STA bflag                   ; set flag to get address from block 1
 StartCrc:
     LDA #'C'                    ; "C" start with CRC mode
-    JSR Put_Chr                 ; send it
+    JSR acia_put_char                 ; send it
     LDA #$FF
     STA retry2                  ; set loop counter for ~3 sec delay
     LDA #$00
@@ -268,7 +271,7 @@ GoodBlk2:
 BadCrc:
     JSR Flush                   ; flush the input port
     LDA #NAK                    ;
-    JSR Put_Chr                 ; send NAK to resend block
+    JSR acia_put_char                 ; send NAK to resend block
     JMP StartBlk                ; Start over, get the block again
 GoodCrc:
     LDX #$02                    ;
@@ -299,58 +302,16 @@ CopyBlk4:
 IncBlk:
     INC blkno                   ; done. INC the block #
     LDA #ACK                    ; send ACK
-    JSR Put_Chr                 ;
+    JSR acia_put_char                 ;
     JMP StartBlk                ; get next block
 
 RDone:
     LDA #ACK                    ; last block, send ACK and exit.
-    JSR Put_Chr                 ;
+    JSR acia_put_char                 ;
     JSR Flush                   ; get leftover characters, if any
     JSR Print_Good              ;
     RTS                         ;
 ;
-;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-;======================================================================
-;  I/O Device Specific Routines
-;
-;  Two routines are used to communicate with the I/O device.
-;
-; "Get_Chr" routine will scan the input port for a character.  It will
-; return without waiting with the Carry flag CLEAR if no character is
-; present or return with the Carry flag SET and the character in the "A"
-; register if one was present.
-;
-; "Put_Chr" routine will write one byte to the output port.  Its alright
-; if this routine waits for the port to be ready.  its assumed that the
-; character was send upon return from this routine.
-;
-; Here is an example of the routines used for a standard 6551 ACIA.
-; You would call the ACIA_Init prior to running the xmodem transfer
-; routine.
-;
-
-Get_Chr:
-    CLC   ; no chr present
-    LDA ACIA_STATUS             ; get Serial port STA tus
-    AND #$08                    ; mask rcvr full bit
-    BEQ Get_Chr2                ; if not chr, done
-    LDA ACIA_DATA               ; else get chr
-    SEC                         ; and set the Carry Flag
-Get_Chr2:
-    RTS                         ; done
-;
-; output to OutPut Port
-;
-Put_Chr:
-    PHA                         ; save registers
-Put_Chr1:
-    LDA ACIA_STATUS             ; serial port STA tus
-    AND #$10                    ; is tx buffer empty
-    BEQ Put_Chr1                ; no, go back and test it again
-    PLA                         ; yes, get chr to send
-    STA ACIA_DATA               ; put character to Port
-    RTS                         ; done
-
 ;=========================================================================
 ;
 ; subroutines
@@ -359,7 +320,7 @@ GetByte:
     LDA #$00                    ; wait for chr input and cycle timing loop
     STA retry                   ; set low value of timing loop
 StartCrcLp:
-    JSR Get_Chr                 ; get chr from serial port, don't wait
+    JSR acia_get_char                 ; get chr from serial port, don't wait
     BCS GetByte1                ; got one, so exit
     DEC retry                   ; no character received, so dec counter
     BNE StartCrcLp              ;
@@ -382,7 +343,7 @@ PrintMsg:
 PrtMsg1:
     LDA Msg,x
     BEQ PrtMsg2
-    JSR Put_Chr
+    JSR acia_put_char
     INX
     BNE PrtMsg1
 PrtMsg2:
@@ -393,7 +354,7 @@ Print_Err:
 PrtErr1:
     LDA ErrMsg,x
     BEQ PrtErr2
-    JSR Put_Chr
+    JSR acia_put_char
     INX
     BNE PrtErr1
 PrtErr2:
@@ -404,7 +365,7 @@ Print_Good:
 Prtgood1:
     LDA GoodMsg,x
     BEQ Prtgood2
-    JSR Put_Chr
+    JSR acia_put_char
     INX
     BNE Prtgood1
 Prtgood2:
