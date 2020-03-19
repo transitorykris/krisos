@@ -20,6 +20,7 @@ clean:
 	-rm *.bin
 	-rm *.raw
 	-rm *.map
+	-rm *.lib
 
 burn:
 	minipro -p AT28C256 -w kernel.bin
