@@ -16,7 +16,10 @@ all:
 		acia.o binhex.o stdlib.o term.o command.o xmodem.o \
 
 clean:
-	rm *.o
+	-rm *.o
+	-rm *.bin
+	-rm *.raw
+	-rm *.map
 
 burn:
 	minipro -p AT28C256 -w kernel.bin
