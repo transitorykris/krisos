@@ -49,8 +49,8 @@ _LIB_XMODEM_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.h"
-    .include "acia.h"
+    .include "term.inc"
+    .include "acia.inc"
 
     .importzp lastblk
     .importzp blkno 
@@ -70,7 +70,7 @@ _LIB_XMODEM_ = 1
 
     .export XModemRcv
 
-    .include "xmodem.h"
+    .include "xmodem.inc"
 
     .segment "LIB"
 

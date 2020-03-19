@@ -7,8 +7,8 @@ _LIB_SOUND_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "sound.h"
-    .include "via.h"
+    .include "sound.inc"
+    .include "via.inc"
 
 sound_init:
     ; Set up our 6522 for the SN76489

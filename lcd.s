@@ -7,9 +7,9 @@ _LIB_LCD = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "lcd.h"
-    .include "via.h"
-    .include "term.h"
+    .include "lcd.inc"
+    .include "via.inc"
+    .include "term.inc"
 
     .importzp string_ptr
 

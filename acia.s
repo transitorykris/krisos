@@ -7,7 +7,7 @@ _LIB_ACIA_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "acia.h"
+    .include "acia.inc"
 
     .export acia_init
     .export acia_get_char

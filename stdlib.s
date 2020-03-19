@@ -7,8 +7,8 @@ _LIB_STD_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.h"
-    .include "acia.h"
+    .include "term.inc"
+    .include "acia.inc"
 
     .importzp string_ptr
 

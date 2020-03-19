@@ -4,8 +4,6 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
-    .importzp
-
 ; Non-visible ASCII codes
 ; https://www.ascii-code.com/
 ;

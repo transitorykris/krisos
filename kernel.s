@@ -4,14 +4,15 @@
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.h"
-    .include "kernel.h"
-    .include "lcd.h"
-    .include "command.h"
+    .include "term.inc"
+    .include "kernel.inc"
+    .include "lcd.inc"
+    .include "command.inc"
 
     .importzp nmi_ptr
     .importzp irq_ptr
     .importzp string_ptr
+    .importzp char_ptr
 
     .import acia_init
     .import XModemRcv

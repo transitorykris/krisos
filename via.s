@@ -7,7 +7,7 @@ _LIB_VIA_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "via.h"
+    .include "via.inc"
 
     .export via1_init_ports
     .export via2_init_ports

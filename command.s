@@ -7,8 +7,8 @@ _LIB_COMMAND_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.h"
-    .include "command.h"
+    .include "term.inc"
+    .include "command.inc"
 
     .import string_ptr
     .import write
