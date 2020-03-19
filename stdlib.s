@@ -14,8 +14,6 @@ _LIB_STD_ = 1
 
     .export write
 
-    .segment "STDLIB"           ; This is the segment
-
     ;.org $d000                  ; Location of the write subroutine
     .segment "STDLIB"
 
