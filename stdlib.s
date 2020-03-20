@@ -28,12 +28,13 @@ wait_txd_empty:
     LDA (string_ptr), y
     BEQ write_done
     STA ACIA_DATA
-    INY
     CPY #$FF                    ; Are we crossing a page boundary?
     BEQ cross_page
+    INY                         ; Nope, increment index
     JMP next_char
 cross_page:
     INC string_ptr+1            ; Move to the next page
+    LDY #$00                    ; Reset our index
     JMP next_char
 write_done:
     PLY
