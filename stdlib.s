@@ -29,6 +29,11 @@ wait_txd_empty:
     BEQ write_done
     STA ACIA_DATA
     INY
+    CPY #$FF                    ; Are we crossing a page boundary?
+    BEQ cross_page
+    JMP next_char
+cross_page:
+    INC string_ptr+1            ; Move to the next page
     JMP next_char
 write_done:
     PLY
