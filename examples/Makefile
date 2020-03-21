@@ -18,6 +18,16 @@ break:
 	ld65 -C examples.cfg -o break.raw break.o
 	printf "\x00\x10" | cat - break.raw > break.bin
 
+clock:
+	ca65 -I ../ clock.s
+	ld65 -C examples.cfg -o clock.raw clock.o
+	printf "\x00\x10" | cat - clock.raw > clock.bin
+
+via_test:
+	ca65 -I ../ via_test.s
+	ld65 -C examples.cfg -o via_test.raw via_test.o
+	printf "\x00\x10" | cat - via_test.raw > via_test.bin
+
 clean:
 	rm *.o
 	rm *.raw

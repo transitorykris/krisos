@@ -9,11 +9,13 @@ all:
 	ca65 term.s
 	ca65 command.s
 	ca65 xmodem.s
+	ca65 clock.s
 	ca65 kernel.s
 	ld65 -C krisos.cfg \
 		-m krisos.map -v \
 		-o kernel.bin zeropage.o kernel.o via.o sound.o lcd.o \
 		acia.o binhex.o stdlib.o term.o command.o xmodem.o \
+		clock.o
 
 clean:
 	-rm *.o
