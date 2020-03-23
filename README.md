@@ -28,6 +28,10 @@ And copy `kernel.bin` to your EEPROM.
 
 See output of the `help` command.
 
+## The K64
+
+![K64 Photo](https://raw.githubusercontent.com/transitorykris/krisos/master/documentation/k64.png)
+
 ## License
 
 Unless otherwise noted in the source code, this software:
