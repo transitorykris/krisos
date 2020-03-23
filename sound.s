@@ -7,6 +7,8 @@ _LIB_SOUND_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
+    .export sound_init
+
     .include "sound.inc"
     .include "via.inc"
 
@@ -14,13 +16,13 @@ sound_init:
     ; Set up our 6522 for the SN76489
     PHA
     LDA #%10000110          ; CE and WE pins to output, READY to input
-    STA VIA2_DDRB
-    LDA #%11111111          ; Default to setting the SN data bus to output
     STA VIA2_DDRA
+    LDA #%11111111          ; Default to setting the SN data bus to output
+    STA VIA2_DDRB
 
     ; Initialize the SN76489
     LDA #%10000110          ; Set CE low (inactive), WE high (inactive)
-    STA VIA2_PORTB
+    STA VIA2_PORTA
     JSR silence_all         ; Stop it from making noise
     
     PLA
@@ -95,14 +97,14 @@ silence_all:
 ; A - databus value to strobe SN with
 sn_send:
     PHX
-    STA VIA2_PORTA               ; Put our data on the data bus
+    STA VIA2_PORTB               ; Put our data on the data bus
     LDX #%00000010          ; Strobe WE
-    STX VIA2_PORTB
+    STX VIA2_PORTA
     LDX #%00000000          
-    STX VIA2_PORTB
+    STX VIA2_PORTA
     JSR wait_ready          ; Wait for chip to be ready from last instruction
     LDX #%00000010
-    STX VIA2_PORTB
+    STX VIA2_PORTA
     PLX
     RTS
 
@@ -110,7 +112,7 @@ sn_send:
 wait_ready:
     PHA
 ready_loop:
-    LDA VIA2_PORTB
+    LDA VIA2_PORTA
     AND #SN_READY
     BNE ready_loop
 ready_done:

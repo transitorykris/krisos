@@ -28,9 +28,11 @@
     .import ACIA_STATUS
     .import lcd_init
     .import via1_init_ports
+    .import via2_init_ports
     .import lcd_write
     .import binhex              ; For build time and ca65 version
     .import clear_screen
+    .import sound_init
 
     .code
 main:
@@ -49,7 +51,14 @@ main:
     LDA #%11100001              ; LCD signals + 1 pin for LED
     LDX #%11111111              ; LCD databus lines
     JSR via1_init_ports         ; Initialize VIA
+    LDA #%01100000
+    LDA #%11111111
+    JSR via2_init_ports
     writeln init_done_msg    
+
+    writeln init_sound_msg
+    JSR sound_init
+    writeln init_done_msg
 
     writeln init_lcd_msg
     JSR lcd_init                ; Set up the LCD display

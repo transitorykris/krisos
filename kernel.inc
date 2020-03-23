@@ -21,6 +21,7 @@ init_terminal_msg: .byte "Initializing terminal...",CR,LF,NULL
 init_start_cli_msg: .byte "Starting command line...",CR,LF,LF,NULL
 init_done_msg: .byte "Done!",CR,LF,NULL
 init_default_interrupt_handlers: .byte "Setting default interrupt handlers...",NULL
+init_sound_msg: .byte "Initializing Sound...",NULL
 
 krisos_lcd_message: .byte "KrisOS/K64",NULL
 
