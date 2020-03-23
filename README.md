@@ -18,6 +18,8 @@ The K64 adds a (non-WDC) 6551 ACIA for serial communication.
 
 ## Building
 
+Modify the `krisos.cfg` memoy layout to match your system.
+
 ```
 $ make
 ```
