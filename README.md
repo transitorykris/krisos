@@ -14,7 +14,11 @@ An operating system for the K64
 
 This is based off a [Ben Eater 6502 Single Board Computer](https://eater.net/6502).
 
-The K64 adds a (non-WDC) 6551 ACIA for serial communication.
+The K64 adds:
+ * a (non-WDC) 6551 ACIA for serial communication, 1.84323 Mhz oscillator, and a TTL to serial interface
+ * a second 6522 VIA
+ * two additional 74HC00Ns for address decoding
+ * a TI SN7689A sound generator, 4Mhz oscillator, and a headphone jack
 
 ## Building
 
