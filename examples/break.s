@@ -3,7 +3,7 @@
 ;
 ; Demonstrates how to create user definable IRQs
 
-    .include "stdlib.h"
+    .include "stdlib.inc"
 
 .macro writeln str_addr
     LDA #<str_addr
