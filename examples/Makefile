@@ -28,6 +28,11 @@ via_test:
 	ld65 -C examples.cfg -o via_test.raw via_test.o
 	printf "\x00\x10" | cat - via_test.raw > via_test.bin
 
+sound:
+	ca65 -I ../ sound.s
+	ld65 -C examples.cfg -o sound.raw sound.o
+	printf "\x00\x10" | cat - sound.raw > sound.bin
+
 clean:
 	rm *.o
 	rm *.raw
