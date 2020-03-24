@@ -33,6 +33,7 @@
     .import binhex              ; For build time and ca65 version
     .import clear_screen
     .import sound_init
+    .import startup_sound
 
     .code
 main:
@@ -58,6 +59,7 @@ main:
 
     writeln init_sound_msg
     JSR sound_init
+    JSR startup_sound
     writeln init_done_msg
 
     writeln init_lcd_msg
