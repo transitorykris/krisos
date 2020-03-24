@@ -57,8 +57,8 @@ clean:
 	rm -f $(OBJS) $(TARGET) $(LDMAP)
 
 .PHONY: burn
-burn:
-	minipro -p AT28C256 -w kernel.bin
+burn: $(TARGET)
+	minipro -p AT28C256 -w $(TARGET)
 
 .PHONY: terminal
 terminal:
