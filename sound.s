@@ -8,23 +8,24 @@ _LIB_SOUND_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .export sound_init
+    .export startup_sound
 
     .include "sound.inc"
     .include "via.inc"
 
+; Note: currently destructive of other pins on the VIA
 sound_init:
     ; Set up our 6522 for the SN76489
     PHA
-    LDA #%10000110          ; CE and WE pins to output, READY to input
+    LDA #(SN_WE|SN_CE)          ; Ready input, WE and CE output
     STA VIA2_DDRA
-    LDA #%11111111          ; Default to setting the SN data bus to output
+    LDA #SN_DATA                ; Default to setting the SN data bus to output
     STA VIA2_DDRB
 
     ; Initialize the SN76489
-    LDA #%10000110          ; Set CE low (inactive), WE high (inactive)
+    LDA #SN_WE                  ; Set CE low (inactive), WE high (inactive)
     STA VIA2_PORTA
-    JSR silence_all         ; Stop it from making noise
-    
+    JSR silence_all             ; Stop it from making noise
     PLA
     RTS
 
@@ -95,15 +96,16 @@ silence_all:
     RTS
 
 ; A - databus value to strobe SN with
+; Note: currently destructive of other pins on the VIA
 sn_send:
     PHX
-    STA VIA2_PORTB               ; Put our data on the data bus
-    LDX #%00000010          ; Strobe WE
+    STA VIA2_PORTB              ; Put our data on the data bus
+    LDX #SN_WE                  ; Strobe WE
     STX VIA2_PORTA
-    LDX #%00000000          
+    LDX #SN_WE_CLEAR
     STX VIA2_PORTA
-    JSR wait_ready          ; Wait for chip to be ready from last instruction
-    LDX #%00000010
+    JSR wait_ready              ; Wait for chip to be ready from last instruction
+    LDX #SN_WE
     STX VIA2_PORTA
     PLX
     RTS
@@ -117,6 +119,39 @@ ready_loop:
     BNE ready_loop
 ready_done:
     PLA
+    RTS
+
+sleep:
+    LDX #$00
+    LDY #$00
+sleep_inner_loop:
+    CPX #$FF
+    BEQ sleep_outer_loop
+    INX
+    JMP sleep_inner_loop
+sleep_outer_loop:
+    LDX #$00
+    CPY #$0F
+    BEQ sleep_done
+    INY
+    JMP sleep_inner_loop
+sleep_done:
+    RTS
+
+startup_sound:
+    LDA #Cn5_1
+    LDX #Cn5_2
+    JSR play_note
+    JSR sleep
+    LDA #En5_1
+    LDX #En5_2
+    JSR play_note_2
+    JSR sleep
+    LDA #Gn5_1
+    LDX #Gn5_2
+    JSR play_note_3
+    JSR sleep
+    JSR silence_all
     RTS
 
 .endif

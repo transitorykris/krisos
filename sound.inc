@@ -24,17 +24,11 @@ TONE            = %00000000
 VOLUME          = %00010000
 VOLUME_OFF      = %00001111
 VOLUME_MAX      = %00000000
-SN_READY        = %00000001 ; Ready pin
-SN_WE           = %00000010 ; Write enable pin (active low)
-SN_CE           = %00000100 ; Chip enable pin (active low) - Tied to ground
-
-; Values for our app
-INTERVAL        = 41666     ; 1/16th note
-RATE            = 4         ; Just playing quarter notes here
-song_counter    = $00       ; Our position in the song
-song_cycle      = $01       ; When we hit RATE we reset and play a note
-song            = $E000     ; Location of our song
-song_length     = $E000     ; How many beats in our song
+SN_READY        = %10000000 ; Ready pin
+SN_WE           = %01000000 ; Write enable pin (active low)
+SN_WE_CLEAR     = %00000000
+SN_CE           = %00100000 ; Chip enable pin (active low) - Tied to ground
+SN_DATA         = %11111111 ; Data pins
 
 ; Notes
 ; Note, (s)harp/(f)lat/(n)atural, octave, byte 1 or 2
