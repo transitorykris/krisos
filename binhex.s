@@ -14,6 +14,9 @@
 .ifndef _LIB_BINHEX_
 _LIB_BINHEX_ = 1
 
+    .setcpu "6502"
+    .PSC02                      ; Enable 65c02 opcodes
+
     .export binhex
 
     .segment "LIB"

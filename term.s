@@ -20,7 +20,6 @@ _LIB_TERM_ = 1
     .export setup_term
     .export read
     .export dump
-    .export panic
     .export reset_user_input
     .export user_input
     .export write_char
@@ -145,10 +144,6 @@ wait_txd_empty_char:
     STA ACIA_DATA
 write_char_done:
     PLA
-    RTS
-
-panic:
-    writeln panic_msg
     RTS
 
 reset_user_input:

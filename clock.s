@@ -2,6 +2,9 @@
 ; Estimates the clock frequency of the 6502
 ; Modified for ca65 and K64, Kris Foster 2020
 
+    .setcpu "6502"
+    .PSC02                      ; Enable 65c02 opcodes
+
 rgConfig    = $6000             ; write: D6=1 - NMI is off, D6=0 - NMI is on
 rgStatus    = $6000             ; read: D6=0 - UART is busy
 rgTxD       = $5000             ; write: data to send via UART
