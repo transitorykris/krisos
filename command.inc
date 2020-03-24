@@ -14,6 +14,7 @@ EMPTY_CMD       = $06
 CLEAR_CMD       = $07
 RESET_CMD       = $08
 BREAK_CMD       = $09
+BEEP_CMD        = $0A
 
 FALSE   = 0
 TRUE    = 1
@@ -32,6 +33,7 @@ EMPTY:      .byte "",NULL
 CLEAR:      .byte "clear",NULL
 RESET:      .byte "reset",NULL
 BREAK:      .byte "break",NULL
+BEEP:       .byte "beep",NULL
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF
@@ -47,6 +49,7 @@ help_commands_msg:
     .byte "clear - Clears the screen",CR,LF
     .byte "reset - Soft resets the computer",CR,LF
     .byte "break - Trigger a soft IRQ",CR,LF
+    .byte "beep - Beeps the speaker",CR,LF
     .byte NULL
 
 help_copyright_msg:

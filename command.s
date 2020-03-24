@@ -37,6 +37,7 @@ parse_command:
     check_command CLEAR, CLEAR_CMD
     check_command RESET, RESET_CMD
     check_command BREAK, BREAK_CMD
+    check_command BEEP, BEEP_CMD
 error:
     LDA #ERROR_CMD
     RTS

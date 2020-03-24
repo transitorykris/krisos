@@ -34,6 +34,7 @@
     .import clear_screen
     .import sound_init
     .import startup_sound
+    .import beep
 
     .code
 main:
@@ -112,6 +113,7 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #CLEAR_CMD,    clear_screen
     case_command #RESET_CMD,    main
     case_command #BREAK_CMD,    soft_irq
+    case_command #BEEP_CMD,     beep
 repl_done:
     JMP repl                    ; Do it all again!
 

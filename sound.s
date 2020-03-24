@@ -9,6 +9,7 @@ _LIB_SOUND_ = 1
 
     .export sound_init
     .export startup_sound
+    .export beep
 
     .include "sound.inc"
     .include "via.inc"
@@ -150,6 +151,14 @@ startup_sound:
     LDA #Gn5_1
     LDX #Gn5_2
     JSR play_note_3
+    JSR sleep
+    JSR silence_all
+    RTS
+
+beep:
+    LDA #Cn5_1
+    LDX #Cn5_2
+    JSR play_note
     JSR sleep
     JSR silence_all
     RTS
