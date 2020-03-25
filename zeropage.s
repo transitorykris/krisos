@@ -3,6 +3,7 @@
 
 .ifndef _LIB_ZEROPAGE_
 _LIB_ZEROPAGE_ = 1
+
     .ZEROPAGE
 
     .include "term_zp.s"

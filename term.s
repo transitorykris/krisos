@@ -25,7 +25,7 @@ _LIB_TERM_ = 1
     .export write_char
     .export clear_screen
 
-   .segment "RAM"
+    .segment "RAM"
 ; 16 byte placeholder for user input
 user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 
