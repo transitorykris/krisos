@@ -32,7 +32,7 @@
     .import via1_init_ports
     .import via2_init_ports
     .import lcd_write
-    .import binhex              ; For build time and ca65 version
+    .import binhex
     .import clear_screen
     .import sound_init
     .import startup_sound
