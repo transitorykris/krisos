@@ -15,6 +15,7 @@ CLEAR_CMD       = $07
 RESET_CMD       = $08
 BREAK_CMD       = $09
 BEEP_CMD        = $0A
+UPTIME_CMD      = $0B
 
 FALSE   = 0
 TRUE    = 1
@@ -34,6 +35,7 @@ CLEAR:      .byte "clear",NULL
 RESET:      .byte "reset",NULL
 BREAK:      .byte "break",NULL
 BEEP:       .byte "beep",NULL
+UPTIME:     .byte "uptime",NULL
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF
@@ -50,6 +52,7 @@ help_commands_msg:
     .byte "reset - Soft resets the computer",CR,LF
     .byte "break - Trigger a soft IRQ",CR,LF
     .byte "beep - Beeps the speaker",CR,LF
+    .byte "uptime - Show the uptime in seconds of the K64",CR,LF
     .byte NULL
 
 help_copyright_msg:

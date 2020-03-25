@@ -4,6 +4,11 @@
 .ifndef _KERNEL_ZP_
 _KERNEL_ZP_ = 1
 
+    .exportzp uptime
+
+    .zeropage
+uptime:     .res 2              ; Uptime of the K64, zeroed out
+
     .exportzp nmi_ptr
     .exportzp irq_ptr
 

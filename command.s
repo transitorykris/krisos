@@ -10,10 +10,11 @@ _LIB_COMMAND_ = 1
     .include "term.inc"
     .include "command.inc"
 
-    .import string_ptr
-    .import write
     .importzp strcmp_first_ptr
     .importzp strcmp_second_ptr
+
+    .import string_ptr
+    .import write
 
     .import user_input
 
@@ -38,6 +39,7 @@ parse_command:
     check_command RESET, RESET_CMD
     check_command BREAK, BREAK_CMD
     check_command BEEP, BEEP_CMD
+    check_command UPTIME, UPTIME_CMD
 error:
     LDA #ERROR_CMD
     RTS

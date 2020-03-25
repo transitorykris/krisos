@@ -8,11 +8,13 @@
     .include "kernel.inc"
     .include "lcd.inc"
     .include "command.inc"
+    .include "via.inc"
 
     .importzp nmi_ptr
     .importzp irq_ptr
     .importzp string_ptr
     .importzp char_ptr
+    .importzp uptime
 
     .import acia_init
     .import XModemRcv
@@ -36,6 +38,8 @@
     .import startup_sound
     .import beep
 
+TICK = 65335                    ; Who knows how long a second is! This one's fast
+
     .code
 main:
     SEI                         ; Disable interrupts while we initialize
@@ -56,7 +60,7 @@ main:
     LDA #%01100000
     LDA #%11111111
     JSR via2_init_ports
-    writeln init_done_msg    
+    writeln init_done_msg
 
     writeln init_sound_msg
     JSR sound_init
@@ -95,6 +99,21 @@ clear_done:
     write_hex_word assembler_version
     writeln new_line
 
+    ; We start the clock late because it's wired into NMI
+    writeln init_clock_msg
+    LDA #$00
+    STA uptime                  ; Low order byte of uptime
+    STA uptime+1                ; High order byte of uptime
+    LDA #%01000000              ; T1 continuous interrupts, PB7 disabled
+    STA VIA1_ACR
+    LDA #%11000000              ; Enable T1 interrupts
+    STA VIA1_IER
+    LDA #<TICK
+    STA VIA1_T1CL               ; Low byte of interval counter
+    LDA #>TICK
+    STA VIA1_T1CH               ; High byte of interval counter
+    writeln init_done_msg
+
     writeln init_start_cli_msg
     writeln welcome_msg
 
@@ -114,6 +133,7 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #RESET_CMD,    main
     case_command #BREAK_CMD,    soft_irq
     case_command #BEEP_CMD,     beep
+    case_command #UPTIME_CMD,   uptime_ticker
 repl_done:
     JMP repl                    ; Do it all again!
 
@@ -138,6 +158,23 @@ shutdown:
     STP
     ; We do not return from this, ever.
 
+uptime_ticker:
+    writeln uptime_msg
+    LDA uptime+1                ; High order byte of uptime
+    JSR binhex
+    STA char_ptr
+    JSR write_char
+    STX char_ptr
+    JSR write_char
+    LDA uptime                  ; Low order byte of uptime
+    JSR binhex
+    STA char_ptr
+    JSR write_char
+    STX char_ptr
+    JSR write_char
+    writeln new_line
+    RTS
+
 soft_irq:
     BRK
     .byte $00                   ; RTI sends us to second byte after BRK
@@ -155,10 +192,24 @@ set_interrupt_handlers:
     RTS
 
 nmi:
-    JMP (nmi_ptr)
-
-default_nmi:
-    writeln default_nmi_msg
+    PHA
+    PHX
+    PHY
+uptime_handler:
+    BIT VIA1_T1CL               ; Clear interrupt
+    LDX uptime
+    INX
+    STX uptime
+    CPX #$FF
+    BNE uptime_done
+    STZ uptime
+    INC uptime+1
+uptime_done:
+    JMP (nmi_ptr)               ; Call the user's NMI handler
+default_nmi:                    ; Do nothing
+    PLY
+    PLX
+    PLA
     RTI
 
 irq:
