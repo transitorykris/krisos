@@ -12,8 +12,6 @@ OBJS =  zeropage.o kernel.o via.o sound.o lcd.o \
 	acia.o binhex.o stdlib.o term.o command.o xmodem.o \
 	clock.o
 
-LDMAP = krisos.map
-
 all: $(TARGET)
 
 %.o: %.s
