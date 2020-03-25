@@ -2,7 +2,10 @@ CA = ca65
 CFLAGS =
 LD = ld65
 LDFLAGS = -v
+LDCFG = krisos.cfg
+LDMAP = krisos.map
 TARGET = kernel.bin
+SERIAL = /dev/cu.usbserial-DN05JN76
 
 # Order currently matters to the linker!
 OBJS =  zeropage.o kernel.o via.o sound.o lcd.o \
@@ -11,13 +14,13 @@ OBJS =  zeropage.o kernel.o via.o sound.o lcd.o \
 
 LDMAP = krisos.map
 
-all: kernel.bin
+all: $(TARGET)
 
 %.o: %.s
 	$(CA) $(CFLAGS) -o $@ $<
 
 $(TARGET): $(OBJS)
-	$(LD) $(LDFLAGS) -C krisos.cfg -m krisos.map -o $(TARGET) $(OBJS) 
+	$(LD) $(LDFLAGS) -C $(LDCFG) -m $(LDMAP) -o $(TARGET) $(OBJS) 
 
 .PHONY: clean
 clean:
@@ -29,4 +32,4 @@ burn: $(TARGET)
 
 .PHONY: terminal
 terminal:
-	picocom -b 19200 --send-cmd 'sz -X' /dev/cu.usbserial-DN05JN76
+	picocom -b 19200 --send-cmd 'sz -X' $(SERIAL)
