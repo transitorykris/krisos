@@ -38,8 +38,6 @@
     .import startup_sound
     .import beep
 
-TICK = 65335                    ; Who knows how long a second is! This one's fast
-
     .code
 main:
     SEI                         ; Disable interrupts while we initialize

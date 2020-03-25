@@ -6,6 +6,8 @@ _KERNEL_H_ = 1
 
     .import __USER_START__
 
+TICK = 65335                    ; Who knows how long a second is! This one's fast
+
 user_code_segment = __USER_START__  ; The user's program will be stored here
 
     .RODATA
