@@ -19,6 +19,7 @@ The K64 adds:
  * a second 6522 VIA
  * two additional 74HC00Ns for address decoding
  * a TI SN7689A sound generator, 4Mhz oscillator, and a headphone jack
+ * IRQB on VIA1 is connected to the 6502's NMI (assuming you want an uptime counter)
 
 ## Building
 
