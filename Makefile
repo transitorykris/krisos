@@ -13,40 +13,7 @@ LDMAP = krisos.map
 
 all: kernel.bin
 
-zeropage.o: zeropage.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-via.o: via.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-sound.o: sound.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-lcd.o: lcd.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-acia.o: acia.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-binhex.o: binhex.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-stdlib.o: stdlib.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-term.o: term.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-command.o: command.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-xmodem.o: xmodem.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-clock.o: clock.s
-	$(CA) $(CFLAGS) -o $@ $<
-
-kernel.o: kernel.s
+%.o: %.s
 	$(CA) $(CFLAGS) -o $@ $<
 
 $(TARGET): $(OBJS)
