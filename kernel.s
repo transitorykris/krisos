@@ -9,6 +9,7 @@
     .include "lcd.inc"
     .include "command.inc"
     .include "via.inc"
+    .include "toolbox.inc"
 
     .importzp nmi_ptr
     .importzp irq_ptr
@@ -99,9 +100,7 @@ clear_done:
 
     ; We start the clock late because it's wired into NMI
     writeln init_clock_msg
-    LDA #$00
-    STA uptime                  ; Low order byte of uptime
-    STA uptime+1                ; High order byte of uptime
+    STZ16 uptime                ; Reset our uptime to zero
     LDA #%01000000              ; T1 continuous interrupts, PB7 disabled
     STA VIA1_ACR
     LDA #%11000000              ; Enable T1 interrupts
@@ -195,14 +194,7 @@ nmi:
     PHY
 uptime_handler:
     BIT VIA1_T1CL               ; Clear interrupt
-    LDX uptime
-    INX
-    STX uptime
-    CPX #$FF
-    BNE uptime_done
-    STZ uptime
-    INC uptime+1
-uptime_done:
+    INC16 uptime
     JMP (nmi_ptr)               ; Call the user's NMI handler
 default_nmi:                    ; Do nothing
     PLY
