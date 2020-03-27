@@ -6,5 +6,5 @@
 int main () {
 	puts("Hello, World!");        //  Transmit "Hello World!"
 
-  return(0);
+  return(1);
 }

@@ -36,6 +36,7 @@ calling_msg: .byte "Starting",CR,LF,LF,NULL
 bad_command_msg: .byte "Unknown command, type help for help",CR,LF,NULL
 shutdown_msg: .byte "Shutting down...",CR,LF,NULL
 uptime_msg: .byte "Uptime: ",NULL
+exited_msg: .byte CR,LF,"Exited with code: ",NULL
 
 default_nmi_msg: .byte "Default NMI handler called",CR,LF,NULL
 default_irq_msg: .byte "Default IRQ handler called",CR,LF,NULL

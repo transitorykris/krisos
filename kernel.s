@@ -137,6 +137,22 @@ repl_done:
 run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
+    PHA                         ; Save our 16-bit return
+    PHX                         ;
+    writeln exited_msg
+    PLA                         ; binhex takes the argument in the A register
+    JSR binhex
+    STA char_ptr
+    JSR write_char              ; Display the high order byte
+    STX char_ptr
+    JSR write_char
+    PLA
+    JSR binhex
+    STA char_ptr
+    JSR write_char
+    STX char_ptr
+    JSR write_char              ; Display the low order byte
+    writeln new_line
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
     RTS
 
