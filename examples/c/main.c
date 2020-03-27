@@ -4,7 +4,7 @@
 extern void __fastcall__ puts(char *str);
 
 int main () {
-	puts("Hello, world!");                //  Transmit "Hello World!"
+	puts("Hello, world!\n\n\n");                //  Transmit "Hello World!"
 
   return(0);                                     //  We should never get here!
 }
