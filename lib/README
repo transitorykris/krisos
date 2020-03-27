@@ -1,3 +1,3 @@
-# C example
+# C libraries
 
-This is an example of a custom cc65 target that runs on KrisOS/K64
+Beginnings of some C std-like libraries
