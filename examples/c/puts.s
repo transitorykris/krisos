@@ -26,7 +26,7 @@ loop:
 	BNE loop                    ; Loop until \0
 newline:
     LDA #$0D                    ;  Store CR
-	JSR acia_put_char
+    JSR acia_put_char
     LDA #$0A                    ;  Store LF
     JSR acia_put_char
     RTS                         ;  Return
