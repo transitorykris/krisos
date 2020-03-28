@@ -5,6 +5,10 @@
 
 int main () {
 	puts("Hello, World!");        //  Transmit "Hello World!"
-
+  puts("Goodbye...");
+  putchar('Y');
+  putchar('o');
+  putchar('\n');
+  putchar('\r');
   return(0);
 }

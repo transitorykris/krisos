@@ -1,4 +1,4 @@
-// A simplified version of the example at
-// https://cc65.github.io/doc/customizing.html
+// stdio.h
 
+extern void __fastcall__ putchar(char c);
 extern void __fastcall__ puts(char *str);
