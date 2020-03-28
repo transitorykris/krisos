@@ -43,6 +43,12 @@ sound:
 	ld65 -C examples.cfg -o sound.raw sound.o
 	printf "\x00\x10" | cat - sound.raw > sound.bin
 
+.PHONY: char
+char:
+	ca65 -I ../ char.s
+	ld65 -C examples.cfg -o char.raw char.o
+	printf "\x00\x10" | cat - char.raw > char.bin
+
 clean:
 	rm *.o
 	rm *.raw

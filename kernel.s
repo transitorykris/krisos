@@ -218,12 +218,31 @@ default_nmi:                    ; Do nothing
     PLA
     RTI
 
+bios_write_char:
+    PHA
+wait_txd_empty_char:
+    LDA $4001
+    AND #$10
+    BEQ wait_txd_empty_char
+    PLA
+    STA $4000
+    JMP return_call
+
 irq:
+    ; TODO check if it's a BRK, that's a BIOS call
+    ; Otherwise use the default handler
     JMP (irq_ptr)
 
 default_irq:
-    writeln default_irq_msg
+    JMP (bios_jmp_table,X)
+return_call:
+    ;writeln default_irq_msg
     RTI
+
+bios_jmp_table:
+    .word $0000
+    .word $0000
+    .word bios_write_char
 
     .segment "VECTORS"
     .word nmi
