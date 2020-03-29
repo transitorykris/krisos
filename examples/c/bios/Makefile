@@ -3,8 +3,11 @@ all:
 	ca65 main.s
 	ca65 puts.s
 	ca65 putchar.s
-	ca65 init.s
-	ld65 -C k64.cfg -m main.map -o hello.raw puts.o putchar.o main.o init.o
+	ca65 getchar.s
+	#ca65 init.s
+	#ar65 a none.lib init.o
+	ld65 -C none.cfg -m main.map -o hello.raw \
+		puts.o putchar.o getchar.o main.o none.lib
 	printf "\x00\x10" | cat - hello.raw > hello.bin
 
 clean:

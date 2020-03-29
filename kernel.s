@@ -115,6 +115,7 @@ clear_done:
     writeln welcome_msg
 
 repl:                           ; Not really a repl but I don't have a better name
+    writeln start_of_repl_msg
     JSR reset_user_input        ; Show a fresh prompt
     writeln prompt              ;
     JSR read                    ; Read command
@@ -133,6 +134,8 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #UPTIME_CMD,   uptime_ticker
 repl_done:
     JMP repl                    ; Do it all again!
+
+start_of_repl_msg: .byte "start of repl",CR,LF,NULL
 
 run_program:
     writeln calling_msg         ; Indicate that we're starting the user's code
@@ -154,7 +157,10 @@ run_program:
     JSR write_char              ; Display the low order byte
     writeln new_line
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
+    writeln handlers_reset_msg
     RTS
+
+handlers_reset_msg: .byte "handlers reset",CR,LF,NULL
 
 error:
     writeln bad_command_msg
@@ -228,6 +234,16 @@ wait_txd_empty_char:
     STA $4000
     JMP return_call
 
+bios_get_char:
+    CLC
+    LDA $4001
+    AND #$08
+    BEQ bios_get_char           ; Block until we get a character
+    LDA $4000
+    SEC
+acia_get_char_done:
+    JMP return_call
+
 irq:
     ; TODO check if it's a BRK, that's a BIOS call
     ; Otherwise use the default handler
@@ -243,6 +259,7 @@ bios_jmp_table:
     .word $0000
     .word $0000
     .word bios_write_char
+    .word bios_get_char
 
     .segment "VECTORS"
     .word nmi

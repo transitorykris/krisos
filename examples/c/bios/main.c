@@ -4,11 +4,18 @@
 #include <stdio.h>
 
 int main () {
-	puts("Hello, World!");        //  Transmit "Hello World!"
-  puts("Goodbye...");
-  putchar('Y');
-  putchar('o');
-  putchar('\n');
-  putchar('\r');
-  return(0);
+    char c;
+
+    puts("Hello, World!");        //  Transmit "Hello World!"
+
+    while (c != '\r') {
+        c = getchar();
+        putchar(c);
+    }
+    putchar('\n');
+    putchar('\r');
+    
+    puts("Goodbye...");
+    
+    return(0);
 }
