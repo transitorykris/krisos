@@ -7,8 +7,8 @@ int main () {
     char c = 0;
 
     puts("Hello, World!");        //  Transmit "Hello World!"
-    puts("Type something!")
-    while (c != '\r') {
+    puts("Type something!");
+    while(c != '\r') {
         c = getchar();
         putchar(c);
     }
