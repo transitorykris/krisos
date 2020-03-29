@@ -4,10 +4,10 @@
 #include <stdio.h>
 
 int main () {
-    char c;
+    char c = 0;
 
     puts("Hello, World!");        //  Transmit "Hello World!"
-
+    puts("Type something!")
     while (c != '\r') {
         c = getchar();
         putchar(c);
