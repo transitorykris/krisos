@@ -24,6 +24,7 @@ _LIB_TERM_ = 1
     .export user_input
     .export write_char
     .export clear_screen
+    .export dump_stack
 
     .segment "RAM"
 ; 16 byte placeholder for user input
@@ -129,6 +130,58 @@ dump_next:
     INX
     JMP dump_loop
 dump_done:
+    PLX
+    PLA
+    RTS
+
+dump_stack:
+    PHA
+    PHX
+    LDX #$00
+dump_loop_stack:
+prefix_new_lines_stack:
+    TXA
+    AND #$0F                    ; Note, this destroys the A register
+    BNE load_and_write_stack
+    TXA
+    PHX                         ; write_char destroys the X register
+    JSR binhex
+    STA char_ptr             ; MSN
+    JSR write_char
+    STX char_ptr             ; LSN
+    JSR write_char
+    PLX
+    LDA #':'
+    STA char_ptr
+    JSR write_char
+    LDA #SPACE
+    STA char_ptr
+    JSR write_char
+load_and_write_stack:
+    LDA $0100,x
+    PHX                         ; Save our index on the stack, binhex destroys it
+    JSR binhex
+    STA char_ptr             ; MSN
+    JSR write_char
+    STX char_ptr             ; LSN
+    JSR write_char
+    LDA #SPACE
+    STA char_ptr
+    JSR write_char
+    PLX                         ; Get our index back
+check_new_line_stack:
+    TXA
+    AND #$0F
+    CMP #$0F
+    BNE dump_next_stack
+    writeln new_line            ; This also covers a new_line at the end of the page
+check_end_of_page_stack:
+    CPX #$FF
+    BEQ dump_done_stack
+dump_next_stack:
+    INX
+    JMP dump_loop_stack
+dump_done_stack:
     PLX
     PLA
     RTS
