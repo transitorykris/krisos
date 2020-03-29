@@ -40,6 +40,7 @@ parse_command:
     check_command BREAK, BREAK_CMD
     check_command BEEP, BEEP_CMD
     check_command UPTIME, UPTIME_CMD
+    check_command STACK, STACK_CMD
 error:
     LDA #ERROR_CMD
     RTS

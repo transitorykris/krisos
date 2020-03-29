@@ -16,6 +16,7 @@ RESET_CMD       = $08
 BREAK_CMD       = $09
 BEEP_CMD        = $0A
 UPTIME_CMD      = $0B
+STACK_CMD       = $0C
 
 FALSE   = 0
 TRUE    = 1
@@ -36,6 +37,7 @@ RESET:      .byte "reset",NULL
 BREAK:      .byte "break",NULL
 BEEP:       .byte "beep",NULL
 UPTIME:     .byte "uptime",NULL
+STACK:      .byte "stack",NULL
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF
