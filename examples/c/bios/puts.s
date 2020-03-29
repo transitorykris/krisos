@@ -22,13 +22,14 @@ _char_ptr:  .res 2, $00      ;  Reserve a local zero page pointer
 loop:
 	LDA (_char_ptr),y
 	BEQ newline                    ; Loop until \0
-    CALL bios_write_char
+    CALL bios_put_char
 	INY
     JMP loop
 newline:
     LDA #$0D                    ;  Store CR
-    CALL bios_write_char
+    CALL bios_put_char
     LDA #$0A                    ;  Store LF
-    CALL bios_write_char
+    CALL bios_put_char
     RTS                         ;  Return
 .endproc
+ 

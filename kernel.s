@@ -39,6 +39,10 @@
     .import startup_sound
     .import beep
     .import dump_stack
+    .import bios_get_char
+    .import bios_put_char
+
+    .export return_from_bios_call
 
     .code
 main:
@@ -230,26 +234,6 @@ default_nmi:                    ; Do nothing
     PLA
     RTI
 
-bios_write_char:
-    PHA
-wait_txd_empty_char:
-    LDA $4001
-    AND #$10
-    BEQ wait_txd_empty_char
-    PLA
-    STA $4000
-    JMP return_call
-
-bios_get_char:
-    CLC
-    LDA $4001
-    AND #$08
-    BEQ bios_get_char           ; Block until we get a character
-    LDA $4000
-    SEC
-acia_get_char_done:
-    JMP return_call
-
 irq:
     ; TODO check if it's a BRK, that's a BIOS call
     ; Otherwise use the default handler
@@ -257,14 +241,14 @@ irq:
 
 default_irq:
     JMP (bios_jmp_table,X)
-return_call:
+return_from_bios_call:
     ;writeln default_irq_msg
     RTI
 
 bios_jmp_table:
     .word $0000
     .word $0000
-    .word bios_write_char
+    .word bios_put_char
     .word bios_get_char
 
     .segment "VECTORS"

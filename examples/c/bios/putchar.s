@@ -8,7 +8,7 @@
     .export _putchar
 
 .proc _putchar: near
-    CALL bios_write_char
+    CALL bios_put_char
     RTS
 .endproc
  

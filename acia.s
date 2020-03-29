@@ -5,13 +5,17 @@
 _LIB_ACIA_ = 1
 
     .setcpu "6502"
-    .PSC02
+    .PSC02                      ; Enable 65c02 opcodes
 
     .include "acia.inc"
+
+    .import return_from_bios_call
 
     .export acia_init
     .export acia_get_char
     .export acia_put_char
+    .export bios_get_char
+    .export bios_put_char
 
     .segment "LIB"
 
@@ -27,6 +31,25 @@ acia_init:
     STA ACIA_CONTROL
     PLA
     RTS
+
+bios_put_char:
+    PHA
+wait_txd_empty_char:
+    LDA ACIA_STATUS
+    AND #$10
+    BEQ wait_txd_empty_char
+    PLA
+    STA ACIA_DATA
+    JMP return_from_bios_call
+
+bios_get_char:
+    CLC
+    LDA ACIA_STATUS
+    AND #$08
+    BEQ bios_get_char           ; Block until we get a character
+    LDA ACIA_DATA
+    SEC
+    JMP return_from_bios_call
 
 ; From Daryl Rictor's XModem, moved here for re-use.
 ;
