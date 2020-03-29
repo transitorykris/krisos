@@ -38,6 +38,7 @@
     .import sound_init
     .import startup_sound
     .import beep
+    .import dump_stack
 
     .code
 main:
@@ -115,7 +116,7 @@ clear_done:
     writeln welcome_msg
 
 repl:                           ; Not really a repl but I don't have a better name
-    writeln start_of_repl_msg
+    ;writeln start_of_repl_msg
     JSR reset_user_input        ; Show a fresh prompt
     writeln prompt              ;
     JSR read                    ; Read command
@@ -132,12 +133,14 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #BREAK_CMD,    soft_irq
     case_command #BEEP_CMD,     beep
     case_command #UPTIME_CMD,   uptime_ticker
+    case_command #STACK_CMD,    dump_stack
 repl_done:
     JMP repl                    ; Do it all again!
 
 start_of_repl_msg: .byte "start of repl",CR,LF,NULL
 
 run_program:
+    ;JSR dump_stack
     writeln calling_msg         ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
     PHA                         ; Save our 16-bit return
@@ -157,8 +160,11 @@ run_program:
     JSR write_char              ; Display the low order byte
     writeln new_line
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
-    writeln handlers_reset_msg
-    RTS
+    ;writeln handlers_reset_msg
+    ;JSR dump_stack
+    LDX $FF                     ; Reset our stack because cc65 isn't cooperating yet
+    TXS
+    JMP repl
 
 handlers_reset_msg: .byte "handlers reset",CR,LF,NULL
 

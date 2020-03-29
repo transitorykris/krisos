@@ -4,8 +4,8 @@ all:
 	ca65 puts.s
 	ca65 putchar.s
 	ca65 getchar.s
-	#ca65 init.s
-	#ar65 a none.lib init.o
+	ca65 crt0.s
+	ar65 a none.lib crt0.o
 	ld65 -C none.cfg -m main.map -o hello.raw \
 		puts.o putchar.o getchar.o main.o none.lib
 	printf "\x00\x10" | cat - hello.raw > hello.bin

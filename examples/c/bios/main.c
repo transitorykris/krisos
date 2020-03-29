@@ -17,5 +17,5 @@ int main () {
     
     puts("Goodbye...");
     
-    return(0);
+    return(0x1234);
 }

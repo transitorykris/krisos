@@ -8,8 +8,8 @@
     .export _init
     .export _exit
 
-    .import __RAM_START__   ; Linker generated
-    .import __RAM_SIZE__    ; Linker generated
+    .import __STACKSTART__   ; Linker generated
+    .import __STACKSIZE__    ; Linker generated
     .export __STARTUP__ : absolute = 1        ; Mark as startup
 
     .import copydata
@@ -23,13 +23,13 @@
 
 _init:
     NOP                     ; Nothing to do here.. yet
-    LDA #<(__RAM_START__ + __RAM_SIZE__)    ; Argument stack pointers
+    LDA #<(__STACKSTART__ + __STACKSIZE__)    ; Argument stack pointers
     STA sp
-    LDA #>(__RAM_START__ + __RAM_SIZE__)
+    LDA #>(__STACKSTART__ + __STACKSIZE__)
     STA sp+1
 
     JSR zerobss              ; Clear BSS segment
-    JSR copydata             ; Initialize DATA segment
+    ;JSR copydata             ; Initialize DATA segment
     JSR initlib              ; Run constructors
 
     JSR _main           ; Main function from our C program
