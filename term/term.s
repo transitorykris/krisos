@@ -8,7 +8,7 @@ _LIB_TERM_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "term.inc"
-    .include "acia.inc"
+    .include "../io/acia.inc"   ; XXX more structural smell?
 
     .importzp string_ptr
     .importzp user_input_ptr

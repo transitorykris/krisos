@@ -12,7 +12,7 @@ _LIB_SOUND_ = 1
     .export beep
 
     .include "sound.inc"
-    .include "via.inc"
+    .include "../io/via.inc"    ; XXX should sound be io?
 
 ; Note: currently destructive of other pins on the VIA
 sound_init:

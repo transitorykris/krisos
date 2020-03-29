@@ -4,12 +4,12 @@
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.inc"
+    .include "term/term.inc"
     .include "kernel.inc"
-    .include "lcd.inc"
-    .include "command.inc"
-    .include "via.inc"
-    .include "toolbox.inc"
+    .include "io/lcd.inc"
+    .include "term/command.inc"
+    .include "io/via.inc"
+    .include "util/toolbox.inc"
 
     .importzp nmi_ptr
     .importzp irq_ptr

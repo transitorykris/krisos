@@ -9,7 +9,7 @@ _LIB_LCD = 1
 
     .include "lcd.inc"
     .include "via.inc"
-    .include "term.inc"
+    .include "../term/term.inc" ; XXX this is probably a bad sign
 
     .importzp string_ptr
 

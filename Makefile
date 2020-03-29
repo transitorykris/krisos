@@ -8,9 +8,18 @@ TARGET = kernel.bin
 SERIAL = /dev/cu.usbserial-DN05JN76
 
 # Order currently matters to the linker!
-OBJS =  zeropage.o kernel.o via.o sound.o lcd.o \
-	acia.o binhex.o stdlib.o term.o command.o xmodem.o \
-	clock.o
+OBJS =  zeropage.o \
+	kernel.o \
+	io/via.o \
+	sound/sound.o \
+	io/lcd.o \
+	io/acia.o \
+	util/binhex.o \
+	stdlib/stdlib.o \
+	term/term.o \
+	term/command.o \
+	xmodem/xmodem.o \
+	util/clock.o
 
 all: $(TARGET)
 

@@ -49,8 +49,8 @@ _LIB_XMODEM_ = 1
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
-    .include "term.inc"
-    .include "acia.inc"
+    .include "../term/term.inc" ; XXX more structural smell?
+    .include "../io/acia.inc"   ; XXX more structural smell?
 
     .importzp lastblk
     .importzp blkno 

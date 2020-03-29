@@ -6,9 +6,9 @@ _LIB_ZEROPAGE_ = 1
 
     .ZEROPAGE
 
-    .include "term_zp.s"
-    .include "commands_zp.s"
-    .include "xmodem_zp.s"
+    .include "term/term_zp.s"
+    .include "term/commands_zp.s"
+    .include "xmodem/xmodem_zp.s"
     .include "kernel_zp.s"
 
 .endif
