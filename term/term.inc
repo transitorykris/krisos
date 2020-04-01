@@ -91,7 +91,7 @@ welcome_msg:    .byte "Welcome to KrisOS on the K64",CR,LF,LF,NULL
 panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,NULL
 
 ; Macros
-.macro writeln  str_addr
+.macro writeln str_addr
     LDA #<str_addr
     STA string_ptr
     LDA #>str_addr

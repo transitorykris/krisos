@@ -84,10 +84,10 @@ main:
     JSR via2_init_ports
     writeln init_done_msg
 
-    writeln init_sound_msg
-    JSR sound_init
-    JSR startup_sound
-    writeln init_done_msg
+    ;writeln init_sound_msg
+    ;JSR sound_init
+    ;JSR startup_sound
+    ;writeln init_done_msg
 
     writeln init_lcd_msg
     JSR lcd_init                ; Set up the LCD display
@@ -138,7 +138,7 @@ clear_done:
     writeln welcome_msg
 
 repl:                           ; Not really a repl but I don't have a better name
-    ;writeln start_of_repl_msg
+    writeln start_of_repl_msg
     JSR reset_user_input        ; Show a fresh prompt
     writeln prompt              ;
     JSR read                    ; Read command
@@ -182,8 +182,8 @@ run_program:
     JSR write_char              ; Display the low order byte
     writeln new_line
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
-    ;writeln handlers_reset_msg
-    ;JSR dump_stack
+    writeln handlers_reset_msg
+    JSR dump_stack
     LDX $FF                     ; Reset our stack because cc65 isn't cooperating yet
     TXS
     JMP repl

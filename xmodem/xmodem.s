@@ -51,6 +51,7 @@ _LIB_XMODEM_ = 1
 
     .include "../term/term.inc" ; XXX more structural smell?
     .include "../io/acia.inc"   ; XXX more structural smell?
+    .include "../stdlib/stdlib.inc"
 
     .importzp lastblk
     .importzp blkno 
@@ -64,9 +65,11 @@ _LIB_XMODEM_ = 1
     .importzp eofph
     .importzp retry
     .importzp retry2
+    .importzp string_ptr
 
     .import acia_get_char
     .import acia_put_char
+
 
     .export XModemRcv
 
@@ -87,7 +90,7 @@ _LIB_XMODEM_ = 1
 ;
 ;
 XModemSend:
-    JSR PrintMsg                ; send prompt and info
+    writeln start_msg           ; send prompt and info
     LDA #$00                    ;
     STA errcnt                  ; error counter set to 0
     STA lastblk                 ; set flag to false
@@ -165,10 +168,10 @@ SCalcCRC:
 Resend:
     LDX #$00                    ;
     LDA #SOH
-    JSR acia_put_char                 ; send SOH
+    JSR acia_put_char           ; send SOH
 SendBlk:
     LDA Rbuff,x                 ; Send 132 bytes in buffer to the console
-    JSR acia_put_char                 ;
+    JSR acia_put_char           ;
     INX                         ;
     CPX #$84                    ; last byte?
     BNE SendBlk                 ; no, get next
@@ -190,20 +193,20 @@ Seterror:
     BNE Resend                  ; no, resend block
 PrtAbort:
     JSR Flush                   ; yes, too many errors, flush buffer,
-    JMP Print_Err               ; print error msg and exit
+    writeln error_msg           ; print error msg and exit
 Done:
-    JMP Print_Good              ; All Done..Print msg and exit
+    writeln success_msg         ; All Done..Print msg and exit
 ;
 ;
 ;
 XModemRcv:
-    JSR PrintMsg                ; send prompt and info
+    writeln start_msg           ; send prompt and info
     LDA #$01
     STA blkno                   ; set block # to 1
     STA bflag                   ; set flag to get address from block 1
 StartCrc:
     LDA #'C'                    ; "C" start with CRC mode
-    JSR acia_put_char                 ; send it
+    JSR acia_put_char           ; send it
     LDA #$FF
     STA retry2                  ; set loop counter for ~3 sec delay
     LDA #$00
@@ -246,7 +249,7 @@ GetBlk2:
     LDA Rbuff,x                 ; get block # from buffer
     CMP blkno                   ; compare to expected block #
     BEQ GoodBlk1                ; matched!
-    JSR Print_Err               ; Unexpected block number - abort
+    writeln error_msg           ; Unexpected block number - abort
     JSR Flush                   ; mismatched - flush buffer and then do BRK
     ;lda #$FD                    ; put error code in "A" if desired
     BRK                         ; unexpected block # - fatal error - BRK or RTS
@@ -255,7 +258,7 @@ GoodBlk1:
     INX                         ;
     CMP Rbuff,x                 ; compare with expected 1's comp of block #
     BEQ GoodBlk2                ; matched!
-    JSR Print_Err               ; Unexpected block number - abort
+    writeln error_msg           ; Unexpected block number - abort
     JSR Flush                   ; mismatched - flush buffer and then do BRK
     ;LDA #$FC                    ; put error code in "A" if desired
     BRK                         ; bad 1's comp of block#
@@ -307,9 +310,9 @@ IncBlk:
 
 RDone:
     LDA #ACK                    ; last block, send ACK and exit.
-    JSR acia_put_char                 ;
+    JSR acia_put_char           ;
     JSR Flush                   ; get leftover characters, if any
-    JSR Print_Good              ;
+    writeln success_msg         ;
     RTS                         ;
 ;
 ;=========================================================================
@@ -320,7 +323,7 @@ GetByte:
     LDA #$00                    ; wait for chr input and cycle timing loop
     STA retry                   ; set low value of timing loop
 StartCrcLp:
-    JSR acia_get_char                 ; get chr from serial port, don't wait
+    JSR acia_get_char           ; get chr from serial port, don't wait
     BCS GetByte1                ; got one, so exit
     DEC retry                   ; no character received, so dec counter
     BNE StartCrcLp              ;
@@ -338,39 +341,6 @@ Flush1:
     BCS Flush                   ; if chr recvd, wait for another
     RTS                         ; else done
 ;
-PrintMsg:
-    LDX #$00                    ; PRINT STA rting message
-PrtMsg1:
-    LDA Msg,x
-    BEQ PrtMsg2
-    JSR acia_put_char
-    INX
-    BNE PrtMsg1
-PrtMsg2:
-    RTS
-;
-Print_Err:
-    LDX #$00                    ; PRINT Error message
-PrtErr1:
-    LDA ErrMsg,x
-    BEQ PrtErr2
-    JSR acia_put_char
-    INX
-    BNE PrtErr1
-PrtErr2:
-    RTS
-;
-Print_Good:
-    LDX #$00                    ; PRINT Good Transfer message
-Prtgood1:
-    LDA GoodMsg,x
-    BEQ Prtgood2
-    JSR acia_put_char
-    INX
-    BNE Prtgood1
-Prtgood2:
-    RTS
-
 ;=========================================================================
 ;
 ;  CRC subroutines
