@@ -27,6 +27,7 @@ _LIB_STD_ = 1
 
     .include "../term/term.inc"
     .include "../io/acia.inc"
+    .include "../config.inc"
 
     .importzp string_ptr
 
@@ -39,10 +40,21 @@ write:
     PHY
     LDY #00
 next_char:
+.ifdef CFG_WDC_ACIA
+    PHX
+    LDX #$00
+delay_loop:
+    CPX #$FF
+    BEQ delay_loop_done
+    INX
+    JMP delay_loop
+delay_loop_done:
+.else
 wait_txd_empty:
     LDA ACIA_STATUS
     AND #$10
     BEQ wait_txd_empty
+.endif
     LDA (string_ptr), y
     BEQ write_done
     STA ACIA_DATA

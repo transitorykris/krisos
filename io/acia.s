@@ -26,6 +26,7 @@ _LIB_ACIA_ = 1
     .PSC02                      ; Enable 65c02 opcodes
 
     .include "acia.inc"
+    .include "../config.inc"
 
     .import return_from_bios_call
 
@@ -51,12 +52,23 @@ acia_init:
     RTS
 
 bios_put_char:
+.ifdef CFG_WDC_ACIA
+    PHX
+    LDX #$00
+bios_delay_loop:
+    CPX #$FF
+    BEQ bios_delay_loop_done
+    INX
+    JMP bios_delay_loop
+bios_delay_loop_done:
+.else
     PHA
 wait_txd_empty_char:
     LDA ACIA_STATUS
     AND #$10
     BEQ wait_txd_empty_char
     PLA
+.endif
     STA ACIA_DATA
     JMP return_from_bios_call
 
@@ -76,7 +88,7 @@ bios_get_char:
 ; present or return with the Carry flag SET and the character in the "A"
 ; register if one was present.
 acia_get_char:
-    CLC   ; no chr present
+    CLC                         ; no chr present
     LDA ACIA_STATUS             ; get Serial port STA tus
     AND #$08                    ; mask rcvr full bit
     BEQ acia_get_char_done      ; if not chr, done
@@ -87,12 +99,23 @@ acia_get_char_done:
 
 
 acia_put_char:
-    PHA                         ; save registers
+.ifdef CFG_WDC_ACIA
+    PHX
+    LDX #$00
+acia_delay_loop:
+    CPX #$FF
+    BEQ acia_delay_loop_done
+    INX
+    JMP acia_delay_loop
+acia_delay_loop_done:
+.else
+    PHA
 acia_put_char_loop:
     LDA ACIA_STATUS             ; serial port STA tus
     AND #$10                    ; is tx buffer empty
     BEQ acia_put_char_loop      ; no, go back and test it again
     PLA                         ; yes, get chr to send
+.endif
     STA ACIA_DATA               ; put character to Port
     RTS                         ; done
 
