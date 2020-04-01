@@ -4,6 +4,7 @@ LD = ld65
 LDFLAGS = -v
 LDCFG = krisos.cfg
 LDMAP = krisos.map
+CONFIG = config.inc
 TARGET = kernel.bin
 SERIAL = /dev/cu.usbserial-DN05JN76
 
@@ -23,7 +24,7 @@ OBJS =  zeropage.o \
 
 all: $(TARGET)
 
-%.o: %.s
+%.o: %.s $(CONFIG)
 	$(CA) $(CFLAGS) -o $@ $<
 
 $(TARGET): $(OBJS)

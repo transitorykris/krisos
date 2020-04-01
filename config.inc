@@ -21,5 +21,13 @@
 
 ; This system uses a WDC 6551 ACIA which has a transmit bug
 ; http://forum.6502.org/viewtopic.php?f=4&t=2543&start=30#p29795
-
 ;CFG_WDC_ACIA = 1
+
+; Use the LCD module
+CFG_LCD = 1
+
+; Use the SN76489 sound generator
+;CFG_SN76489 = 1
+
+; Generate periodic interrupts for the system clock
+CFG_CLOCK = 1

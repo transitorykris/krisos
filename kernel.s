@@ -28,6 +28,7 @@
     .include "term/command.inc"
     .include "io/via.inc"
     .include "util/toolbox.inc"
+    .include "config.inc"
 
     .importzp nmi_ptr
     .importzp irq_ptr
@@ -84,15 +85,19 @@ main:
     JSR via2_init_ports
     writeln init_done_msg
 
-    ;writeln init_sound_msg
-    ;JSR sound_init
-    ;JSR startup_sound
-    ;writeln init_done_msg
+.ifdef CFG_SN76489
+    writeln init_sound_msg
+    JSR sound_init
+    JSR startup_sound
+    writeln init_done_msg
+.endif
 
+.ifdef CFG_LCD
     writeln init_lcd_msg
     JSR lcd_init                ; Set up the LCD display
     writeln_lcd krisos_lcd_message
     writeln init_done_msg
+.endif
 
     writeln init_clear_userspace_msg
     LDA #$00
@@ -121,6 +126,7 @@ clear_done:
     write_hex_word assembler_version
     writeln new_line
 
+.ifdef CFG_CLOCK
     ; We start the clock late because it's wired into NMI
     writeln init_clock_msg
     STZ16 uptime                ; Reset our uptime to zero
@@ -133,6 +139,7 @@ clear_done:
     LDA #>TICK
     STA VIA1_T1CH               ; High byte of interval counter
     writeln init_done_msg
+.endif
 
     writeln init_start_cli_msg
     writeln welcome_msg

@@ -23,7 +23,9 @@ The K64 adds:
 
 ## Building
 
-Modify the `krisos.cfg` memoy layout to match your system.
+Modify the `krisos.cfg` memory layout to match your system.
+
+Modify `config.inc` as needed.
 
 ```
 $ make

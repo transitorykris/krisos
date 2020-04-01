@@ -11,7 +11,7 @@ A list of things for a rainy day
 * Rewrite a bunch of the borrowed code
 * Could conditionally assemble for instructions for non-WDC 6502 chips, but, meh?
 * Go digging for hardcoded constants and make those go away
-* Make configuration for other systems even easier
+* ~Make configuration for other systems even easier~
 * Create macros to be a little more DRY
 * ~Write an example in C using cc65~
 * Add more constants for VT100, xterm, etc
