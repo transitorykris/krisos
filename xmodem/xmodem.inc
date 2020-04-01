@@ -12,9 +12,9 @@ Rbuff   = $0300                 ; temp 132 byte receive buffer
 ;(place anywhere, page aligned)
 
     .RODATA
-start_msg:            .byte "Begin XMODEM/CRC transfer.  Press <Esc> to abort...",CR,LF,NULL
-error_msg:         .byte "Transfer Error!",CR,LF,NULL
-success_msg:        .byte EOT,CR,LF,"Transfer Successful!",CR,LF,NULL
+start_msg:      .byte "Begin XMODEM/CRC transfer.  Press <Esc> to abort...",CR,LF,NULL
+error_msg:      .byte "Transfer Error!",CR,LF,NULL
+success_msg:    .byte EOT,CR,LF,"Transfer Successful!",CR,LF,NULL
 
 ; The following tables are used to calculate the CRC for the 128 bytes
 ; in the xmodem data blocks.  You can use these tables if you plan to
