@@ -13,14 +13,14 @@ A list of things for a rainy day
 * Go digging for hardcoded constants and make those go away
 * Make configuration for other systems even easier
 * Create macros to be a little more DRY
-* Write an example in C using cc65
+* ~Write an example in C using cc65~
 * Add more constants for VT100, xterm, etc
 * Make user input more robust (e.g. arrow keys shouldn't do a thing)
 * Add additional commands: `peek`, `poke`, VIA pin control?
 * Get EhBasic running as an example
 * Fix whatever bug I introduced into Microchess
 * Display more information on the LCD -- Running program? Uptime?
-* Set a timer on one of the VIAs to calculate ticks
+* ~Set a timer on one of the VIAs to calculate ticks~
 * Get the clock speed estimation code working
 * Handle IRQs from different sources
 * Create a simple text editor example
