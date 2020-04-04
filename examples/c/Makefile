@@ -10,5 +10,17 @@ all:
 		puts.o putchar.o getchar.o main.o none.lib
 	printf "\x00\x10" | cat - hello.raw > hello.bin
 
+counter:
+	cc65 -t none -O --cpu 65c02 counter.c
+	ca65 counter.s
+	ca65 puts.s
+	ca65 putchar.s
+	ca65 getchar.s
+	ca65 crt0.s
+	ar65 a none.lib crt0.o
+	ld65 -C none.cfg -m main.map -o counter.raw \
+		puts.o putchar.o getchar.o counter.o none.lib
+	printf "\x00\x10" | cat - counter.raw > counter.bin
+
 clean:
 	rm -f *.o *.bin *.raw main.s main.map

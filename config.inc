@@ -24,10 +24,13 @@
 ;CFG_WDC_ACIA = 1
 
 ; Use the LCD module
-CFG_LCD = 1
+;CFG_LCD = 1
 
 ; Use the SN76489 sound generator
 ;CFG_SN76489 = 1
 
 ; Generate periodic interrupts for the system clock
-CFG_CLOCK = 1
+;CFG_CLOCK = 1
+
+; Enable debug output
+CFG_DEBUG = 1

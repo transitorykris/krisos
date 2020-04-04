@@ -99,6 +99,12 @@ panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,
     JSR write
 .endmacro
 
+.macro write_debug str_addr 
+.ifdef CFG_DEBUG
+    writeln str_addr
+.endif
+.endmacro
+
 .macro write_hex char_addr
     LDA char_addr
     JSR binhex
