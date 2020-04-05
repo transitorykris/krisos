@@ -104,10 +104,15 @@ main:
     LDX #$00
 clear_page:                     ; Give the user's code clean space to run in
     STA user_code_segment,X
+    CMP user_code_segment,X
+    BNE clear_failed
     CPX #$FF
     BEQ clear_done
     INX
     JMP clear_page
+clear_failed:
+    writeln init_failed_msg
+    STP                         ; Well, let's give up!
 clear_done:
     writeln init_done_msg
 
