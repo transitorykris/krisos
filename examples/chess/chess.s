@@ -99,7 +99,6 @@ temp    = $FC
 START:
     LDA #$00                    ; REVERSE TOGGLE
     STA REV
-    JSR Init_6551
 CHESS:
     CLD                         ; INITIALIZE
     LDX #$FF                    ; TWO STACKS
@@ -888,13 +887,6 @@ KIN:
     RTS
 ;
 ; 6551 I/O Support Routines
-;
-Init_6551:
-    LDA #$1F                    ; 19.2K/8/1
-    STA ACIActl                 ; control reg
-    LDA #$0B                    ; N parity/echo off/rx int off/ dtr active low
-    STA ACIAcmd                 ; command reg
-    RTS                         ; done
 ;
 ; input chr from ACIA1 (waiting)
 ;
