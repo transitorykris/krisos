@@ -34,7 +34,9 @@
 ;
 ; Updated with corrections to earlier OCR errors by Bill Forster, August 2005.
 ;
-; Modified to ca65 syntax to run on the K64 6502 SBC w/ ACIA
+; Modified to run on the K64 6502 SBC w/ ACIA
+; - CA65 syntax
+; - use KrisOS routines for input and output
 ; by Kris Foster, March 2020
 ;
     .setcpu "6502"
