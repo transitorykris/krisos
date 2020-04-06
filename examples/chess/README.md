@@ -7,7 +7,7 @@ This is Microchess. See (Peter Jenning's Microchess page)[http://www.benlo.com/m
  * C - clears the board
  * E - switches sides
  * P - causes the computer to play a move
- * Q - quitting is currently broken
+ * Q - quit chess, performs a soft reset of KrisOS
 
 ## Moving a piece
 
