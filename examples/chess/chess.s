@@ -962,11 +962,3 @@ OPNING:
     .byte $07, $36, $34, $0D, $34, $34, $0E, $52
     .byte $25, $0D, $45, $35, $04, $55, $22, $06
     .byte $43, $33, $0F, $CC
-
-NMI:RTI
-IRQ:RTI
-
-    .org $FFFA
-    .word NMI
-    .word START
-    .word IRQ
