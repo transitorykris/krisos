@@ -304,57 +304,57 @@ CLEAR:
     BPL CLEAR
 ;
 GNM:
-    LDA #$10    ; SET UP
-    STA PIECE; PIECE
+    LDA #$10                    ; SET UP
+    STA PIECE                   ; PIECE
 NEWP:
-    DEC PIECE; NEW PIECE
-    BPL NEX  ; ALL DONE?
-    RTS ;   -YES
+    DEC PIECE                   ; NEW PIECE
+    BPL NEX                     ; ALL DONE?
+    RTS                         ;   -YES
 ;
 NEX:
-    JSR RESET; READY
-    LDY PIECE; GET PIECE
+    JSR RESET                   ; READY
+    LDY PIECE                   ; GET PIECE
     LDX #$08
-    STX MOVEN; COMMON START
-    CPY #$08    ; WHAT IS IT?
-    BPL PAWN ; PAWN
+    STX MOVEN                   ; COMMON START
+    CPY #$08                    ; WHAT IS IT?
+    BPL PAWN                    ; PAWN
     CPY #$06
-    BPL KNIGHT       ; KNIGHT
+    BPL KNIGHT                  ; KNIGHT
     CPY #$04
-    BPL BISHOP       ; BISHOP
+    BPL BISHOP                  ; BISHOP
     CPY #$01
-    BEQ QUEEN; QUEEN
-    BPL ROOK ; ROOK
+    BEQ QUEEN                   ; QUEEN
+    BPL ROOK                    ; ROOK
 ;
 KING:
-    JSR SNGMV; MUST BE KING!
-    BNE KING ; MOVES
-    BEQ NEWP ; 8 TO 1
+    JSR SNGMV                   ; MUST BE KING!
+    BNE KING                    ; MOVES
+    BEQ NEWP                    ; 8 TO 1
 QUEEN:
     JSR LINE
-    BNE QUEEN; MOVES
-    BEQ NEWP ; 8 TO 1
+    BNE QUEEN                   ; MOVES
+    BEQ NEWP                    ; 8 TO 1
 ;
 ROOK:
     LDX #$04
-    STX MOVEN; MOVES
+    STX MOVEN                   ; MOVES
 AGNR:
-    JSR LINE ; 4 TO 1
+    JSR LINE                    ; 4 TO 1
     BNE AGNR
     BEQ NEWP
 ;
 BISHOP:
     JSR LINE
-    LDA MOVEN; MOVES
-    CMP #$04    ; 8 TO 5
+    LDA MOVEN                   ; MOVES
+    CMP #$04                    ; 8 TO 5
     BNE BISHOP
     BEQ NEWP
 ;
 KNIGHT:
     LDX #$10
-    STX MOVEN; MOVES
+    STX MOVEN                   ; MOVES
 AGNN:
-    JSR SNGMV; 16 TO 9
+    JSR SNGMV                   ; 16 TO 9
     LDA MOVEN
     CMP #$08
     BNE AGNN
@@ -364,33 +364,33 @@ PAWN:
     LDX #$06
     STX MOVEN
 P1:
-    JSR CMOVE; RIGHT CAP?
+    JSR CMOVE                   ; RIGHT CAP?
     BVC P2
     BMI P2
-    JSR JANUS; YES
+    JSR JANUS                   ; YES
 P2:
     JSR RESET
-    DEC MOVEN; LEFT CAP?
+    DEC MOVEN                   ; LEFT CAP?
     LDA MOVEN
     CMP #$05
     BEQ P1
 P3:
-    JSR CMOVE; AHEAD
-    BVS NEWP ; ILLEGAL
+    JSR CMOVE                   ; AHEAD
+    BVS NEWP                    ; ILLEGAL
     BMI NEWP
     JSR JANUS
-    LDA SQUARE       ; GETS TO
-    AND #$F0    ; 3RD RANK?
+    LDA SQUARE                  ; GETS TO
+    AND #$F0                    ; 3RD RANK?
     CMP #$20
-    BEQ P3      ; DO DOUBLE
+    BEQ P3                      ; DO DOUBLE
     JMP NEWP
 ;
 ; CALCULATE SINGLE STEP MOVES FOR K,N
 ;
 SNGMV:
-    JSR CMOVE; CALC MOVE
-    BMI ILL1    ; -IF LEGAL
-    JSR JANUS; -EVALUATE
+    JSR CMOVE                   ; CALC MOVE
+    BMI ILL1                    ; -IF LEGAL
+    JSR JANUS                   ; -EVALUATE
 ILL1:JSR RESET
     DEC MOVEN
     RTS
@@ -398,18 +398,18 @@ ILL1:JSR RESET
 ; CALCULATE ALL MOVES DOWN A STRAIGHT LINE FOR Q,B,R
 ;
 LINE:
-    JSR CMOVE; CALC MOVE
-    BCC OVL  ; NO CHK
-    BVC LINE ; NOCAP
+    JSR CMOVE                   ; CALC MOVE
+    BCC OVL                     ; NO CHK
+    BVC LINE                    ; NOCAP
 OVL:
-    BMI ILL  ; RETURN
+    BMI ILL                     ; RETURN
     PHP
-    JSR JANUS; EVALUATE POSN
+    JSR JANUS                   ; EVALUATE POSN
     PLP
-    BVC LINE ; NOT A CAP
+    BVC LINE                    ; NOT A CAP
 ILL:
-    JSR RESET; LINE STOPPED
-    DEC MOVEN; NEXT DIR
+    JSR RESET                   ; LINE STOPPED
+    DEC MOVEN                   ; NEXT DIR
     RTS
 ;
 ; EXCHANGE SIDES FOR REPLY ANALYSIS
@@ -418,14 +418,14 @@ REVERSE:
     LDX #$0F
 ETC:
     SEC
-    LDY BK,X ; SUBTRACT
-    LDA #$77    ; POSITION
-    SBC BOARD,X      ; FROM 77
+    LDY BK,X                    ; SUBTRACT
+    LDA #$77                    ; POSITION
+    SBC BOARD,X                 ; FROM 77
     STA BK,X
-    STY BOARD,X      ; AND
+    STY BOARD,X                 ; AND
     SEC
-    LDA #$77    ; EXCHANGE
-    SBC BOARD,X      ; PIECES
+    LDA #$77                    ; EXCHANGE
+    SBC BOARD,X                 ; PIECES
     STA BOARD,X
     DEX
     BPL ETC
@@ -440,36 +440,36 @@ ETC:
 ; VERSION OF CMOVE]
 ;
 CMOVE:
-    LDA SQUARE       ; GET SQUARE
-    LDX MOVEN; MOVE POINTER
+    LDA SQUARE                  ; GET SQUARE
+    LDX MOVEN                   ; MOVE POINTER
     CLC
-    ADC MOVEX,X      ; MOVE LIST
-    STA SQUARE       ; NEW POS'N
+    ADC MOVEX,X                 ; MOVE LIST
+    STA SQUARE                  ; NEW POS'N
     AND #$88
-    BNE ILLEGAL      ; OFF BOARD
+    BNE ILLEGAL                 ; OFF BOARD
     LDA SQUARE
 ;
     LDX #$20
 LOOP:
-    DEX ; IS TO
-    BMI NO   ; SQUARE
-    CMP BOARD,X      ; OCCUPIED?
+    DEX                         ; IS TO
+    BMI NO                      ; SQUARE
+    CMP BOARD,X                 ; OCCUPIED?
     BNE LOOP
 ;
-    CPX #$10    ; BY SELF?
+    CPX #$10                    ; BY SELF?
     BMI ILLEGAL
 ;
-    LDA #$7F ; MUST BE CAP!
-    ADC #$01    ; SET V FLAG
-    BVS SPX  ; (JMP)
+    LDA #$7F                    ; MUST BE CAP!
+    ADC #$01                    ; SET V FLAG
+    BVS SPX                     ; (JMP)
 ;
 NO:
-    CLV ; NO CAPTURE
+    CLV                         ; NO CAPTURE
 ;
 SPX:
-    LDA STATE; SHOULD WE
-    BMI RETL ; DO THE
-    CMP #$08    ; CHECK CHECK?
+    LDA STATE                   ; SHOULD WE
+    BMI RETL                    ; DO THE
+    CMP #$08                    ; CHECK CHECK?
     BPL RETL
 ;
 ; CHKCHK REVERSES SIDES AND LOOKS FOR A KING CAPTURE TO INDICATE
@@ -477,70 +477,70 @@ SPX:
 ; ALWAYS DONE
 ;
 CHKCHK:
-    PHA ; STATE
+    PHA                         ; STATE
     PHP
     LDA #$F9
-    STA STATE; GENERATE
-    STA INCHEK       ; ALL REPLY
-    JSR MOVE ; MOVES TO
-    JSR REVERSE      ; SEE IF KING
-    JSR GNM  ; IS IN
-    JSR RUM  ; CHECK
+    STA STATE                   ; GENERATE
+    STA INCHEK                  ; ALL REPLY
+    JSR MOVE                    ; MOVES TO
+    JSR REVERSE                 ; SEE IF KING
+    JSR GNM                     ; IS IN
+    JSR RUM                     ; CHECK
     PLP
     PLA
     STA STATE
     LDA INCHEK
-    BMI RETL ; NO - SAFE
-    SEC ; YES - IN CHK
+    BMI RETL                    ; NO - SAFE
+    SEC                         ; YES - IN CHK
     LDA #$FF
     RTS
 ;
 RETL:
     CLC ; LEGAL
-    LDA #$00    ; RETURN
+    LDA #$00                    ; RETURN
     RTS
 ;
 ILLEGAL:
     LDA #$FF
-    CLC ; ILLEGAL
-    CLV ; RETURN
+    CLC                         ; ILLEGAL
+    CLV                         ; RETURN
     RTS
 ;
 ; REPLACE PIECE ON CORRECT SQUARE
 ;
 RESET:
-    LDX PIECE ; GET LOGAT
-    LDA BOARD,X      ; FOR PIECE
-    STA SQUARE       ; FROM BOARD
+    LDX PIECE                   ; GET LOGAT
+    LDA BOARD,X                 ; FOR PIECE
+    STA SQUARE                  ; FROM BOARD
     RTS
 ;
 ;
 ;
 GENRM:
-    JSR MOVE ; MAKE MOVE
+    JSR MOVE                    ; MAKE MOVE
 GENR2:
-    JSR REVERSE      ; REVERSE BOARD
-    JSR GNM  ; GENERATE MOVES
+    JSR REVERSE                 ; REVERSE BOARD
+    JSR GNM                     ; GENERATE MOVES
 RUM:
-    JSR REVERSE ; REVERSE BACK
+    JSR REVERSE                 ; REVERSE BACK
 ;
 ; ROUTINE TO UNMAKE A MOVE MADE BY MOVE
 ;
 UMOVE:
-    TSX ; UNMAKE MOVE
+    TSX                         ; UNMAKE MOVE
     STX SP1
-    LDX SP2; EXCHANGE
-    TXS ; STACKS
-    PLA ; MOVEN
+    LDX SP2                     ; EXCHANGE
+    TXS                         ; STACKS
+    PLA                         ; MOVEN
     STA MOVEN
-    PLA ; CAPTURED
-    STA PIECE; PIECE
+    PLA                         ; CAPTURED
+    STA PIECE                   ; PIECE
     TAX
-    PLA ; FROM SQUARE
+    PLA                         ; FROM SQUARE
     STA BOARD,X
-    PLA ; PIECE
+    PLA                         ; PIECE
     TAX
-    PLA ; TO SOUARE
+    PLA                         ; TO SOUARE
     STA SQUARE
     STA BOARD,X
     JMP STRV
@@ -550,120 +550,120 @@ UMOVE:
 ;
 MOVE:
     TSX
-    STX SP1     ; SWITCH
-    LDX SP2     ; STACKS
+    STX SP1                     ; SWITCH
+    LDX SP2                     ; STACKS
     TXS
     LDA SQUARE
-    PHA ; TO SQUARE
+    PHA                         ; TO SQUARE
     TAY
     LDX #$1F
 CHECK:
-    CMP BOARD,X      ; CHECK FOR
-    BEQ TAKE ; CAPTURE
+    CMP BOARD,X                 ; CHECK FOR
+    BEQ TAKE                    ; CAPTURE
     DEX
     BPL CHECK
 TAKE:
     LDA #$CC
     STA BOARD,X
-    TXA ; CAPTURED
-    PHA ; PIECE
+    TXA                         ; CAPTURED
+    PHA                         ; PIECE
     LDX PIECE
     LDA BOARD,X
-    STY BOARD,X      ; FROM
-    PHA ; SQUARE
+    STY BOARD,X                 ; FROM
+    PHA                         ; SQUARE
     TXA
-    PHA      ; PIECE
+    PHA                         ; PIECE
     LDA MOVEN
-    PHA      ; MOVEN
+    PHA                         ; MOVEN
 STRV:
     TSX
-    STX SP2     ; SWITCH
-    LDX SP1     ; STACKS
-    TXS      ; BACK
+    STX SP2                     ; SWITCH
+    LDX SP1                     ; STACKS
+    TXS                         ; BACK
     RTS
 ;
 ; CONTINUATION OF SUB STRATGY-CHECKS FOR CHECK OR CHECKMATE
 ; AND ASSIGNS VALUE TO MOVE
 ;
 CKMATE:
-    LDX BMAXC; CAN BLK CAP
-    CPX POINTS       ; MY KING?
+    LDX BMAXC                   ; CAN BLK CAP
+    CPX POINTS                  ; MY KING?
     BNE NOCHEK
-    LDA #$00    ; GULP!
-    BEQ RETV ; DUMB MOVE!
+    LDA #$00                    ; GULP!
+    BEQ RETV                    ; DUMB MOVE!
 ;
 NOCHEK:
-    LDX BMOB ; IS BLACK
-    BNE RETV ; UNABLE TO
-    LDX WMAXP; MOVE AND
-    BNE RETV ; KING IN CH?
-    LDA #$FF ; YES! MATE
+    LDX BMOB                    ; IS BLACK
+    BNE RETV                    ; UNABLE TO
+    LDX WMAXP                   ; MOVE AND
+    BNE RETV                    ; KING IN CH?
+    LDA #$FF                    ; YES! MATE
 ;
 RETV:
-    LDX #$04    ; RESTORE
-    STX STATE; STATE=4
+    LDX #$04                    ; RESTORE
+    STX STATE                   ; STATE=4
 ;
 ; THE VALUE OF THE MOVE (IN ACCU) IS COMPARED TO THE BEST MOVE AND
 ; REPLACES IT IF IT IS BETTER
 ;
 PUSH:
-    CMP BESTV; IS THIS BEST
-    BCC RETP ; MOVE SO FAR?
+    CMP BESTV                   ; IS THIS BEST
+    BCC RETP                    ; MOVE SO FAR?
     BEQ RETP
-    STA BESTV; YES!
-    LDA PIECE; SAVE IT
+    STA BESTV                   ; YES!
+    LDA PIECE                   ; SAVE IT
     STA BESTP
     LDA SQUARE
-    STA BESTM; FLASH DISPLAY
+    STA BESTM                   ; FLASH DISPLAY
 RETP:
-    LDA #'.'    ; print ... instead of flashing disp
-    JMP syschout     ; print . and return
+    LDA #'.'                    ; print ... instead of flashing disp
+    JMP syschout                ; print . and return
 ;
 ; MAIN PROGRAM TO PLAY CHESS PLAY FROM OPENING OR THINK
 ;
 GO:
-    LDX OMOVE; OPENING?
-    BMI NOOPEN       ; -NO   *ADD CHANGE FROM BPL
-    LDA DIS3    ; -YES WAS
-    CMP OPNING,X     ; OPPONENT'S
-    BNE END  ; MOVE OK?
+    LDX OMOVE                   ; OPENING?
+    BMI NOOPEN                  ; -NO   *ADD CHANGE FROM BPL
+    LDA DIS3                    ; -YES WAS
+    CMP OPNING,X                ; OPPONENT'S
+    BNE END                     ; MOVE OK?
     DEX
-    LDA OPNING,X     ; GET NEXT
-    STA DIS1    ; CANNED
-    DEX      ; OPENING MOVE
+    LDA OPNING,X                ; GET NEXT
+    STA DIS1                    ; CANNED
+    DEX                         ; OPENING MOVE
     LDA OPNING,X
-    STA DIS3    ; DISPLAY IT
+    STA DIS3                    ; DISPLAY IT
     DEX
-    STX OMOVE; MOVE IT
-    BNE MV2     ; (JMP)
+    STX OMOVE                   ; MOVE IT
+    BNE MV2                     ; (JMP)
 ;
 END:
-    LDA #$FF ; *ADD - STOP CANNED MOVES
-    STA OMOVE; FLAG OPENING
+    LDA #$FF                    ; *ADD - STOP CANNED MOVES
+    STA OMOVE                   ; FLAG OPENING
 NOOPEN:
-    LDX #$0C ; FINISHED
-    STX STATE; STATE=C
-    STX BESTV; CLEAR BESTV
-    LDX #$14    ; GENERATE P
-    JSR GNMX ; MOVES
+    LDX #$0C                    ; FINISHED
+    STX STATE                   ; STATE=C
+    STX BESTV                   ; CLEAR BESTV
+    LDX #$14                    ; GENERATE P
+    JSR GNMX                    ; MOVES
 ;
-    LDX #$04    ; STATE=4
-    STX STATE; GENERATE AND
-    JSR GNMZ ; TEST AVAILABLE
+    LDX #$04                    ; STATE=4
+    STX STATE                   ; GENERATE AND
+    JSR GNMZ                    ; TEST AVAILABLE
 ; MOVES
 ;
-    LDX BESTV; GET BEST MOVE
-    CPX #$0F ; IF NONE
-    BCC MATE ; OH OH!
+    LDX BESTV                   ; GET BEST MOVE
+    CPX #$0F                    ; IF NONE
+    BCC MATE                    ; OH OH!
 ;
 MV2:
-    LDX BESTP; MOVE
-    LDA BOARD,X      ; THE
-    STA BESTV; BEST
-    STX PIECE; MOVE
+    LDX BESTP                   ; MOVE
+    LDA BOARD,X                 ; THE
+    STA BESTV                   ; BEST
+    STX PIECE                   ; MOVE
     LDA BESTM
-    STA SQUARE       ; AND DISPLAY
-    JSR MOVE ; IT
+    STA SQUARE                  ; AND DISPLAY
+    JSR MOVE                    ; IT
     JMP CHESS
 ;
 MATE:LDA #$FF                   ; RESIGN
