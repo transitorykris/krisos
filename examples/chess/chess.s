@@ -101,7 +101,7 @@ temp    = $FC
     PHX
     LDA c
     LDX #$04                    ; bios_put_char
-    BRK                         ; call bios
+    BRK                         ; call the KrisOS bios
     NOP                         ; we'll return to the next instruction
     PLX
 .endmacro
