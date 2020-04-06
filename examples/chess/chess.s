@@ -755,8 +755,8 @@ NOPOSN:
 ;
 POUT:
     JSR POUT_HOME_1             ; return cursor to top left
-    JSR POUT9                   ; print CRLF
     JSR POUT13                  ; print copyright
+    JSR POUT9                   ; print CRLF
     JSR POUT10                  ; print column labels
     LDY #$00                    ; init board location
     JSR POUT5                   ; print board horz edge
