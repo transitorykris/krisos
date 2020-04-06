@@ -3,9 +3,9 @@
 ;  Kim-1 MicroChess (c) 1976-2005 Peter Jennings, www.benlo.com 
 ;
 ;***********************************************************************
-
+;
 ; All rights reserved.
-
+;
 ; Redistribution and use in source and binary forms, with or without
 ; modification, are permitted provided that the following conditions
 ; are met:
@@ -16,7 +16,7 @@
 ;    documentation and/or other materials provided with the distribution.
 ; 3. The name of the author may not be used to endorse or promote products
 ;    derived from this software without specific prior written permission.
-
+;
 ; THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
 ; IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 ; OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,15 +27,15 @@
 ; THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 ; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+;
 ;
 ; modified by Daryl Rictor to work over a 
 ; serial terminal connection, August 2002.
 ;
 ; Updated with corrections to earlier OCR errors by Bill Forster, August 2005.
 ;
-; Modified to ca65 syntax to run on the K64 6502 SBC
-; w/ ACIA at $4000 by Kris Foster, March 2020
+; Modified to ca65 syntax to run on the K64 6502 SBC w/ ACIA
+; by Kris Foster, March 2020
 ;
     .setcpu "6502"
     .PSC02
@@ -50,7 +50,7 @@ ACIActl = $4003
 ; page zero variables
 ;
 BOARD   = $50 
-BK   = $60 
+BK      = $60 
 PIECE   = $B0 
 SQUARE  = $B1 
 SP2     = $B2 
@@ -58,7 +58,7 @@ SP1     = $B3
 INCHEK  = $B4 
 STATE   = $B5 
 MOVEN   = $B6 
-REV  = $B7
+REV     = $B7
 OMOVE   = $DC 
 WCAP0   = $DD 
 COUNT   = $DE 
@@ -67,23 +67,23 @@ WCAP2   = $DF
 BCAP1   = $E0 
 WCAP1   = $E1 
 BCAP0   = $E2 
-MOB  = $E3 
-MAXC = $E4 
-CC   = $E5 
-PCAP = $E6 
-BMOB = $E3 
+MOB     = $E3 
+MAXC    = $E4 
+CC      = $E5 
+PCAP    = $E6 
+BMOB    = $E3 
 BMAXC   = $E4 
-BMCC = $E5   ; was BCC (TASS doesn't like it as a label)
+BMCC    = $E5                   ; was BCC (TASS doesn't like it as a label)
 BMAXP   = $E6 
 XMAXC   = $E8 
-WMOB = $EB 
+WMOB    = $EB 
 WMAXC   = $EC 
-WCC  = $ED 
+WCC     = $ED 
 WMAXP   = $EE 
-PMOB = $EF 
+PMOB    = $EF 
 PMAXC   = $F0 
-PCC  = $F1 
-PCP  = $F2 
+PCC     = $F1 
+PCP     = $F2 
 OLDKY   = $F3 
 BESTP   = $FB 
 BESTV   = $FA 
@@ -91,18 +91,18 @@ BESTM   = $F9
 DIS1    = $FB 
 DIS2    = $FA 
 DIS3    = $F9 
-temp = $FC
+temp    = $FC
 ;
 ;
 ;
     .code
 START:
-    LDA #$00    ; REVERSE TOGGLE
+    LDA #$00                    ; REVERSE TOGGLE
     STA REV
     JSR Init_6551
 CHESS:
-    CLD      ; INITIALIZE
-    LDX #$FF ; TWO STACKS
+    CLD                         ; INITIALIZE
+    LDX #$FF                    ; TWO STACKS
     TXS
     LDX #$C8
     STX SP2
@@ -110,53 +110,53 @@ CHESS:
 ; ROUTINES TO LIGHT LED DISPLAY AND GET KEY FROM KEYBOARD
 ;
 OUT:
-    JSR POUT ; DISPLAY AND
-    JSR KIN  ; GET INPUT   *** my routine waits for a keypress
-    CMP #$43    ; [C]
-    BNE NOSET; SET UP
-    LDX #$1F ; BOARD
+    JSR POUT                    ; DISPLAY AND
+    JSR KIN                     ; GET INPUT   *** my routine waits for a keypress
+    CMP #$43                    ; [C]
+    BNE NOSET                   ; SET UP
+    LDX #$1F                    ; BOARD
 WHSET:
-    LDA SETW,X       ; FROM
-    STA BOARD,X      ; SETW
+    LDA SETW,X                  ; FROM
+    STA BOARD,X                 ; SETW
     DEX
     BPL WHSET
-    LDX #$1B ; *ADDED
-    STX OMOVE; INITS TO $FF
-    LDA #$CC ; Display CCC
+    LDX #$1B                    ; *ADDED
+    STX OMOVE                   ; INITS TO $FF
+    LDA #$CC                    ; Display CCC
     BNE CLDSP
 ;
 NOSET:
-    CMP #$45    ; [E]
-    BNE NOREV; REVERSE
-    JSR REVERSE      ; BOARD IS
+    CMP #$45                    ; [E]
+    BNE NOREV                   ; REVERSE
+    JSR REVERSE                 ; BOARD IS
     SEC
     LDA #$01
     SBC REV
-    STA REV  ; TOGGLE REV FLAG
-    LDA #$EE ; IS
+    STA REV                     ; TOGGLE REV FLAG
+    LDA #$EE                    ; IS
     BNE CLDSP
 ;
 NOREV:
-    CMP #$40    ; [P]
-    BNE NOGO ; PLAY CHESS
+    CMP #$40                    ; [P]
+    BNE NOGO                    ; PLAY CHESS
     JSR GO
 CLDSP:
-    STA DIS1    ; DISPLAY
-    STA DIS2    ; ACROSS
-    STA DIS3    ; DISPLAY
+    STA DIS1                    ; DISPLAY
+    STA DIS2                    ; ACROSS
+    STA DIS3                    ; DISPLAY
     BNE CHESS
 ;
 NOGO:
-    CMP #$0D ; [Enter]
-    BNE NOMV ; MOVE MAN
-    JSR MOVE ; AS ENTERED
+    CMP #$0D                    ; [Enter]
+    BNE NOMV                    ; MOVE MAN
+    JSR MOVE                    ; AS ENTERED
     JMP DISP
 NOMV:
-    CMP #$41    ; [Q] ***Added to allow game exit***
-    BEQ DONE ; quit the game, exit back to system.  
-    JMP INPUT; process move
+    CMP #$41                    ; [Q] ***Added to allow game exit***
+    BEQ DONE                    ; quit the game, exit back to system.  
+    JMP INPUT                   ; process move
 DONE:
-    JMP $FF00   ; *** MUST set this to YOUR OS starting address
+    JMP $FF00                   ; *** MUST set this to YOUR OS starting address
 ;
 ; THE ROUTINE JANUS DIRECTS THE ANALYSIS BY DETERMINING WHAT
 ; SHOULD OCCUR AFTER EACH MOVE GENERATED BY GNM
@@ -170,45 +170,45 @@ JANUS:
 ;
 COUNTS:
     LDA PIECE
-    BEQ OVER ; IF STATE=8
-    CPX #$08    ; DO NOT COUNT
-    BNE OVER ; BLK MAX CAP
-    CMP BMAXP; MOVES FOR
-    BEQ XRT  ; WHITE
+    BEQ OVER                    ; IF STATE=8
+    CPX #$08                    ; DO NOT COUNT
+    BNE OVER                    ; BLK MAX CAP
+    CMP BMAXP                   ; MOVES FOR
+    BEQ XRT                     ; WHITE
 ;    
 OVER:
-    INC MOB,X; MOBILITY
-    CMP #$01    ;  + QUEEN
-    BNE NOQ  ; FOR TWO
+    INC MOB,X                   ; MOBILITY
+    CMP #$01                    ;  + QUEEN
+    BNE NOQ                     ; FOR TWO
     INC MOB,X
 ;
 NOQ:
     BVC NOCAP
-    LDY #$0F ; CALCULATE
-    LDA SQUARE       ; POINTS
+    LDY #$0F                    ; CALCULATE
+    LDA SQUARE                  ; POINTS
 ELOOP:
-    CMP BK,Y ; CAPTURED
-    BEQ FOUN ; BY THIS
-    DEY      ; MOVE
+    CMP BK,Y                    ; CAPTURED
+    BEQ FOUN                    ; BY THIS
+    DEY                         ; MOVE
     BPL ELOOP
 FOUN:
     LDA POINTS,Y
     CMP MAXC,X
-    BCC LESS ; SAVE IF
-    STY PCAP,X       ; BEST THIS
-    STA MAXC,X       ; STATE
+    BCC LESS                    ; SAVE IF
+    STY PCAP,X                  ; BEST THIS
+    STA MAXC,X                  ; STATE
 ;
 LESS:
     CLC 
-    PHP ; ADD TO
-    ADC CC,X ; CAPTURE
-    STA CC,X ; COUNTS
+    PHP                         ; ADD TO
+    ADC CC,X                    ; CAPTURE
+    STA CC,X                    ; COUNTS
     PLP 
 ;
 NOCAP:
     CPX #$04
     BEQ ON4
-    BMI TREE ;(=00 ONLY)
+    BMI TREE                    ;(=00 ONLY)
 XRT:
     RTS 
 ;
