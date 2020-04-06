@@ -100,9 +100,6 @@ START:
     LDA #$00                    ; REVERSE TOGGLE
     STA REV
 CHESS:
-    CLD                         ; INITIALIZE
-    LDX #$FF                    ; TWO STACKS
-    TXS
     LDX #$C8
     STX SP2
 ;
