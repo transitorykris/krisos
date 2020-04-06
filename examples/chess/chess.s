@@ -874,7 +874,7 @@ POUT12:
 POUT13:
     LDX #$00                    ; Print the copyright banner
 POUT14:
-    LDA banner,x
+    LDA banner,X
     BEQ POUT15
     JSR syschout
     INX
@@ -885,7 +885,7 @@ POUT15:
 POUT_CLEAR_SCREEN_1:            ; Clears the screen
     LDX #$00
 POUT_CLEAR_SCREEN_2:
-    LDA term_clear_screen,x
+    LDA term_clear_screen,X
     BEQ POUT_CLEAR_SCREEN_DONE
     JSR syschout
     INX
@@ -896,7 +896,7 @@ POUT_CLEAR_SCREEN_DONE:
 POUT_HOME_1:                    ; Return the cursor to the top left
     LDX #$00
 POUT_HOME_2:
-    LDA term_return_home,x
+    LDA term_return_home,X
     BEQ POUT_HOME_DONE
     JSR syschout
     INX
