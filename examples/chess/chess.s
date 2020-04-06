@@ -98,8 +98,12 @@ temp    = $FC
 ; Macros
 ;
 .macro print_char c
+    PHX
     LDA c
-    JSR syschout
+    LDX #$04                    ; bios_put_char
+    BRK                         ; call bios
+    NOP                         ; we'll return to the next instruction
+    PLX
 .endmacro
 
 .macro print_hex val
