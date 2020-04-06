@@ -95,8 +95,18 @@ DIS2    = $FA
 DIS3    = $F9
 temp    = $FC
 ;
+; Macros
 ;
-;
+.macro print_char c
+    LDA c
+    JSR syschout
+.endmacro
+
+.macro print_hex val
+    LDA val
+    JSR syshexout
+.endmacro
+
     .code
 START:
     LDA #$00                    ; REVERSE TOGGLE
@@ -617,8 +627,7 @@ PUSH:
     LDA SQUARE
     STA BESTM                   ; FLASH DISPLAY
 RETP:
-    LDA #'.'                    ; print ... instead of flashing disp
-    JMP syschout                ; print . and return
+    print_char #'.'              ; print ... instead of flashing disp
 ;
 ; MAIN PROGRAM TO PLAY CHESS PLAY FROM OPENING OR THINK
 ;
@@ -761,8 +770,7 @@ POUT:
     LDY #$00                    ; init board location
     JSR POUT5                   ; print board horz edge
 POUT1:
-    LDA #'|'                    ; print vert edge
-    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
+    print_char #'|'             ; print vert edge
     LDX #$1F
 POUT2:
     TYA                         ; scan the pieces for a location match
@@ -782,20 +790,20 @@ POUT2:
     CLC
     ADC temp                    ; combine row & col to determine square color
     AND #$01                    ; is board square white or blk?
-    BEQ POUT25                  ; white, print space
-    LDA #'*'                    ; black, print *
-    .byte $2c                   ; used to skip over LDA #$20
-POUT25:
-    LDA #$20                    ; ASCII space
-    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
-    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
+    BEQ POUT_WHITE_SQUARE       ; white, print space
+POUT_BLACK_SQUARE:
+    print_char #'*'             ; black, print *
+    print_char #'*'             ; black, print *
+    JMP POUT3                   ; Skip past printing a white square
+POUT_WHITE_SQUARE:
+    print_char #' '             ; PRINT ONE ASCII CHR - SPACE
+    print_char #' '             ; PRINT ONE ASCII CHR - SPACE
 POUT3:
     INY
     TYA                         ; get row number
     AND #$08                    ; have we completed the row?
     BEQ POUT1                   ; no, do next column
-    LDA #'|'                    ; yes, put the right edge on
-    JSR syschout                ; PRINT ONE ASCII CHR - |
+    print_char #'|'             ; yes, put the right edge on
     JSR POUT12                  ; print row number
     JSR POUT9                   ; print CRLF
     JSR POUT5                   ; print bottom edge of board
@@ -824,9 +832,8 @@ POUT5:
     TXA                         ; print "-----...-----<crlf>"
     PHA
     LDX #$19
-    LDA #'-'
 POUT6:
-    JSR syschout                ; PRINT ONE ASCII CHR - "-"
+    print_char #'-'
     DEX
     BNE POUT6
     PLA
@@ -837,29 +844,21 @@ POUT6:
 POUT8:
     JSR POUT10
     JSR POUT9                   ; Add vertical space before the LEDs
-    LDA $FB
-    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
-    LDA #$20
-    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
-    LDA $FA
-    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
-    LDA #$20
-    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
-    LDA $F9
-    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
+    print_hex $FB               ; PRINT 1 BYTE AS 2 HEX CHRS
+    print_char #' '             ; PRINT ONE ASCII CHR - SPACE
+    print_hex $FA               ; PRINT 1 BYTE AS 2 HEX CHRS
+    print_char #' '             ; PRINT ONE ASCII CHR - SPACE
+    print_hex $F9               ; PRINT 1 BYTE AS 2 HEX CHRS
 
 POUT9:
-    LDA #$0D
-    JSR syschout                ; PRINT ONE ASCII CHR - CR
-    LDA #$0A
-    JSR syschout                ; PRINT ONE ASCII CHR - LF
+    print_char #$0D            ; PRINT ONE ASCII CHR - CR
+    print_char #$0A            ; PRINT ONE ASCII CHR - LF
     RTS
 
 POUT10:
     LDX #$00                    ; print the column labels
 POUT11:
-    LDA #$20                    ; 00 01 02 03 ... 07 <CRLF>
-    JSR syschout
+    print_char #$20
     TXA
     JSR syshexout
     INX
@@ -906,8 +905,7 @@ POUT_HOME_DONE:
     RTS
 
 KIN:
-    LDA #'?'
-    JSR syschout                ; PRINT ONE ASCII CHR - ?
+    print_char #'?'             ; PRINT ONE ASCII CHR - ?
     JSR syskin                  ; GET A KEYSTROKE FROM SYSTEM
     AND #$4F                    ; MASK 0-7, AND ALPHA'S
     RTS
