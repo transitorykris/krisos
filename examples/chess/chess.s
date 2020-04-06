@@ -953,7 +953,7 @@ Hexdigdata:
     .byte "0123456789ABCDEF"
 banner:
     .byte "MicroChess (c) 1996-2005 Peter Jennings, www.benlo.com"
-    .byte $0d, $0a, $00
+    .byte $0D, $0A, $00
 cpl:
     .byte "WWWWWWWWWWWWWWWWBBBBBBBBBBBBBBBBWWWWWWWWWWWWWWWW"
 cph:
