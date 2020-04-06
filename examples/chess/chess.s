@@ -1,6 +1,6 @@
 ;***********************************************************************
 ;
-;  Kim-1 MicroChess (c) 1976-2005 Peter Jennings, www.benlo.com
+; Kim-1 MicroChess (c) 1976-2005 Peter Jennings, www.benlo.com
 ;
 ;***********************************************************************
 ;
@@ -10,12 +10,12 @@
 ; modification, are permitted provided that the following conditions
 ; are met:
 ; 1. Redistributions of source code must retain the above copyright
-;    notice, this list of conditions and the following disclaimer.
+;   notice, this list of conditions and the following disclaimer.
 ; 2. Redistributions in binary form must reproduce the above copyright
-;    notice, this list of conditions and the following disclaimer in the
-;    documentation and/or other materials provided with the distribution.
+;   notice, this list of conditions and the following disclaimer in the
+;   documentation and/or other materials provided with the distribution.
 ; 3. The name of the author may not be used to endorse or promote products
-;    derived from this software without specific prior written permission.
+;   derived from this software without specific prior written permission.
 ;
 ; THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
 ; IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -178,7 +178,7 @@ COUNTS:
 ;
 OVER:
     INC MOB,X                   ; MOBILITY
-    CMP #$01                    ;  + QUEEN
+    CMP #$01                    ; + QUEEN
     BNE NOQ                     ; FOR TWO
     INC MOB,X
 ;
@@ -215,31 +215,31 @@ XRT:
 ; GENERATE FURTHER MOVES FOR COUNT AND ANALYSIS
 ;
 ON4:
-    LDA XMAXC; SAVE ACTUAL
-    STA WCAP0   ; CAPTURE
-    LDA #$00    ; STATE=0
+    LDA XMAXC                   ; SAVE ACTUAL
+    STA WCAP0                   ; CAPTURE
+    LDA #$00                    ; STATE=0
     STA STATE
-    JSR MOVE ; GENERATE
-    JSR REVERSE      ; IMMEDIATE
-    JSR GNMZ ; REPLY MOVES
+    JSR MOVE                    ; GENERATE
+    JSR REVERSE                 ; IMMEDIATE
+    JSR GNMZ                    ; REPLY MOVES
     JSR REVERSE
 ;
-    LDA #$08    ; STATE=8
-    STA STATE; GENERATE
-    JSR GNM  ; CONTINUATION
-    JSR UMOVE; MOVES
+    LDA #$08                    ; STATE=8
+    STA STATE                   ; GENERATE
+    JSR GNM                     ; CONTINUATION
+    JSR UMOVE                   ; MOVES
 ;
-    JMP STRATGY      ; FINAL EVALUATION
+    JMP STRATGY                 ; FINAL EVALUATION
 NOCOUNT:
     CPX #$F9
     BNE TREE
 ;
 ; DETERMINE IF THE KING CAN BE TAKEN, USED BY CHKCHK
 ;
-    LDA BK   ; IS KING
-    CMP SQUARE       ; IN CHECK?
-    BNE RETJ ; SET INCHEK=0
-    LDA #$00    ; IF IT IS
+    LDA BK                      ; IS KING
+    CMP SQUARE                  ; IN CHECK?
+    BNE RETJ                    ; SET INCHEK=0
+    LDA #$00                    ; IF IT IS
     STA INCHEK
 RETJ:RTS
 ;
@@ -247,46 +247,46 @@ RETJ:RTS
 ; EVALUATE THE EXCHANGE GAIN/LOSS
 ;
 TREE:
-    BVC RETJ ; NO CAP
-    LDY #$07    ; (PIECES)
+    BVC RETJ                    ; NO CAP
+    LDY #$07                    ; (PIECES)
     LDA SQUARE
 LOOPX:
     CMP BK,Y
     BEQ FOUNX
     DEY
-    BEQ RETJ ; (KING)
-    BPL LOOPX; SAVE
+    BEQ RETJ                    ; (KING)
+    BPL LOOPX                   ; SAVE
 FOUNX:
-    LDA POINTS,Y     ; BEST CAP
-    CMP BCAP0,X      ; AT THIS
-    BCC NOMAX; LEVEL
+    LDA POINTS,Y                ; BEST CAP
+    CMP BCAP0,X                 ; AT THIS
+    BCC NOMAX                   ; LEVEL
     STA BCAP0,X
 NOMAX:
     DEC STATE
-    LDA #$FB ; IF STATE=FB
-    CMP STATE; TIME TO TURN
-    BEQ UPTREE       ; AROUND
-    JSR GENRM; GENERATE FURTHER
+    LDA #$FB                    ; IF STATE=FB
+    CMP STATE                   ; TIME TO TURN
+    BEQ UPTREE                  ; AROUND
+    JSR GENRM                   ; GENERATE FURTHER
 UPTREE:
-    INC STATE; CAPTURES
+    INC STATE                   ; CAPTURES
     RTS
 ;
 ; THE PLAYER'S MOVE IS INPUT
 ;
 INPUT:
-    CMP #$08    ; NOT A LEGAL
-    BCS ERROR ; SQUARE #
+    CMP #$08                    ; NOT A LEGAL
+    BCS ERROR                   ; SQUARE #
     JSR DISMV
 DISP:
     LDX #$1F
 SEARCH:
     LDA BOARD,X
     CMP DIS2
-    BEQ HERE ; DISPLAY
-    DEX ; PIECE AT
-    BPL SEARCH       ; FROM
+    BEQ HERE                    ; DISPLAY
+    DEX                         ; PIECE AT
+    BPL SEARCH                  ; FROM
 HERE:
-    STX DIS1    ; SQUARE
+    STX DIS1                    ; SQUARE
     STX PIECE
 ERROR:
     JMP CHESS
@@ -295,9 +295,9 @@ ERROR:
 ;
 ;
 GNMZ:
-    LDX #$10    ; CLEAR
+    LDX #$10                    ; CLEAR
 GNMX:
-    LDA #$00    ; COUNTERS
+    LDA #$00                    ; COUNTERS
 CLEAR:
     STA COUNT,X
     DEX
@@ -309,7 +309,7 @@ GNM:
 NEWP:
     DEC PIECE; NEW PIECE
     BPL NEX  ; ALL DONE?
-    RTS ;    -YES
+    RTS ;   -YES
 ;
 NEX:
     JSR RESET; READY
@@ -433,11 +433,11 @@ ETC:
 ;
 ; CMOVE CALCULATES THE TO SQUARE USING SQUARE AND THE MOVE
 ; TABLE,  FLAGS SET AS FOLLOWS:
-;    N - ILLEGAL MOVE
-;    V - CAPTURE (LEGAL UNLESS IN CH)
-;    C - ILLEGAL BECAUSE OF CHECK
+;   N - ILLEGAL MOVE
+;   V - CAPTURE (LEGAL UNLESS IN CH)
+;   C - ILLEGAL BECAUSE OF CHECK
 ; [MY THANKS TO JIM BUTTERFIELD WHO WROTE THIS MORE EFFICIENT
-;  VERSION OF CMOVE]
+; VERSION OF CMOVE]
 ;
 CMOVE:
     LDA SQUARE       ; GET SQUARE
@@ -666,17 +666,17 @@ MV2:
     JSR MOVE ; IT
     JMP CHESS
 ;
-MATE:LDA #$FF ; RESIGN
-    RTS      ; OR STALEMATE
+MATE:LDA #$FF                   ; RESIGN
+    RTS                         ; OR STALEMATE
 ;
 ; SUBROUTINE TO ENTER THE PLAYER'S MOVE
 ;
 DISMV:
-    LDX #$04    ; ROTATE
+    LDX #$04                    ; ROTATE
 DROL:
-    ASL DIS3    ; KEY
-    ROL DIS2    ; INTO
-    DEX      ; DISPLAY
+    ASL DIS3                    ; KEY
+    ROL DIS2                    ; INTO
+    DEX                         ; DISPLAY
     BNE DROL
     ORA DIS3
     STA DIS3
@@ -690,9 +690,9 @@ DROL:
 STRATGY:
     CLC
     LDA #$80
-    ADC WMOB ; PARAMETERS
-    ADC WMAXC; WITH WEIGHT
-    ADC WCC  ; OF 0.25
+    ADC WMOB                    ; PARAMETERS
+    ADC WMAXC                   ; WITH WEIGHT
+    ADC WCC                     ; OF 0.25
     ADC WCAP1
     ADC WCAP2
     SEC
@@ -703,39 +703,39 @@ STRATGY:
     SBC BCAP2
     SBC PMOB
     SBC BMOB
-    BCS POS  ; UNDERFLOW
-    LDA #$00    ; PREVENTION
+    BCS POS                     ; UNDERFLOW
+    LDA #$00                    ; PREVENTION
 POS:
     LSR
-    CLC      ; **************
+    CLC                         ; **************
     ADC #$40
-    ADC WMAXC; PARAMETERS
-    ADC WCC  ; WITH WEIGHT
-    SEC      ; OF 0.5
+    ADC WMAXC                   ; PARAMETERS
+    ADC WCC                     ; WITH WEIGHT
+    SEC                         ; OF 0.5
     SBC BMAXC
-    LSR      ; **************
+    LSR                         ; **************
     CLC
     ADC #$90
-    ADC WCAP0   ; PARAMETERS
-    ADC WCAP0   ; WITH WEIGHT
-    ADC WCAP0   ; OF 1.0
+    ADC WCAP0                   ; PARAMETERS
+    ADC WCAP0                   ; WITH WEIGHT
+    ADC WCAP0                   ; OF 1.0
     ADC WCAP0
     ADC WCAP1
-    SEC      ; [UNDER OR OVER-
-    SBC BMAXC; FLOW MAY OCCUR
-    SBC BMAXC; FROM THIS
-    SBC BMCC ; SECTION]
+    SEC                         ; [UNDER OR OVER-
+    SBC BMAXC                   ; FLOW MAY OCCUR
+    SBC BMAXC                   ; FROM THIS
+    SBC BMCC                    ; SECTION]
     SBC BMCC
     SBC BCAP1
-    LDX SQUARE       ; ***************
+    LDX SQUARE                  ; ***************
     CPX #$33
-    BEQ POSN ; POSITION
-    CPX #$34    ; BONUS FOR
-    BEQ POSN ; MOVE TO
-    CPX #$22    ; CENTRE
-    BEQ POSN ; OR
-    CPX #$25    ; OUT OF
-    BEQ POSN ; BACK RANK
+    BEQ POSN                    ; POSITION
+    CPX #$34                    ; BONUS FOR
+    BEQ POSN                    ; MOVE TO
+    CPX #$22                    ; CENTRE
+    BEQ POSN                    ; OR
+    CPX #$25                    ; OUT OF
+    BEQ POSN                    ; BACK RANK
     LDX PIECE
     BEQ NOPOSN
     LDY BOARD,X
@@ -745,7 +745,7 @@ POSN:
     CLC
     ADC #$02
 NOPOSN:
-    JMP CKMATE       ; CONTINUE
+    JMP CKMATE                  ; CONTINUE
 
 
 ;-----------------------------------------------------------------
@@ -753,60 +753,60 @@ NOPOSN:
 ; display over a standard RS-232 port.
 ;
 POUT:
-    JSR POUT9       ; print CRLF
-    JSR POUT13    ; print copyright
-    JSR POUT10    ; print column labels
-    LDY #$00    ; init board location
-    JSR POUT5    ; print board horz edge
+    JSR POUT9                   ; print CRLF
+    JSR POUT13                  ; print copyright
+    JSR POUT10                  ; print column labels
+    LDY #$00                    ; init board location
+    JSR POUT5                   ; print board horz edge
 POUT1:
-    LDA #'|'    ; print vert edge
-    JSR syschout     ; PRINT ONE ASCII CHR - SPACE
+    LDA #'|'                    ; print vert edge
+    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
     LDX #$1F
 POUT2:
-    TYA ; scan the pieces for a location match
-    CMP BOARD,X ; match found?
-    BEQ POUT4   ; yes; print the piece's color and type
-    DEX ; no
-    BPL POUT2    ; if not the last piece, try again
-    TYA ; empty square
-    AND #$01    ; odd or even column?
-    STA temp ; save it
-    TYA ; is the row odd or even
-    LSR ; shift column right 4 spaces
+    TYA                         ; scan the pieces for a location match
+    CMP BOARD,X                 ; match found?
+    BEQ POUT4                   ; yes; print the piece's color and type
+    DEX                         ; no
+    BPL POUT2                   ; if not the last piece, try again
+    TYA                         ; empty square
+    AND #$01                    ; odd or even column?
+    STA temp                    ; save it
+    TYA                         ; is the row odd or even
+    LSR                         ; shift column right 4 spaces
     LSR
     LSR
     LSR
-    AND #$01    ; strip LSB
+    AND #$01                    ; strip LSB
     CLC
-    ADC temp ; combine row & col to determine square color
-    AND #$01    ; is board square white or blk?
-    BEQ POUT25  ; white, print space
-    LDA #'*'    ; black, print *
-    .byte $2c ; used to skip over LDA #$20
+    ADC temp                    ; combine row & col to determine square color
+    AND #$01                    ; is board square white or blk?
+    BEQ POUT25                  ; white, print space
+    LDA #'*'                    ; black, print *
+    .byte $2c                   ; used to skip over LDA #$20
 POUT25:
-    LDA #$20    ; ASCII space
-    JSR syschout     ; PRINT ONE ASCII CHR - SPACE
-    JSR syschout     ; PRINT ONE ASCII CHR - SPACE
+    LDA #$20                    ; ASCII space
+    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
+    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
 POUT3:
     INY
-    TYA      ; get row number
-    AND #$08    ; have we completed the row?
-    BEQ POUT1   ; no, do next column
-    LDA #'|'    ; yes, put the right edge on
-    JSR syschout     ; PRINT ONE ASCII CHR - |
-    JSR POUT12  ; print row number
-    JSR POUT9   ; print CRLF
-    JSR POUT5   ; print bottom edge of board
+    TYA                         ; get row number
+    AND #$08                    ; have we completed the row?
+    BEQ POUT1                   ; no, do next column
+    LDA #'|'                    ; yes, put the right edge on
+    JSR syschout                ; PRINT ONE ASCII CHR - |
+    JSR POUT12                  ; print row number
+    JSR POUT9                   ; print CRLF
+    JSR POUT5                   ; print bottom edge of board
     CLC
     TYA
-    ADC #$08    ; point y to beginning of next row
+    ADC #$08                    ; point y to beginning of next row
     TAY
-    CPY #$80    ; was that the last row?
-    BEQ POUT8   ; yes, print the LED values
-    BNE POUT1   ; no, do new row
+    CPY #$80                    ; was that the last row?
+    BEQ POUT8                   ; yes, print the LED values
+    BNE POUT1                   ; no, do new row
 
 POUT4:
-    LDA REV  ; print piece's color & type
+    LDA REV                     ; print piece's color & type
     BEQ POUT41
     LDA cpl+16,X
     BNE POUT42
@@ -816,15 +816,15 @@ POUT42:
     JSR syschout
     LDA cph,X
     JSR syschout
-    BNE POUT3   ; branch always
+    BNE POUT3                   ; branch always
 
 POUT5:
-    TXA      ; print "-----...-----<crlf>"
+    TXA                         ; print "-----...-----<crlf>"
     PHA
     LDX #$19
     LDA #'-'
 POUT6:
-    JSR syschout     ; PRINT ONE ASCII CHR - "-"
+    JSR syschout                ; PRINT ONE ASCII CHR - "-"
     DEX
     BNE POUT6
     PLA
@@ -835,27 +835,27 @@ POUT6:
 POUT8:
     JSR POUT10
     LDA $FB
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
+    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
-    JSR syschout     ; PRINT ONE ASCII CHR - SPACE
+    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
     LDA $FA
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
+    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
-    JSR syschout     ; PRINT ONE ASCII CHR - SPACE
+    JSR syschout                ; PRINT ONE ASCII CHR - SPACE
     LDA $F9
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
+    JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
 
 POUT9:
     LDA #$0D
-    JSR syschout     ; PRINT ONE ASCII CHR - CR
+    JSR syschout                ; PRINT ONE ASCII CHR - CR
     LDA #$0A
-    JSR syschout     ; PRINT ONE ASCII CHR - LF
+    JSR syschout                ; PRINT ONE ASCII CHR - LF
     RTS
 
 POUT10:
-    LDX #$00    ; print the column labels
+    LDX #$00                    ; print the column labels
 POUT11:
-    LDA #$20    ; 00 01 02 03 ... 07 <CRLF>
+    LDA #$20                    ; 00 01 02 03 ... 07 <CRLF>
     JSR syschout
     TXA
     JSR syshexout
@@ -870,7 +870,7 @@ POUT12:
     RTS
 
 POUT13:
-    LDX #$00    ; Print the copyright banner
+    LDX #$00                    ; Print the copyright banner
 POUT14:
     LDA banner,x
     BEQ POUT15
@@ -882,62 +882,66 @@ POUT15:
 
 KIN:
     LDA #'?'
-    JSR syschout     ; PRINT ONE ASCII CHR - ?
-    JSR syskin       ; GET A KEYSTROKE FROM SYSTEM
-    AND #$4F ; MASK 0-7, AND ALPHA'S
+    JSR syschout                ; PRINT ONE ASCII CHR - ?
+    JSR syskin                  ; GET A KEYSTROKE FROM SYSTEM
+    AND #$4F                    ; MASK 0-7, AND ALPHA'S
     RTS
 ;
 ; 6551 I/O Support Routines
 ;
 Init_6551:
-    LDA #$1F ; 19.2K/8/1
-    STA ACIActl      ; control reg
-    LDA #$0B ; N parity/echo off/rx int off/ dtr active low
-    STA ACIAcmd      ; command reg
-    RTS      ; done
+    LDA #$1F                    ; 19.2K/8/1
+    STA ACIActl                 ; control reg
+    LDA #$0B                    ; N parity/echo off/rx int off/ dtr active low
+    STA ACIAcmd                 ; command reg
+    RTS                         ; done
 ;
 ; input chr from ACIA1 (waiting)
 ;
 syskin:
-    LDA ACIAsta      ; Serial port status
-    AND #$08    ; is recvr full
-    BEQ syskin       ; no char to get
-    LDA ACIAdat      ; get chr
+    LDA ACIAsta                 ; Serial port status
+    AND #$08                    ; is recvr full
+    BEQ syskin                  ; no char to get
+    LDA ACIAdat                 ; get chr
     RTS
 ;
 ; output to OutPut Port
 ;
 syschout:
-    PHA      ; save registers
+    PHA                         ; save registers
 ACIA_Out1:
-    LDA ACIAsta      ; serial port status
-    AND #$10    ; is tx buffer empty
-    BEQ ACIA_Out1       ; no
-    PLA      ; get chr
-    STA ACIAdat      ; put character to Port
-    RTS      ; done
+    LDA ACIAsta                 ; serial port status
+    AND #$10                    ; is tx buffer empty
+    BEQ ACIA_Out1               ; no
+    PLA                         ; get chr
+    STA ACIAdat                 ; put character to Port
+    RTS                         ; done
 
 syshexout:
-    PHA      ;  prints AA hex digits
-    LSR      ;  MOVE UPPER NIBBLE TO LOWER
+    PHA                         ; prints AA hex digits
+    LSR                         ; MOVE UPPER NIBBLE TO LOWER
     LSR
     LSR
     LSR
     JSR PrintDig
     PLA
 PrintDig:
-    AND #$0F ;  prints A hex nibble (low 4 bits)
+    AND #$0F                    ; prints A hex nibble (low 4 bits)
     PHY
     TAY
     LDA Hexdigdata,Y
     PLY
     JMP syschout
 
-Hexdigdata:    .byte "0123456789ABCDEF"
-banner:.byte "MicroChess (c) 1996-2005 Peter Jennings, www.benlo.com"
+Hexdigdata:
+    .byte "0123456789ABCDEF"
+banner:
+    .byte "MicroChess (c) 1996-2005 Peter Jennings, www.benlo.com"
     .byte $0d, $0a, $00
-cpl:.byte "WWWWWWWWWWWWWWWWBBBBBBBBBBBBBBBBWWWWWWWWWWWWWWWW"
-cph:.byte "KQRRBBNNPPPPPPPPKQRRBBNNPPPPPPPP"
+cpl:
+    .byte "WWWWWWWWWWWWWWWWBBBBBBBBBBBBBBBBWWWWWWWWWWWWWWWW"
+cph:
+    .byte "KQRRBBNNPPPPPPPPKQRRBBNNPPPPPPPP"
     .byte $00
 ;
 ; end of added code
