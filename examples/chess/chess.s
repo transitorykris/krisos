@@ -1,6 +1,6 @@
 ;***********************************************************************
 ;
-;  Kim-1 MicroChess (c) 1976-2005 Peter Jennings, www.benlo.com 
+;  Kim-1 MicroChess (c) 1976-2005 Peter Jennings, www.benlo.com
 ;
 ;***********************************************************************
 ;
@@ -29,7 +29,7 @@
 ; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;
 ;
-; modified by Daryl Rictor to work over a 
+; modified by Daryl Rictor to work over a
 ; serial terminal connection, August 2002.
 ;
 ; Updated with corrections to earlier OCR errors by Bill Forster, August 2005.
@@ -49,48 +49,48 @@ ACIActl = $4003
 ;
 ; page zero variables
 ;
-BOARD   = $50 
-BK      = $60 
-PIECE   = $B0 
-SQUARE  = $B1 
-SP2     = $B2 
-SP1     = $B3 
-INCHEK  = $B4 
-STATE   = $B5 
-MOVEN   = $B6 
+BOARD   = $50
+BK      = $60
+PIECE   = $B0
+SQUARE  = $B1
+SP2     = $B2
+SP1     = $B3
+INCHEK  = $B4
+STATE   = $B5
+MOVEN   = $B6
 REV     = $B7
-OMOVE   = $DC 
-WCAP0   = $DD 
-COUNT   = $DE 
-BCAP2   = $DE 
-WCAP2   = $DF 
-BCAP1   = $E0 
-WCAP1   = $E1 
-BCAP0   = $E2 
-MOB     = $E3 
-MAXC    = $E4 
-CC      = $E5 
-PCAP    = $E6 
-BMOB    = $E3 
-BMAXC   = $E4 
+OMOVE   = $DC
+WCAP0   = $DD
+COUNT   = $DE
+BCAP2   = $DE
+WCAP2   = $DF
+BCAP1   = $E0
+WCAP1   = $E1
+BCAP0   = $E2
+MOB     = $E3
+MAXC    = $E4
+CC      = $E5
+PCAP    = $E6
+BMOB    = $E3
+BMAXC   = $E4
 BMCC    = $E5                   ; was BCC (TASS doesn't like it as a label)
-BMAXP   = $E6 
-XMAXC   = $E8 
-WMOB    = $EB 
-WMAXC   = $EC 
-WCC     = $ED 
-WMAXP   = $EE 
-PMOB    = $EF 
-PMAXC   = $F0 
-PCC     = $F1 
-PCP     = $F2 
-OLDKY   = $F3 
-BESTP   = $FB 
-BESTV   = $FA 
-BESTM   = $F9 
-DIS1    = $FB 
-DIS2    = $FA 
-DIS3    = $F9 
+BMAXP   = $E6
+XMAXC   = $E8
+WMOB    = $EB
+WMAXC   = $EC
+WCC     = $ED
+WMAXP   = $EE
+PMOB    = $EF
+PMAXC   = $F0
+PCC     = $F1
+PCP     = $F2
+OLDKY   = $F3
+BESTP   = $FB
+BESTV   = $FA
+BESTM   = $F9
+DIS1    = $FB
+DIS2    = $FA
+DIS3    = $F9
 temp    = $FC
 ;
 ;
@@ -153,7 +153,7 @@ NOGO:
     JMP DISP
 NOMV:
     CMP #$41                    ; [Q] ***Added to allow game exit***
-    BEQ DONE                    ; quit the game, exit back to system.  
+    BEQ DONE                    ; quit the game, exit back to system.
     JMP INPUT                   ; process move
 DONE:
     JMP $FF00                   ; *** MUST set this to YOUR OS starting address
@@ -175,7 +175,7 @@ COUNTS:
     BNE OVER                    ; BLK MAX CAP
     CMP BMAXP                   ; MOVES FOR
     BEQ XRT                     ; WHITE
-;    
+;
 OVER:
     INC MOB,X                   ; MOBILITY
     CMP #$01                    ;  + QUEEN
@@ -199,29 +199,29 @@ FOUN:
     STA MAXC,X                  ; STATE
 ;
 LESS:
-    CLC 
+    CLC
     PHP                         ; ADD TO
     ADC CC,X                    ; CAPTURE
     STA CC,X                    ; COUNTS
-    PLP 
+    PLP
 ;
 NOCAP:
     CPX #$04
     BEQ ON4
     BMI TREE                    ;(=00 ONLY)
 XRT:
-    RTS 
+    RTS
 ;
 ; GENERATE FURTHER MOVES FOR COUNT AND ANALYSIS
 ;
 ON4:
-    LDA XMAXC; SAVE ACTUAL 
+    LDA XMAXC; SAVE ACTUAL
     STA WCAP0   ; CAPTURE
     LDA #$00    ; STATE=0
     STA STATE
     JSR MOVE ; GENERATE
     JSR REVERSE      ; IMMEDIATE
-    JSR GNMZ ; REPLY MOVES  
+    JSR GNMZ ; REPLY MOVES
     JSR REVERSE
 ;
     LDA #$08    ; STATE=8
@@ -241,7 +241,7 @@ NOCOUNT:
     BNE RETJ ; SET INCHEK=0
     LDA #$00    ; IF IT IS
     STA INCHEK
-RETJ:RTS 
+RETJ:RTS
 ;
 ; IF A PIECE HAS BEEN CAPTURED BY A TRIAL MOVE, GENERATE REPLIES &
 ; EVALUATE THE EXCHANGE GAIN/LOSS
@@ -253,7 +253,7 @@ TREE:
 LOOPX:
     CMP BK,Y
     BEQ FOUNX
-    DEY 
+    DEY
     BEQ RETJ ; (KING)
     BPL LOOPX; SAVE
 FOUNX:
@@ -269,7 +269,7 @@ NOMAX:
     JSR GENRM; GENERATE FURTHER
 UPTREE:
     INC STATE; CAPTURES
-    RTS 
+    RTS
 ;
 ; THE PLAYER'S MOVE IS INPUT
 ;
@@ -283,7 +283,7 @@ SEARCH:
     LDA BOARD,X
     CMP DIS2
     BEQ HERE ; DISPLAY
-    DEX ; PIECE AT 
+    DEX ; PIECE AT
     BPL SEARCH       ; FROM
 HERE:
     STX DIS1    ; SQUARE
@@ -300,7 +300,7 @@ GNMX:
     LDA #$00    ; COUNTERS
 CLEAR:
     STA COUNT,X
-    DEX 
+    DEX
     BPL CLEAR
 ;
 GNM:
@@ -393,43 +393,43 @@ SNGMV:
     JSR JANUS; -EVALUATE
 ILL1:JSR RESET
     DEC MOVEN
-    RTS 
+    RTS
 ;
 ; CALCULATE ALL MOVES DOWN A STRAIGHT LINE FOR Q,B,R
 ;
 LINE:
     JSR CMOVE; CALC MOVE
     BCC OVL  ; NO CHK
-    BVC LINE ; NOCAP    
+    BVC LINE ; NOCAP
 OVL:
     BMI ILL  ; RETURN
-    PHP 
+    PHP
     JSR JANUS; EVALUATE POSN
-    PLP 
+    PLP
     BVC LINE ; NOT A CAP
 ILL:
     JSR RESET; LINE STOPPED
     DEC MOVEN; NEXT DIR
-    RTS 
+    RTS
 ;
 ; EXCHANGE SIDES FOR REPLY ANALYSIS
 ;
 REVERSE:
     LDX #$0F
 ETC:
-    SEC 
+    SEC
     LDY BK,X ; SUBTRACT
     LDA #$77    ; POSITION
     SBC BOARD,X      ; FROM 77
     STA BK,X
     STY BOARD,X      ; AND
-    SEC 
+    SEC
     LDA #$77    ; EXCHANGE
     SBC BOARD,X      ; PIECES
     STA BOARD,X
-    DEX 
+    DEX
     BPL ETC
-    RTS 
+    RTS
 ;
 ; CMOVE CALCULATES THE TO SQUARE USING SQUARE AND THE MOVE
 ; TABLE,  FLAGS SET AS FOLLOWS:
@@ -442,43 +442,43 @@ ETC:
 CMOVE:
     LDA SQUARE       ; GET SQUARE
     LDX MOVEN; MOVE POINTER
-    CLC 
+    CLC
     ADC MOVEX,X      ; MOVE LIST
     STA SQUARE       ; NEW POS'N
     AND #$88
     BNE ILLEGAL      ; OFF BOARD
     LDA SQUARE
-;    
+;
     LDX #$20
 LOOP:
     DEX ; IS TO
     BMI NO   ; SQUARE
     CMP BOARD,X      ; OCCUPIED?
     BNE LOOP
-;    
+;
     CPX #$10    ; BY SELF?
     BMI ILLEGAL
-;    
+;
     LDA #$7F ; MUST BE CAP!
     ADC #$01    ; SET V FLAG
     BVS SPX  ; (JMP)
-;    
+;
 NO:
     CLV ; NO CAPTURE
-;    
+;
 SPX:
     LDA STATE; SHOULD WE
     BMI RETL ; DO THE
     CMP #$08    ; CHECK CHECK?
     BPL RETL
-;    
+;
 ; CHKCHK REVERSES SIDES AND LOOKS FOR A KING CAPTURE TO INDICATE
 ; ILLEGAL MOVE BECAUSE OF CHECK  SINCE THIS IS TIME CONSUMING, IT IS NOT
 ; ALWAYS DONE
 ;
 CHKCHK:
     PHA ; STATE
-    PHP 
+    PHP
     LDA #$F9
     STA STATE; GENERATE
     STA INCHEK       ; ALL REPLY
@@ -486,25 +486,25 @@ CHKCHK:
     JSR REVERSE      ; SEE IF KING
     JSR GNM  ; IS IN
     JSR RUM  ; CHECK
-    PLP 
-    PLA 
+    PLP
+    PLA
     STA STATE
     LDA INCHEK
     BMI RETL ; NO - SAFE
     SEC ; YES - IN CHK
     LDA #$FF
-    RTS 
+    RTS
 ;
 RETL:
     CLC ; LEGAL
     LDA #$00    ; RETURN
-    RTS 
+    RTS
 ;
 ILLEGAL:
     LDA #$FF
     CLC ; ILLEGAL
     CLV ; RETURN
-    RTS 
+    RTS
 ;
 ; REPLACE PIECE ON CORRECT SQUARE
 ;
@@ -512,7 +512,7 @@ RESET:
     LDX PIECE ; GET LOGAT
     LDA BOARD,X      ; FOR PIECE
     STA SQUARE       ; FROM BOARD
-    RTS 
+    RTS
 ;
 ;
 ;
@@ -535,11 +535,11 @@ UMOVE:
     STA MOVEN
     PLA ; CAPTURED
     STA PIECE; PIECE
-    TAX 
+    TAX
     PLA ; FROM SQUARE
     STA BOARD,X
     PLA ; PIECE
-    TAX 
+    TAX
     PLA ; TO SOUARE
     STA SQUARE
     STA BOARD,X
@@ -549,18 +549,18 @@ UMOVE:
 ; UNMAKE THE MOVE LATER
 ;
 MOVE:
-    TSX 
+    TSX
     STX SP1     ; SWITCH
     LDX SP2     ; STACKS
-    TXS 
+    TXS
     LDA SQUARE
     PHA ; TO SQUARE
-    TAY 
+    TAY
     LDX #$1F
 CHECK:
     CMP BOARD,X      ; CHECK FOR
     BEQ TAKE ; CAPTURE
-    DEX 
+    DEX
     BPL CHECK
 TAKE:
     LDA #$CC
@@ -571,24 +571,24 @@ TAKE:
     LDA BOARD,X
     STY BOARD,X      ; FROM
     PHA ; SQUARE
-    TXA 
+    TXA
     PHA      ; PIECE
     LDA MOVEN
     PHA      ; MOVEN
 STRV:
-    TSX 
+    TSX
     STX SP2     ; SWITCH
     LDX SP1     ; STACKS
     TXS      ; BACK
-    RTS 
-;    
+    RTS
+;
 ; CONTINUATION OF SUB STRATGY-CHECKS FOR CHECK OR CHECKMATE
 ; AND ASSIGNS VALUE TO MOVE
 ;
 CKMATE:
     LDX BMAXC; CAN BLK CAP
     CPX POINTS       ; MY KING?
-    BNE NOCHEK 
+    BNE NOCHEK
     LDA #$00    ; GULP!
     BEQ RETV ; DUMB MOVE!
 ;
@@ -627,16 +627,16 @@ GO:
     LDA DIS3    ; -YES WAS
     CMP OPNING,X     ; OPPONENT'S
     BNE END  ; MOVE OK?
-    DEX 
+    DEX
     LDA OPNING,X     ; GET NEXT
     STA DIS1    ; CANNED
     DEX      ; OPENING MOVE
     LDA OPNING,X
     STA DIS3    ; DISPLAY IT
-    DEX 
+    DEX
     STX OMOVE; MOVE IT
     BNE MV2     ; (JMP)
-;    
+;
 END:
     LDA #$FF ; *ADD - STOP CANNED MOVES
     STA OMOVE; FLAG OPENING
@@ -681,21 +681,21 @@ DROL:
     ORA DIS3
     STA DIS3
     STA SQUARE
-    RTS 
+    RTS
 ;
 ; THE FOLLOWING SUBROUTINE ASSIGNS A VALUE TO THE MOVE UNDER
 ; CONSIDERATION AND RETURNS IT IN THE ACCUMULATOR
 ;
 
 STRATGY:
-    CLC 
+    CLC
     LDA #$80
     ADC WMOB ; PARAMETERS
     ADC WMAXC; WITH WEIGHT
     ADC WCC  ; OF 0.25
     ADC WCAP1
     ADC WCAP2
-    SEC 
+    SEC
     SBC PMAXC
     SBC PCC
     SBC BCAP0
@@ -706,7 +706,7 @@ STRATGY:
     BCS POS  ; UNDERFLOW
     LDA #$00    ; PREVENTION
 POS:
-    LSR 
+    LSR
     CLC      ; **************
     ADC #$40
     ADC WMAXC; PARAMETERS
@@ -714,7 +714,7 @@ POS:
     SEC      ; OF 0.5
     SBC BMAXC
     LSR      ; **************
-    CLC 
+    CLC
     ADC #$90
     ADC WCAP0   ; PARAMETERS
     ADC WCAP0   ; WITH WEIGHT
@@ -768,17 +768,17 @@ POUT2:
     BEQ POUT4   ; yes; print the piece's color and type
     DEX ; no
     BPL POUT2    ; if not the last piece, try again
-    TYA ; empty square 
+    TYA ; empty square
     AND #$01    ; odd or even column?
     STA temp ; save it
     TYA ; is the row odd or even
-    LSR ; shift column right 4 spaces 
+    LSR ; shift column right 4 spaces
     LSR ;
     LSR ;
     LSR ;
-    AND #$01    ; strip LSB  
-    CLC      ; 
-    ADC temp ; combine row & col to determine square color  
+    AND #$01    ; strip LSB
+    CLC      ;
+    ADC temp ; combine row & col to determine square color
     AND #$01    ; is board square white or blk?
     BEQ POUT25  ; white, print space
     LDA #'*'    ; black, print *
@@ -788,17 +788,17 @@ POUT25:
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
 POUT3:
-    INY      ; 
+    INY      ;
     TYA      ; get row number
-    AND #$08    ; have we completed the row?     
+    AND #$08    ; have we completed the row?
     BEQ POUT1   ; no, do next column
     LDA #'|'    ; yes, put the right edge on
-    JSR syschout     ; PRINT ONE ASCII CHR - |     
+    JSR syschout     ; PRINT ONE ASCII CHR - |
     JSR POUT12  ; print row number
     JSR POUT9   ; print CRLF
     JSR POUT5   ; print bottom edge of board
-    CLC      ; 
-    TYA      ; 
+    CLC      ;
+    TYA      ;
     ADC #$08    ; point y to beginning of next row
     TAY      ;
     CPY #$80    ; was that the last row?
@@ -815,7 +815,7 @@ POUT41:
 POUT42:
     JSR syschout     ;
     LDA cph,X;
-    JSR syschout     ; 
+    JSR syschout     ;
     BNE POUT3   ; branch always
 
 POUT5:
@@ -830,27 +830,27 @@ POUT6:
     PLA
     TAX
     JSR POUT9
-    RTS 
+    RTS
 
 POUT8:
-    JSR POUT10  ; 
+    JSR POUT10  ;
     LDA $FB
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS 
+    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
     LDA $FA
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS 
+    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
     LDA $F9
-    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS 
+    JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
 
 POUT9:
     LDA #$0D
     JSR syschout     ; PRINT ONE ASCII CHR - CR
     LDA #$0A
     JSR syschout     ; PRINT ONE ASCII CHR - LF
-    RTS 
+    RTS
 
 POUT10:
     LDX #$00    ; print the column labels
@@ -878,7 +878,7 @@ POUT14:
     INX
     BNE POUT14
 POUT15:
-    RTS      
+    RTS
 
 KIN:
     LDA #'?'
@@ -891,15 +891,15 @@ KIN:
 ;
 Init_6551:
     LDA #$1F ; 19.2K/8/1
-    STA ACIActl      ; control reg 
+    STA ACIActl      ; control reg
     LDA #$0B ; N parity/echo off/rx int off/ dtr active low
-    STA ACIAcmd      ; command reg 
+    STA ACIAcmd      ; command reg
     RTS      ; done
 ;
 ; input chr from ACIA1 (waiting)
 ;
 syskin:
-    LDA ACIAsta      ; Serial port status  
+    LDA ACIAsta      ; Serial port status
     AND #$08    ; is recvr full
     BEQ syskin       ; no char to get
     LDA ACIAdat      ; get chr
