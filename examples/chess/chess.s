@@ -677,7 +677,7 @@ DROL:
     ASL DIS3    ; KEY
     ROL DIS2    ; INTO
     DEX      ; DISPLAY
-    BNE DROL ;
+    BNE DROL
     ORA DIS3
     STA DIS3
     STA SQUARE
@@ -773,11 +773,11 @@ POUT2:
     STA temp ; save it
     TYA ; is the row odd or even
     LSR ; shift column right 4 spaces
-    LSR ;
-    LSR ;
-    LSR ;
+    LSR
+    LSR
+    LSR
     AND #$01    ; strip LSB
-    CLC      ;
+    CLC
     ADC temp ; combine row & col to determine square color
     AND #$01    ; is board square white or blk?
     BEQ POUT25  ; white, print space
@@ -788,7 +788,7 @@ POUT25:
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
     JSR syschout     ; PRINT ONE ASCII CHR - SPACE
 POUT3:
-    INY      ;
+    INY
     TYA      ; get row number
     AND #$08    ; have we completed the row?
     BEQ POUT1   ; no, do next column
@@ -797,25 +797,25 @@ POUT3:
     JSR POUT12  ; print row number
     JSR POUT9   ; print CRLF
     JSR POUT5   ; print bottom edge of board
-    CLC      ;
-    TYA      ;
+    CLC
+    TYA
     ADC #$08    ; point y to beginning of next row
-    TAY      ;
+    TAY
     CPY #$80    ; was that the last row?
     BEQ POUT8   ; yes, print the LED values
     BNE POUT1   ; no, do new row
 
 POUT4:
     LDA REV  ; print piece's color & type
-    BEQ POUT41  ;
-    LDA cpl+16,X     ;
-    BNE POUT42  ;
+    BEQ POUT41
+    LDA cpl+16,X
+    BNE POUT42
 POUT41:
-    LDA cpl,X;
+    LDA cpl,X
 POUT42:
-    JSR syschout     ;
-    LDA cph,X;
-    JSR syschout     ;
+    JSR syschout
+    LDA cph,X
+    JSR syschout
     BNE POUT3   ; branch always
 
 POUT5:
@@ -833,7 +833,7 @@ POUT6:
     RTS
 
 POUT8:
-    JSR POUT10  ;
+    JSR POUT10
     LDA $FB
     JSR syshexout    ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
@@ -903,7 +903,7 @@ syskin:
     AND #$08    ; is recvr full
     BEQ syskin       ; no char to get
     LDA ACIAdat      ; get chr
-    RTS      ;
+    RTS
 ;
 ; output to OutPut Port
 ;
@@ -920,18 +920,18 @@ ACIA_Out1:
 syshexout:
     PHA      ;  prints AA hex digits
     LSR      ;  MOVE UPPER NIBBLE TO LOWER
-    LSR      ;
-    LSR      ;
-    LSR      ;
-    JSR PrintDig     ;
-    PLA      ;
+    LSR
+    LSR
+    LSR
+    JSR PrintDig
+    PLA
 PrintDig:
     AND #$0F ;  prints A hex nibble (low 4 bits)
     PHY
-    TAY      ;
-    LDA Hexdigdata,Y ;
+    TAY
+    LDA Hexdigdata,Y
     PLY
-    JMP syschout     ;
+    JMP syschout
 
 Hexdigdata:    .byte "0123456789ABCDEF"
 banner:.byte "MicroChess (c) 1996-2005 Peter Jennings, www.benlo.com"
