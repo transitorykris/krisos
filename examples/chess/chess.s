@@ -387,7 +387,8 @@ SNGMV:
     JSR CMOVE                   ; CALC MOVE
     BMI ILL1                    ; -IF LEGAL
     JSR JANUS                   ; -EVALUATE
-ILL1:JSR RESET
+ILL1:
+    JSR RESET
     DEC MOVEN
     RTS
 ;
