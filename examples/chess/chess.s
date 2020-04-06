@@ -41,6 +41,8 @@
 ;
     .setcpu "6502"
     .PSC02
+
+    .include "krisos.inc"       ; Handy stuff for using
 ;
 ; 6551 I/O Port Addresses
 ;
@@ -96,22 +98,6 @@ DIS1    = $FB
 DIS2    = $FA
 DIS3    = $F9
 temp    = $FC
-;
-; Macros
-;
-.macro print_char c
-    PHX
-    LDA c
-    LDX #$04                    ; bios_put_char
-    BRK                         ; call the KrisOS bios
-    NOP                         ; we'll return to the next instruction
-    PLX
-.endmacro
-
-.macro print_hex val
-    LDA val
-    JSR syshexout
-.endmacro
 
     .code
 START:
@@ -954,6 +940,8 @@ PrintDig:
     LDA Hexdigdata,Y
     PLY
     JMP syschout
+    ;CALL bios_put_char          ; Request the OS print this character
+    RTS
 
 Hexdigdata:
     .byte "0123456789ABCDEF"
