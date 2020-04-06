@@ -836,6 +836,7 @@ POUT6:
 
 POUT8:
     JSR POUT10
+    JSR POUT9                   ; Add vertical space before the LEDs
     LDA $FB
     JSR syshexout               ; PRINT 1 BYTE AS 2 HEX CHRS
     LDA #$20
