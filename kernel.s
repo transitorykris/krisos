@@ -218,8 +218,7 @@ help:
 
 shutdown:
     writeln shutdown_msg
-    STP
-    ; We do not return from this, ever.
+    STP                         ; We do not return from this, ever.
 
 uptime_ticker:
     writeln uptime_msg
