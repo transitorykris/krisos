@@ -276,7 +276,9 @@ irq:
 default_irq:
     JMP (bios_jmp_table,X)
 return_from_bios_call:
-    ;writeln default_irq_msg
+.ifdef CFG_DEBUG
+    writeln default_irq_msg
+.endif
     RTI
 
 bios_jmp_table:
