@@ -104,6 +104,8 @@ START:
 CHESS:
     LDX #$C8
     STX SP2
+CLEAR_SCREEN:
+    JSR POUT_CLEAR_SCREEN_1
 ;
 ; ROUTINES TO LIGHT LED DISPLAY AND GET KEY FROM KEYBOARD
 ;
@@ -752,6 +754,7 @@ NOPOSN:
 ; display over a standard RS-232 port.
 ;
 POUT:
+    JSR POUT_HOME_1             ; return cursor to top left
     JSR POUT9                   ; print CRLF
     JSR POUT13                  ; print copyright
     JSR POUT10                  ; print column labels
@@ -879,6 +882,28 @@ POUT14:
 POUT15:
     RTS
 
+POUT_CLEAR_SCREEN_1:            ; Clears the screen
+    LDX #$00
+POUT_CLEAR_SCREEN_2:
+    LDA term_clear_screen,x
+    BEQ POUT_CLEAR_SCREEN_DONE
+    JSR syschout
+    INX
+    BNE POUT_CLEAR_SCREEN_2
+POUT_CLEAR_SCREEN_DONE:
+    RTS
+
+POUT_HOME_1:                    ; Return the cursor to the top left
+    LDX #$00
+POUT_HOME_2:
+    LDA term_return_home,x
+    BEQ POUT_HOME_DONE
+    JSR syschout
+    INX
+    BNE POUT_HOME_2
+POUT_HOME_DONE:
+    RTS
+
 KIN:
     LDA #'?'
     JSR syschout                ; PRINT ONE ASCII CHR - ?
@@ -935,6 +960,10 @@ cpl:
 cph:
     .byte "KQRRBBNNPPPPPPPPKQRRBBNNPPPPPPPP"
     .byte $00
+term_clear_screen:
+    .byte $1B, "[2J", $00
+term_return_home:
+    .byte $1B, "[H", $00
 ;
 ; end of added code
 ;
