@@ -24,7 +24,7 @@ OBJS =  zeropage.o \
 
 all: $(TARGET)
 
-%.o: %.s $(CONFIG)
+%.o: %.s $(CONFIG) $(LDCFG)
 	$(CA) $(CFLAGS) -o $@ $<
 
 $(TARGET): $(OBJS)
