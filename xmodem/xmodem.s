@@ -70,7 +70,6 @@ _LIB_XMODEM_ = 1
     .import acia_get_char
     .import acia_put_char
 
-
     .export XModemRcv
 
     .include "xmodem.inc"
