@@ -75,10 +75,7 @@ main:
 
     writeln init_terminal_msg
     JSR setup_term              ; Pretty up the user's terminal
-    
-    ; XXXXXXXXX
-    JMP shutdown
-    
+
     writeln init_via_msg
     LDA #%11100001              ; LCD signals + 1 pin for LED
     LDX #%11111111              ; LCD databus lines
