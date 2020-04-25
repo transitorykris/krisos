@@ -33,7 +33,6 @@ _LIB_STD_ = 1
 
     .export write
 
-    ;.org $d000                  ; Location of the write subroutine
     .segment "STDLIB"
 
 write:
