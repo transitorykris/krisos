@@ -100,7 +100,7 @@ Wait4CRC:
     STA retry2                  ;
     JSR GetByte                 ;
     BCC Wait4CRC                ; wait for something to come in...
-    CMP #'C'                    ; is it the "C" to STA rt a CRC xfer?
+    CMP #'C'                    ; is it the "C" to start a CRC xfer?
     BEQ SetstAddr               ; yes
     CMP #ESC                    ; is it a cancel? <Esc> Key
     BNE Wait4CRC                ; No, wait for another character
@@ -112,9 +112,9 @@ SetstAddr:
     STA Rbuff                   ; into 1st byte
     LDA #$FE                    ; load 1's comp of block #
     STA Rbuff+1                 ; into 2nd byte
-    LDA ptr                     ; load low byte of STA rt address
+    LDA ptr                     ; load low byte of start address
     STA Rbuff+2                 ; into 3rd byte
-    LDA ptrh                    ; load hi byte of STA rt address
+    LDA ptrh                    ; load hi byte of start address
     STA Rbuff+3                 ; into 4th byte
     BRA LdBuff1                 ; jump into buffer load routine
 
