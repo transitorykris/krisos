@@ -89,7 +89,7 @@ bios_get_char:
 ; register if one was present.
 acia_get_char:
     CLC                         ; no chr present
-    LDA ACIA_STATUS             ; get Serial port STA tus
+    LDA ACIA_STATUS             ; get Serial port status
     AND #$08                    ; mask rcvr full bit
     BEQ acia_get_char_done      ; if not chr, done
     LDA ACIA_DATA               ; else get chr

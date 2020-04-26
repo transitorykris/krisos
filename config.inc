@@ -27,7 +27,7 @@
 ;CFG_LCD = 1
 
 ; Use the SN76489 sound generator
-;CFG_SN76489 = 1
+CFG_SN76489 = 1
 
 ; Generate periodic interrupts for the system clock
 ;CFG_CLOCK = 1

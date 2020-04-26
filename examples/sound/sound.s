@@ -57,15 +57,15 @@ G5_BYTE_1       = $0F
 G5_BYTE_2       = $04
 
 ; 6522 VIA
-PORTB = $5000
-PORTA = $5001
-DDRB  = $5002
-DDRA  = $5003
+PORTB = $B000
+PORTA = $B001
+DDRB  = $B002
+DDRA  = $B003
 
 ; SN76489AN
-SN_READY        = %10000000     ; Ready pin
-SN_WE           = %01000000     ; Write enable pin (active low)
-SN_CE           = %00100000     ; Chip enable pin (active low) - Tied to ground
+SN_READY        = %00100001     ; Ready pin
+SN_WE           = %01000010     ; Write enable pin (active low)
+SN_CE           = %10000100     ; Chip enable pin (active low) - Tied to ground
 
 CR      = $0D   ; Carriage Return
 LF      = $0A   ; Line Feed
@@ -77,13 +77,13 @@ reset:
     writeln init_msg
 
     LDA #(SN_WE|SN_CE)      ; CE and WE pins to output, READY to input
-    STA DDRA
-    LDA #%11111111          ; Default to setting the SN data bus to output
     STA DDRB
+    LDA #%11111111          ; Default to setting the SN data bus to output
+    STA DDRA
 
     ; Initialize the SN76489
     LDA #(SN_WE|SN_CE)      ; Set CE low (inactive), WE high (inactive)
-    STA PORTA
+    STA PORTB
     writeln done_msg
 
     writeln silence_msg
@@ -150,14 +150,14 @@ silence_all:
 ; A - databus value to strobe SN with
 sn_send:
     PHX
-    STA PORTB               ; Put our data on the data bus
+    STA PORTA               ; Put our data on the data bus
     LDX #%01000000          ; Strobe WE
-    STX PORTA
+    STX PORTB
     LDX #%00000000          
-    STX PORTA
+    STX PORTB
     JSR wait_ready          ; Wait for chip to be ready from last instruction
     LDX #%01000000
-    STX PORTA
+    STX PORTB
     PLX
     RTS
 
@@ -165,7 +165,7 @@ sn_send:
 wait_ready:
     PHA
 ready_loop:
-    LDA PORTA
+    LDA PORTB
     AND #SN_READY
     BNE ready_loop
 ready_done:

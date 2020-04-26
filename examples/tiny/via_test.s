@@ -21,10 +21,15 @@
 ;
 ; Fiddles with the VIA ports on the K64
 
-VIA2_PORTB = $5000
-VIA2_PORTA = $5001
-VIA2_DDRB = $5002
-VIA2_DDRA = $5003
+VIA1_PORTB = $A000
+VIA1_PORTA = $A001
+VIA1_DDRB = $A002
+VIA1_DDRA = $A003
+
+VIA2_PORTB = $B000
+VIA2_PORTA = $B001
+VIA2_DDRB = $B002
+VIA2_DDRA = $B003
 
 LF      = $0a
 NULL    = $00
@@ -46,6 +51,11 @@ hello:
 
 ports_on:
     LDA #$FF                    ; Turn all pin output, and on
+    STA VIA1_DDRA
+    STA VIA1_PORTA
+    STA VIA1_DDRB
+    STA VIA1_PORTB
+
     STA VIA2_DDRA
     STA VIA2_PORTA
     STA VIA2_DDRB
