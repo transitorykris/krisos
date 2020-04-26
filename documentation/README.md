@@ -31,3 +31,8 @@
 |||Potentiometer||
 
 You can (and should) order the base kit from (Ben Eater)[https://eater.net/6502]. Additional components are noted above as "K64".
+
+# Known issues
+
+* There appears to be a problem with Picocom and sz's Xmodem. Loading can fail
+if the sender doesn't start within about 3 seconds
