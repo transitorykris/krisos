@@ -40,4 +40,4 @@ burn: $(TARGET)
 
 .PHONY: terminal
 terminal:
-	picocom -b 19200 --send-cmd 'sz -X' $(SERIAL)
+	picocom -b 19200 --send-cmd 'sz -Xb' $(SERIAL)
