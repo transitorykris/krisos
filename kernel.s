@@ -157,7 +157,7 @@ repl:                           ; Not really a repl but I don't have a better na
     JSR parse_command
     ; Switch
     case_command #ERROR_CMD,    error
-    case_command #LOAD_CMD,     XModemRcv
+    case_command #LOAD_CMD,     load_program
     case_command #RUN_CMD,      run_program
     case_command #DUMP_CMD,     dump
     case_command #HELP_CMD,     help
@@ -172,6 +172,18 @@ repl_done:
     JMP repl                    ; Do it all again!
 
 start_of_repl_msg: .byte "start of repl",CR,LF,NULL
+
+load_program:
+    JSR XModemRcv
+    PHA                         ; Save our 16-bit return
+    PHX                         ;
+    writeln exited_msg
+    PLA                         ; binhex takes the argument in the A register
+    JSR binhex
+    STA char_ptr
+    JSR write_char              ; Display XModem's return value
+    writeln new_line
+    JMP repl
 
 run_program:
     .ifdef CFG_DEBUG

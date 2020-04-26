@@ -223,7 +223,8 @@ StartBlk:
 GotByte:
     CMP #ESC                    ; quitting?
     BNE GotByte1                ; no
-    ;LDA #$FE                    ; Error code in "A" of desired
+    LDA #$FE                    ; Error code in "A" of desired
+    STA $1000                   ; XXX DEBUGGING
     RTS                         ; YES - do BRK or change to RTS if desired
 GotByte1:
     CMP #SOH                    ; Start of block?
@@ -250,7 +251,8 @@ GetBlk2:
     BEQ GoodBlk1                ; matched!
     writeln error_msg           ; Unexpected block number - abort
     JSR Flush                   ; mismatched - flush buffer and then do BRK
-    ;lda #$FD                    ; put error code in "A" if desired
+    LDA #$FD                    ; put error code in "A" if desired
+    STA $1000                   ; XXX DEBUGGING
     RTS                         ; unexpected block # - fatal error - BRK or RTS
 GoodBlk1:
     EOR #$ff                    ; 1's comp of block #
@@ -259,7 +261,8 @@ GoodBlk1:
     BEQ GoodBlk2                ; matched!
     writeln error_msg           ; Unexpected block number - abort
     JSR Flush                   ; mismatched - flush buffer and then do BRK
-    ;LDA #$FC                    ; put error code in "A" if desired
+    LDA #$FC                    ; put error code in "A" if desired
+    STA $1000                   ; XXX DEBUGGING
     RTS                         ; bad 1's comp of block#
 GoodBlk2:
     JSR CalcCRC                 ; calc CRC
@@ -273,7 +276,7 @@ GoodBlk2:
 BadCrc:
     JSR Flush                   ; flush the input port
     LDA #NAK                    ;
-    JSR acia_put_char                 ; send NAK to resend block
+    JSR acia_put_char           ; send NAK to resend block
     JMP StartBlk                ; Start over, get the block again
 GoodCrc:
     LDX #$02                    ;
