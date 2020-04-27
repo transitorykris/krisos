@@ -32,7 +32,7 @@ user_code_segment = __USER_START__  ; The user's program will be stored here
 
     .RODATA
 init_interrupts_disabled: .asciiz "Interrupts disable\n\r"
-init_via_msg: .asciiz "Initializing 6521 VIA..."
+init_via_msg: .asciiz "Initializing 6522 VIA..."
 init_acia_msg: .asciiz "Initializing 6551 ACIA..."
 init_cld_msg: .asciiz "Disabling BCD mode..."
 init_lcd_msg: .asciiz "Initializing Hitachi LCD...."
