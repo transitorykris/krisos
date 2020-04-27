@@ -63,9 +63,9 @@ DDRB  = $B002
 DDRA  = $B003
 
 ; SN76489AN
-SN_READY        = %00100001     ; Ready pin
-SN_WE           = %01000010     ; Write enable pin (active low)
-SN_CE           = %10000100     ; Chip enable pin (active low) - Tied to ground
+SN_READY        = %00000001     ; Ready pin
+SN_WE           = %00000010     ; Write enable pin (active low)
+SN_CE           = %00000100     ; Chip enable pin (active low) - Tied to ground
 
 CR      = $0D   ; Carriage Return
 LF      = $0A   ; Line Feed
@@ -151,12 +151,12 @@ silence_all:
 sn_send:
     PHX
     STA PORTA               ; Put our data on the data bus
-    LDX #%01000000          ; Strobe WE
+    LDX #%00000010          ; Strobe WE
     STX PORTB
     LDX #%00000000          
     STX PORTB
     JSR wait_ready          ; Wait for chip to be ready from last instruction
-    LDX #%01000000
+    LDX #%00000010
     STX PORTB
     PLX
     RTS

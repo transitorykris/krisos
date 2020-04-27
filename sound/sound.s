@@ -37,13 +37,13 @@ sound_init:
     ; Set up our 6522 for the SN76489
     PHA
     LDA #(SN_WE|SN_CE)          ; Ready input, WE and CE output
-    STA VIA2_DDRA
-    LDA #SN_DATA                ; Default to setting the SN data bus to output
     STA VIA2_DDRB
+    LDA #SN_DATA                ; Default to setting the SN data bus to output
+    STA VIA2_DDRA
 
     ; Initialize the SN76489
     LDA #SN_WE                  ; Set CE low (inactive), WE high (inactive)
-    STA VIA2_PORTA
+    STA VIA2_PORTB
     JSR silence_all             ; Stop it from making noise
     PLA
     RTS
@@ -118,14 +118,14 @@ silence_all:
 ; Note: currently destructive of other pins on the VIA
 sn_send:
     PHX
-    STA VIA2_PORTB              ; Put our data on the data bus
+    STA VIA2_PORTA              ; Put our data on the data bus
     LDX #SN_WE                  ; Strobe WE
-    STX VIA2_PORTA
+    STX VIA2_PORTB
     LDX #SN_WE_CLEAR
-    STX VIA2_PORTA
+    STX VIA2_PORTB
     JSR wait_ready              ; Wait for chip to be ready from last instruction
     LDX #SN_WE
-    STX VIA2_PORTA
+    STX VIA2_PORTB
     PLX
     RTS
 
@@ -133,7 +133,7 @@ sn_send:
 wait_ready:
     PHA
 ready_loop:
-    LDA VIA2_PORTA
+    LDA VIA2_PORTB
     AND #SN_READY
     BNE ready_loop
 ready_done:

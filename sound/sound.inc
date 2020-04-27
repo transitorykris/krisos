@@ -41,10 +41,10 @@ TONE            = %00000000
 VOLUME          = %00010000
 VOLUME_OFF      = %00001111
 VOLUME_MAX      = %00000000
-SN_READY        = %10000000 ; Ready pin
-SN_WE           = %01000000 ; Write enable pin (active low)
+SN_READY        = %00000001 ; Ready pin
+SN_WE           = %00000010 ; Write enable pin (active low)
 SN_WE_CLEAR     = %00000000
-SN_CE           = %00100000 ; Chip enable pin (active low) - Tied to ground
+SN_CE           = %00000100 ; Chip enable pin (active low) - Tied to ground
 SN_DATA         = %11111111 ; Data pins
 
 ; Notes
