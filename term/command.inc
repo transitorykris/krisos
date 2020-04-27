@@ -22,6 +22,8 @@
 .ifndef _COMMAND_H_
 _COMMAND_H_ = 1
 
+    .feature string_escapes
+
 ERROR_CMD       = $00
 LOAD_CMD        = $01
 RUN_CMD         = $02
@@ -44,18 +46,18 @@ LT      = $FF
 GT      = $1
 
     .RODATA
-LOAD:       .byte "load",NULL
-RUN:        .byte "run",NULL
-DUMP:       .byte "dump",NULL
-HELP:       .byte "help",NULL
-SHUTDOWN:   .byte "shutdown",NULL
-EMPTY:      .byte "",NULL
-CLEAR:      .byte "clear",NULL
-RESET:      .byte "reset",NULL
-BREAK:      .byte "break",NULL
-BEEP:       .byte "beep",NULL
-UPTIME:     .byte "uptime",NULL
-STACK:      .byte "stack",NULL
+LOAD:       .asciiz "load"
+RUN:        .asciiz "run"
+DUMP:       .asciiz "dump"
+HELP:       .asciiz "help"
+SHUTDOWN:   .asciiz "shutdown"
+EMPTY:      .asciiz ""
+CLEAR:      .asciiz "clear"
+RESET:      .asciiz "reset"
+BREAK:      .asciiz "break"
+BEEP:       .asciiz "beep"
+UPTIME:     .asciiz "uptime"
+STACK:      .asciiz "stack"
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:",CR,LF

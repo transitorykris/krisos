@@ -22,6 +22,8 @@
 .ifndef _TERM_H_
 _TERM_H_ = 1
 
+    .feature string_escapes
+
 ; Non-visible ASCII codes
 ; https://www.ascii-code.com/
 ;
@@ -87,8 +89,8 @@ new_line:               .byte CR,LF,NULL
 prompt:                 .byte "OK>",SPACE,NULL
 
 ; Messages
-welcome_msg:    .byte "Welcome to KrisOS on the K64",CR,LF,LF,NULL
-panic_msg:      .byte "Something went wrong. BRK called or executed $00?",CR,LF,NULL
+welcome_msg:    .asciiz "Welcome to KrisOS on the K64\n\n\r"
+panic_msg:      .asciiz "Something went wrong. BRK called or executed $00?\n\r"
 
 ; Macros
 .macro writeln str_addr

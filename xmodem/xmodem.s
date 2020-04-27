@@ -194,6 +194,8 @@ PrtAbort:
     JSR Flush                   ; yes, too many errors, flush buffer,
     writeln error_msg           ; print error msg and exit
 Done:
+    LDA #EOT
+    JSR acia_put_char
     writeln success_msg         ; All Done..Print msg and exit
 ;
 ;
@@ -314,6 +316,8 @@ RDone:
     LDA #ACK                    ; last block, send ACK and exit.
     JSR acia_put_char           ;
     JSR Flush                   ; get leftover characters, if any
+    LDA #EOT
+    JSR acia_put_char
     writeln success_msg         ;
     RTS                         ;
 ;

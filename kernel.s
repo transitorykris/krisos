@@ -171,8 +171,6 @@ repl:                           ; Not really a repl but I don't have a better na
 repl_done:
     JMP repl                    ; Do it all again!
 
-start_of_repl_msg: .byte "start of repl",CR,LF,NULL
-
 load_program:
     JSR XModemRcv
     PHA                         ; Save our 16-bit return
@@ -215,8 +213,6 @@ run_program:
     LDX $FF                     ; Reset our stack because cc65 isn't cooperating yet
     TXS
     JMP repl
-
-handlers_reset_msg: .byte "handlers reset",CR,LF,NULL
 
 error:
     writeln bad_command_msg
