@@ -113,9 +113,9 @@ prefix_new_lines:
     TXA
     PHX                         ; write_char destroys the X register
     JSR binhex
-    STA char_ptr             ; MSN
+    STA char_ptr                ; MSN
     JSR write_char
-    STX char_ptr             ; LSN
+    STX char_ptr                ; LSN
     JSR write_char
     PLX    
     LDA #':'
@@ -128,9 +128,9 @@ load_and_write:
     LDA $1000,x
     PHX                         ; Save our index on the stack, binhex destroys it
     JSR binhex
-    STA char_ptr             ; MSN
+    STA char_ptr                ; MSN
     JSR write_char
-    STX char_ptr             ; LSN
+    STX char_ptr                ; LSN
     JSR write_char
     LDA #SPACE
     STA char_ptr
@@ -165,9 +165,9 @@ prefix_new_lines_stack:
     TXA
     PHX                         ; write_char destroys the X register
     JSR binhex
-    STA char_ptr             ; MSN
+    STA char_ptr                ; MSN
     JSR write_char
-    STX char_ptr             ; LSN
+    STX char_ptr                ; LSN
     JSR write_char
     PLX
     LDA #':'
@@ -180,9 +180,9 @@ load_and_write_stack:
     LDA $0100,x
     PHX                         ; Save our index on the stack, binhex destroys it
     JSR binhex
-    STA char_ptr             ; MSN
+    STA char_ptr                ; MSN
     JSR write_char
-    STX char_ptr             ; LSN
+    STX char_ptr                ; LSN
     JSR write_char
     LDA #SPACE
     STA char_ptr
@@ -223,7 +223,7 @@ reset_user_input:
     LDA #<user_input
     STA user_input_ptr
     LDA #>user_input
-    STA user_input_ptr+1          ; Point or repoint at our user_input array
+    STA user_input_ptr+1        ; Point or repoint at our user_input array
     LDY #$00
 clear_user_input_loop:
     LDA #NULL
@@ -237,12 +237,12 @@ reset_user_input_done:
     RTS
 
 clear_screen:
-    writeln x_set_fg_white          ; White on Blue is the KrisOS color
-    writeln x_set_bg_blue           ;
-    writeln x_home_position         ; Write out our welcome message
-    writeln x_erase_display         ;
-    writeln x_set_normal            ; Reset to a normal font
-    writeln x_set_not_underlined    ;
+    writeln x_set_fg_white      ; White on Blue is the KrisOS color
+    writeln x_set_bg_blue
+    writeln x_home_position
+    writeln x_erase_display
+    writeln x_set_normal        ; Reset to a normal font
+    writeln x_set_not_underlined 
     RTS
 
 .endif
