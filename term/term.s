@@ -45,8 +45,9 @@ _LIB_TERM_ = 1
     .export dump_stack
 
     .segment "RAM"
+
 ; 16 byte placeholder for user input
-user_input: .byte NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+user_input: .res 16, NULL
 
     .segment "LIB"
 
