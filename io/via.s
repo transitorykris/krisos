@@ -29,6 +29,8 @@ _LIB_VIA_ = 1
 
     .export via1_init_ports
     .export via2_init_ports
+    .export test_via1
+    .export test_via2
 
 ; Takes:
 ; A - data direction for port A
@@ -48,6 +50,76 @@ via2_init_ports:
     STX VIA2_DDRB
     STZ VIA2_PORTA              ; Set all port outputs to low
     STZ VIA2_PORTB              ; Set all port outputs to low
+    RTS
+
+; Success carry clear
+; Failure carry set
+test_via1:
+    LDA VIA1_DDRA               ; Save our direction registers
+    PHA
+    LDA VIA1_DDRB
+    PHA
+
+    LDA #$FF                    ; Set both direction registers to output
+    STA VIA1_DDRA
+    STA VIA1_DDRB
+
+    LDA $A5                     ; First pattern
+    STA VIA1_PORTA
+    CMP VIA1_PORTA
+    BNE test_via1_failed
+    STA VIA1_PORTB
+    BNE test_via1_failed
+
+    LDA $5A                     ; Second pattern
+    STA VIA1_PORTA
+    CMP VIA1_PORTA
+    BNE test_via1_failed
+    STA VIA1_PORTB
+    BNE test_via1_failed
+
+    PLA                         ; Restore our direction registers
+    STA VIA1_DDRB
+    PLA
+    STA VIA1_DDRA
+    CLC                         ; Set success
+    RTS
+test_via1_failed:
+    SEC                         ; Set failure
+    RTS
+
+test_via2:
+    LDA VIA2_DDRA               ; Save our direction registers
+    PHA
+    LDA VIA2_DDRB
+    PHA
+
+    LDA #$FF
+    STA VIA2_DDRA
+    STA VIA2_DDRB
+
+    LDA $A5                     ; First pattern
+    STA VIA2_PORTA
+    CMP VIA2_PORTA
+    BNE test_via2_failed
+    STA VIA2_PORTB
+    BNE test_via2_failed
+
+    LDA $5A                     ; Second pattern
+    STA VIA2_PORTA
+    CMP VIA2_PORTA
+    BNE test_via2_failed
+    STA VIA2_PORTB
+    BNE test_via2_failed
+
+    PLA                         ; Restore our direction registers
+    STA VIA2_DDRB
+    PLA
+    STA VIA2_DDRA
+    CLC                         ; Set success
+    RTS
+test_via2_failed:
+    SEC                         ; Set failure
     RTS
 
 .endif

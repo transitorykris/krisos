@@ -54,6 +54,8 @@
     .import lcd_init
     .import via1_init_ports
     .import via2_init_ports
+    .import test_via1
+    .import test_via2
     .import lcd_write
     .import binhex
     .import clear_screen
@@ -79,14 +81,29 @@ main:
     writeln init_terminal_msg
     JSR setup_term              ; Pretty up the user's terminal
 
+init_via1:
     writeln init_via_msg
+    JSR test_via1               ; See if the via works!
+    BCS test_via1_failed
     LDA #%11100001              ; LCD signals + 1 pin for LED
     LDX #%11111111              ; LCD databus lines
+    writeln init_done_msg
+    JMP init_via2
+test_via1_failed:
+    writeln init_failed_msg
+init_via2:
+    writeln init_via_msg
+    JSR test_via2
+    BCS test_via2_failed
     JSR via1_init_ports         ; Initialize VIA
-    LDA #%01100000
-    LDA #%11111111
+    LDA #%00000000
+    LDX #%00000000
     JSR via2_init_ports
     writeln init_done_msg
+    JMP init_vias_done
+test_via2_failed:
+    writeln init_failed_msg
+init_vias_done:
 
 .ifdef CFG_SN76489
     writeln init_sound_msg
