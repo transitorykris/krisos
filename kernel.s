@@ -22,6 +22,9 @@
     .setcpu "6502"
     .PSC02                      ; Enable 65c02 opcodes
 
+    .fopt author, "Kris Foster <kris.foster@gmail.com>"
+    .fopt comment, "Copyright 2020 Kris Foster, MIT Licensed"
+
     .include "term/term.inc"
     .include "kernel.inc"
     .include "io/lcd.inc"
