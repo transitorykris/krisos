@@ -62,32 +62,28 @@ UPTIME:     .asciiz "uptime"
 STACK:      .asciiz "stack"
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
-    .byte "Available commands in KrisOS:",CR,LF
-    .byte "------------------------------------------------",CR,LF
+    .byte "Available commands in KrisOS:\n\r"
+    .byte "------------------------------------------------\n\r"
     .byte NULL
 
 help_commands_msg:
-    .byte "load - Begins an XMODEM receive",CR,LF
-    .byte "run - Starts the program located at $1000",CR,LF
-    .byte "dump - Displays the first page of data at $1000",CR,LF
-    .byte "help - Displays this helpful help message",CR,LF
-    .byte "shutdown - Stop the K64",CR,LF
-    .byte "clear - Clears the screen",CR,LF
-    .byte "reset - Soft resets the computer",CR,LF
-    .byte "break - Trigger a soft IRQ",CR,LF
-    .byte "beep - Beeps the speaker",CR,LF
-    .byte "uptime - Show the uptime in seconds of the K64",CR,LF
+    .byte "load - Begins an XMODEM receive\n\r"
+    .byte "run - Starts the program located at $1000\n\r"
+    .byte "dump - Displays the first page of data at $1000\n\r"
+    .byte "help - Displays this helpful help message\n\r"
+    .byte "shutdown - Stop the K64\n\r"
+    .byte "clear - Clears the screen\n\r"
+    .byte "reset - Soft resets the computer\n\r"
+    .byte "break - Trigger a soft IRQ\n\r"
+    .byte "beep - Beeps the speaker\n\r"
+    .byte "uptime - Show the uptime in seconds of the K64\n\r"
     .byte NULL
 
 help_copyright_msg:
-    .byte "------------------------------------------------",CR,LF
-    .byte "KrisOS is licensed under the MIT License",CR,LF
-    .byte "XMODEM Copyright 2002 Daryl Rictor",CR,LF
-    .byte "Some ACIA code by Dirk Grappendorf",CR,LF
-    .byte "binhex by BigDumbDinosaur on 6502.org",CR,LF
-    .byte "strcmp by Michael H. Potter",CR,LF
-    .byte "The K64 is based on a design by Ben Eater",CR,LF
-    .byte "See github.com/transitorykris/krisos for details",CR,LF
+    .byte "------------------------------------------------\n\r"
+    .byte "KrisOS is licensed under the MIT License\n\r"
+    .byte "Some code contains other copyrights, please see:\n\r"
+    .byte "github.com/transitorykris/krisos for details\n\r"
     .byte NULL
 
 

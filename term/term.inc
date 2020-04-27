@@ -85,8 +85,8 @@ x_erase_display:        .byte ESC,"[2J", NULL
 x_erase_line:           .byte ESC,"[2K", NULL
 
 ; Other
-new_line:               .byte CR,LF,NULL
-prompt:                 .byte "OK>",SPACE,NULL
+new_line:               .asciiz "\n\r"
+prompt:                 .asciiz "OK> "
 
 ; Messages
 welcome_msg:    .asciiz "Welcome to KrisOS on the K64\n\n\r"
