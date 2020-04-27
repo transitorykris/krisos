@@ -24,19 +24,21 @@ _COMMAND_H_ = 1
 
     .feature string_escapes
 
-ERROR_CMD       = $00
-LOAD_CMD        = $01
-RUN_CMD         = $02
-DUMP_CMD        = $03
-HELP_CMD        = $04
-SHUTDOWN_CMD    = $05
-EMPTY_CMD       = $06
-CLEAR_CMD       = $07
-RESET_CMD       = $08
-BREAK_CMD       = $09
-BEEP_CMD        = $0A
-UPTIME_CMD      = $0B
-STACK_CMD       = $0C
+.enum
+    ERROR_CMD
+    LOAD_CMD
+    RUN_CMD
+    DUMP_CMD
+    HELP_CMD
+    SHUTDOWN_CMD
+    EMPTY_CMD
+    CLEAR_CMD
+    RESET_CMD
+    BREAK_CMD
+    BEEP_CMD
+    UPTIME_CMD
+    STACK_CMD
+.endenum
 
 FALSE   = 0
 TRUE    = 1
