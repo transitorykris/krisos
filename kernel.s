@@ -119,7 +119,14 @@ init_vias_done:
     writeln init_done_msg
 .endif
 
+    ;writeln init_test_user_memory_msg
+    ;JSR memtest_user
+    ;writeln init_done_msg
+
     writeln init_clear_userspace_msg
+    ; TODO
+    ; LDA #$00
+    ; JSR memset
     LDA #$00
     LDX #$00
 clear_page:                     ; Give the user's code clean space to run in

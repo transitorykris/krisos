@@ -16,6 +16,7 @@ OBJS =  zeropage.o \
 	io/lcd.o \
 	io/acia.o \
 	util/binhex.o \
+	util/memtest.o \
 	stdlib/stdlib.o \
 	term/term.o \
 	term/command.o \

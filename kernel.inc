@@ -45,6 +45,7 @@ init_done_msg: .asciiz "Done!\n\r"
 init_default_interrupt_handlers: .asciiz "Setting default interrupt handlers..."
 init_sound_msg: .asciiz "Initializing SN76489A Sound..."
 init_clock_msg: .asciiz "Starting the system clock..."
+init_test_user_memory_msg: .asciiz "Testing user space memory..."
 
 krisos_lcd_message: .asciiz "KrisOS/K64"
 

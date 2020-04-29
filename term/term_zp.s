@@ -28,6 +28,6 @@ _TERM_ZP_ = 1
 
 string_ptr:         .res 2
 user_input_ptr:     .res 2           ; Where we can find our raw user input
-char_ptr:        .res 2
+char_ptr:           .res 2
 
 .endif
