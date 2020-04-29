@@ -23,7 +23,9 @@ The K64 adds:
 
 ## Building
 
-Modify the `krisos.cfg` memory layout to match your system.
+Modify the `krisos.cfg` memory layout to match your system. If you're using a
+Ben Eater 6502 you can find a typical memory layout in `be6502.cfg`, simply
+rename that file to `krisos.cfg`.
 
 Modify `config.inc` as needed.
 
