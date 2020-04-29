@@ -21,6 +21,7 @@
 
 ; This system uses a WDC 6551 ACIA which has a transmit bug
 ; http://forum.6502.org/viewtopic.php?f=4&t=2543&start=30#p29795
+; Leave unset for AMI or Rockwell 6551s
 ;CFG_WDC_ACIA = 1
 
 ; Use the LCD module
