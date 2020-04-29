@@ -119,9 +119,11 @@ init_vias_done:
     writeln init_done_msg
 .endif
 
+.ifdef CFG_USER_MEMTEST
     ;writeln init_test_user_memory_msg
     ;JSR memtest_user
     ;writeln init_done_msg
+.endif
 
     writeln init_clear_userspace_msg
     ; TODO

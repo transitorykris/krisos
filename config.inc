@@ -34,3 +34,6 @@ CFG_SN76489 = 1
 
 ; Enable debug output
 ;CFG_DEBUG = 1
+
+; Test user space memory
+CFG_USER_MEMTEST = 1
