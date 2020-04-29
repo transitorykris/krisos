@@ -23,7 +23,7 @@
 _MEM_TEST_ = 1
 
     .setcpu "6502"
-    .PSC02
+    .psc02                      ; Enable 65c02 opcodes
 
     .importzp memset_addr
 

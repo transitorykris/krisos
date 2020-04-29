@@ -15,7 +15,7 @@
 _LIB_BINHEX_ = 1
 
     .setcpu "6502"
-    .PSC02                      ; Enable 65c02 opcodes
+    .psc02                      ; Enable 65c02 opcodes
 
     .export binhex
 

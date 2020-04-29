@@ -23,7 +23,7 @@
 _LIB_SOUND_ = 1
 
     .setcpu "6502"
-    .PSC02                      ; Enable 65c02 opcodes
+    .psc02                      ; Enable 65c02 opcodes
 
     .export sound_init
     .export startup_sound

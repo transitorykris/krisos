@@ -23,7 +23,7 @@
 _LIB_COMMAND_ = 1
 
     .setcpu "6502"
-    .PSC02                      ; Enable 65c02 opcodes
+    .psc02                      ; Enable 65c02 opcodes
 
     .include "term.inc"
     .include "command.inc"

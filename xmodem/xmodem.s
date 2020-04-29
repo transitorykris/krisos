@@ -47,7 +47,7 @@
 _LIB_XMODEM_ = 1
 
     .setcpu "6502"
-    .PSC02                      ; Enable 65c02 opcodes
+    .psc02                      ; Enable 65c02 opcodes
 
     .include "../term/term.inc" ; XXX more structural smell?
     .include "../io/acia.inc"   ; XXX more structural smell?
@@ -333,7 +333,7 @@ StartCrcLp:
     BCS GetByte1                ; got one, so exit
     DEC retry                   ; no character received, so dec counter
     BNE StartCrcLp              ;
-    dec retry2                  ; dec hi byte of counter
+    DEC retry2                  ; dec hi byte of counter
     BNE StartCrcLp              ; look for character again
     CLC                         ; if loop times out, CLC, else SEC and return
 GetByte1:
