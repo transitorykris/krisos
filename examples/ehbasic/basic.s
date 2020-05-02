@@ -322,118 +322,116 @@ Decssp1           = Decss+1   ; number to decimal string start
 ; token values needed for BASIC
 
 ; primary command tokens (can start a statement)
+.enum
+    token_END = $80
+    token_FOR
+    token_NEXT
+    token_DATA
+    token_INPUT
+    token_DIM
+    token_READ    
+    token_LET         
+    token_DEC         
+    token_GOTO       
+    token_RUN     
+    token_IF      
+    token_RESTORE        
+    token_GOSUB     
+    token_RETIRQ     
+    token_RETNMI      
+    token_RETURN  
+    token_REM    
+    token_STOP  
+    token_ON         
+    token_NULL     
+    token_INC        
+    token_WAIT       
+    token_LOAD   
+    token_SAVE      
+    token_DEF          
+    token_POKE   
+    token_DOKE     
+    token_CALL       
+    token_DO      
+    token_LOOP       
+    token_PRINT        
+    token_CONT     
+    token_LIST        
+    token_CLEAR     
+    token_NEW       
+    token_WIDTH    
+    token_GET           
+    token_SWAP       
+    token_BITSET        
+    token_BITCLR   
+    token_IRQ           
+    token_NMI         
 
-token_END       = $80             ; END token
-token_FOR       = token_END+1        ; FOR token
-token_NEXT      = token_FOR+1        ; NEXT token
-token_DATA      = token_NEXT+1       ; DATA token
-token_INPUT     = token_DATA+1       ; INPUT token
-token_DIM       = token_INPUT+1      ; DIM token
-token_READ      = token_DIM+1        ; READ token
-token_LET       = token_READ+1       ; LET token
-token_DEC       = token_LET+1        ; DEC token
-token_GOTO      = token_DEC+1        ; GOTO token
-token_RUN       = token_GOTO+1       ; RUN token
-token_IF        = token_RUN+1        ; IF token
-token_RESTORE   = token_IF+1         ; RESTORE token
-token_GOSUB     = token_RESTORE+1    ; GOSUB token
-token_RETIRQ    = token_GOSUB+1      ; RETIRQ token
-token_RETNMI    = token_RETIRQ+1     ; RETNMI token
-token_RETURN    = token_RETNMI+1     ; RETURN token
-token_REM       = token_RETURN+1     ; REM token
-token_STOP      = token_REM+1        ; STOP token
-token_ON        = token_STOP+1       ; ON token
-token_NULL      = token_ON+1         ; NULL token
-token_INC       = token_NULL+1       ; INC token
-token_WAIT      = token_INC+1        ; WAIT token
-token_LOAD      = token_WAIT+1       ; LOAD token
-token_SAVE      = token_LOAD+1       ; SAVE token
-token_DEF       = token_SAVE+1       ; DEF token
-token_POKE      = token_DEF+1        ; POKE token
-token_DOKE      = token_POKE+1       ; DOKE token
-token_CALL      = token_DOKE+1       ; CALL token
-token_DO        = token_CALL+1       ; DO token
-token_LOOP      = token_DO+1         ; LOOP token
-token_PRINT     = token_LOOP+1       ; PRINT token
-token_CONT      = token_PRINT+1      ; CONT token
-token_LIST      = token_CONT+1       ; LIST token
-token_CLEAR     = token_LIST+1       ; CLEAR token
-token_NEW       = token_CLEAR+1      ; NEW token
-token_WIDTH     = token_NEW+1        ; WIDTH token
-token_GET       = token_WIDTH+1      ; GET token
-token_SWAP      = token_GET+1        ; SWAP token
-token_BITSET    = token_SWAP+1       ; BITSET token
-token_BITCLR    = token_BITSET+1     ; BITCLR token
-token_IRQ       = token_BITCLR+1     ; IRQ token
-token_NMI       = token_IRQ+1        ; NMI token
+    ; secondary command tokens, can't start a statement
+    token_TAB     
+    token_ELSE           
+    token_TO          
+    token_FN            
+    token_SPC          
+    token_THEN         
+    token_NOT           
+    token_STEP             
+    token_UNTIL         
+    token_WHILE       
+    token_OFF       
 
-; secondary command tokens, can't start a statement
+    ; opperator tokens
+    token_PLUS                  ; + token
+    token_MINUS                 ; - token
+    token_MUL                   ; * token
+    token_DIV                   ; / token
+    token_POWER                 ; ^ token
+    token_AND    
+    token_EOR     
+    token_OR    
+    token_RSHIFT                ; RSHIFT token
+    token_LSHIFT                ; LSHIFT token
+    token_GT                    ; > token
+    token_EQUAL                 ; = token
+    token_LT                    ; < token
 
-token_TAB            = token_NMI+1        ; TAB token
-token_ELSE           = token_TAB+1        ; ELSE token
-token_TO             = token_ELSE+1       ; TO token
-token_FN             = token_TO+1         ; FN token
-token_SPC            = token_FN+1         ; SPC token
-token_THEN           = token_SPC+1        ; THEN token
-token_NOT            = token_THEN+1       ; NOT token
-token_STEP           = token_NOT+1        ; STEP token
-token_UNTIL          = token_STEP+1       ; UNTIL token
-token_WHILE          = token_UNTIL+1      ; WHILE token
-token_OFF            = token_WHILE+1      ; OFF token
-
-; opperator tokens
-
-token_PLUS           = token_OFF+1        ; + token
-token_MINUS          = token_PLUS+1       ; - token
-token_MUL            = token_MINUS+1      ; * token
-token_DIV            = token_MUL+1        ; / token
-token_POWER          = token_DIV+1        ; ^ token
-token_AND            = token_POWER+1      ; AND token
-token_EOR            = token_AND+1        ; EOR token
-token_OR             = token_EOR+1        ; OR token
-token_RSHIFT         = token_OR+1         ; RSHIFT token
-token_LSHIFT         = token_RSHIFT+1     ; LSHIFT token
-token_GT             = token_LSHIFT+1     ; > token
-token_EQUAL          = token_GT+1         ; = token
-token_LT             = token_EQUAL+1      ; < token
-
-; functions tokens
-
-token_SGN            = token_LT+1         ; SGN token
-token_INT            = token_SGN+1        ; INT token
-token_ABS            = token_INT+1        ; ABS token
-token_USR            = token_ABS+1        ; USR token
-token_FRE            = token_USR+1        ; FRE token
-token_POS            = token_FRE+1        ; POS token
-token_SQR            = token_POS+1        ; SQR token
-token_RND            = token_SQR+1        ; RND token
-token_LOG            = token_RND+1        ; LOG token
-token_EXP            = token_LOG+1        ; EXP token
-token_COS            = token_EXP+1        ; COS token
-token_SIN            = token_COS+1        ; SIN token
-token_TAN            = token_SIN+1        ; TAN token
-token_ATN            = token_TAN+1        ; ATN token
-token_PEEK           = token_ATN+1        ; PEEK token
-token_DEEK           = token_PEEK+1       ; DEEK token
-token_SADD           = token_DEEK+1       ; SADD token
-token_LEN            = token_SADD+1       ; LEN token
-token_STRS           = token_LEN+1        ; STR$ token
-token_VAL            = token_STRS+1       ; VAL token
-token_ASC            = token_VAL+1        ; ASC token
-token_UCASES         = token_ASC+1        ; UCASE$ token
-token_LCASES         = token_UCASES+1     ; LCASE$ token
-token_CHRS           = token_LCASES+1     ; CHR$ token
-token_HEXS           = token_CHRS+1       ; HEX$ token
-token_BINS           = token_HEXS+1       ; BIN$ token
-token_BITTST         = token_BINS+1       ; BITTST token
-token_MAX            = token_BITTST+1     ; MAX token
-token_MIN            = token_MAX+1        ; MIN token
-token_PI             = token_MIN+1        ; PI token
-token_TWOPI          = token_PI+1         ; TWOPI token
-token_VPTR           = token_TWOPI+1      ; VARPTR token
-token_LEFTS          = token_VPTR+1       ; LEFT$ token
-token_RIGHTS         = token_LEFTS+1      ; RIGHT$ token
-token_MIDS           = token_RIGHTS+1     ; MID$ token
+    ; functions tokens
+    token_SGN         
+    token_INT          
+    token_ABS          
+    token_USR          
+    token_FRE            
+    token_POS        
+    token_SQR           
+    token_RND                  
+    token_LOG            
+    token_EXP       
+    token_COS           
+    token_SIN            
+    token_TAN           
+    token_ATN           
+    token_PEEK            
+    token_DEEK         
+    token_SADD        
+    token_LEN       
+    token_STRS                  ; STR$ token
+    token_VAL            
+    token_ASC       
+    token_UCASES                ; UCASE$ token
+    token_LCASES                ; LCASE$ token
+    token_CHRS                  ; CHR$ token
+    token_HEXS                  ; HEX$ token
+    token_BINS                  ; BIN$ token
+    token_BITTST         
+    token_MAX            
+    token_MIN             
+    token_PI                 
+    token_TWOPI           
+    token_VPTR          
+    token_LEFTS                 ; LEFT$ token
+    token_RIGHTS                ; RIGHT$ token
+    token_MIDS                  ; MID$ token
+.endenum
 
 ; offsets from a base of X or Y
 
