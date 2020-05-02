@@ -28,6 +28,7 @@ _MEM_TEST_ = 1
     .importzp memset_addr
     
     .export memtest_user
+    .export clear_page
 
 ; This is a desctructive test
 ; Test all memory in the user space as defined in the linker config
@@ -51,6 +52,15 @@ memtest_user_success:
     CLC
     RTS
 
+clear_page:
+    STA memset_addr+1
+    PHA                         ; In case the user wants that value after
+    LDA #$00
+    STA memset_addr
+    JSR memset
+    PLA
+    RTS
+
 ; This is a destructive test on a page
 ; Carry set for failure, carry clear for success
 memtest:
@@ -60,7 +70,7 @@ memtest_pattern_a5:             ; First pattern #$A5
     JSR memset
     LDY #$00
 memtest_a5_loop:
-    CMP (memset_addr),Y           ; Compare memory location to #$A5
+    CMP (memset_addr),Y         ; Compare memory location to #$A5
     BNE memtest_fail
     DEY
     BEQ memtest_pattern_5a
@@ -70,7 +80,7 @@ memtest_pattern_5a:             ; Second pattern #$5A
     JSR memset
     LDY #$00
 memtest_5a_loop:
-    CMP (memset_addr),Y           ; Compare memory location to #$5A
+    CMP (memset_addr),Y         ; Compare memory location to #$5A
     BNE memtest_fail
     DEY
     BEQ memtest_success

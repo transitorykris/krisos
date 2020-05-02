@@ -66,6 +66,7 @@
     .import bios_get_char
     .import bios_put_char
     .import memtest_user
+    .import clear_page
 
     .export return_from_bios_call
 
@@ -131,25 +132,10 @@ memory_passed:
 memory_test_done:
 .endif
 
-    ;writeln init_clear_userspace_msg
-    ; TODO
-    ; LDA #$00
-    ; JSR memset
-    ;LDA #$00
-    ;LDX #$00
-;clear_page:                     ; Give the user's code clean space to run in
-    ;STA user_code_segment,X
-    ;CMP user_code_segment,X
-    ;BNE clear_failed
-    ;CPX #$FF
-    ;BEQ clear_done
-    ;INX
-    ;JMP clear_page
-;clear_failed:
-    ;writeln init_failed_msg
-    ;STP                         ; Well, let's give up!
-;clear_done:
-    ;writeln init_done_msg
+    writeln init_clear_userspace_msg
+    LDA #$10                    ; The page to clear
+    JSR clear_page
+    writeln init_done_msg
 
     writeln init_default_interrupt_handlers
     JSR set_interrupt_handlers
