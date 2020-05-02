@@ -83,7 +83,7 @@ Tindx             = Ibptr     ; token index
 Defdim            = $5E       ; default DIM flag
 Dtypef            = $5F       ; data type flag, $FF=string, $00=numeric
 Oquote            = $60       ; open quote flag (b7) (Flag: DATA scan; LIST quote; memory)
-Gclctd            = $60       ; garbage collected flag
+clear_gc_flag            = $60       ; garbage collected flag
 Sufnxf            = $61       ; subscript/FNX flag, 1xxx xxx = FN(0xxx xxx)
 Imode             = $62       ; input mode flag, $00=INPUT, $80=READ
 
@@ -323,117 +323,117 @@ Decssp1           = Decss+1   ; number to decimal string start
 
 ; primary command tokens (can start a statement)
 
-TK_END            = $80             ; END token
-TK_FOR            = TK_END+1        ; FOR token
-TK_NEXT           = TK_FOR+1        ; NEXT token
-TK_DATA           = TK_NEXT+1       ; DATA token
-TK_INPUT          = TK_DATA+1       ; INPUT token
-TK_DIM            = TK_INPUT+1      ; DIM token
-TK_READ           = TK_DIM+1        ; READ token
-TK_LET            = TK_READ+1       ; LET token
-TK_DEC            = TK_LET+1        ; DEC token
-TK_GOTO           = TK_DEC+1        ; GOTO token
-TK_RUN            = TK_GOTO+1       ; RUN token
-TK_IF             = TK_RUN+1        ; IF token
-TK_RESTORE        = TK_IF+1         ; RESTORE token
-TK_GOSUB          = TK_RESTORE+1    ; GOSUB token
-TK_RETIRQ         = TK_GOSUB+1      ; RETIRQ token
-TK_RETNMI         = TK_RETIRQ+1     ; RETNMI token
-TK_RETURN         = TK_RETNMI+1     ; RETURN token
-TK_REM            = TK_RETURN+1     ; REM token
-TK_STOP           = TK_REM+1        ; STOP token
-TK_ON             = TK_STOP+1       ; ON token
-TK_NULL           = TK_ON+1         ; NULL token
-TK_INC            = TK_NULL+1       ; INC token
-TK_WAIT           = TK_INC+1        ; WAIT token
-TK_LOAD           = TK_WAIT+1       ; LOAD token
-TK_SAVE           = TK_LOAD+1       ; SAVE token
-TK_DEF            = TK_SAVE+1       ; DEF token
-TK_POKE           = TK_DEF+1        ; POKE token
-TK_DOKE           = TK_POKE+1       ; DOKE token
-TK_CALL           = TK_DOKE+1       ; CALL token
-TK_DO             = TK_CALL+1       ; DO token
-TK_LOOP           = TK_DO+1         ; LOOP token
-TK_PRINT          = TK_LOOP+1       ; PRINT token
-TK_CONT           = TK_PRINT+1      ; CONT token
-TK_LIST           = TK_CONT+1       ; LIST token
-TK_CLEAR          = TK_LIST+1       ; CLEAR token
-TK_NEW            = TK_CLEAR+1      ; NEW token
-TK_WIDTH          = TK_NEW+1        ; WIDTH token
-TK_GET            = TK_WIDTH+1      ; GET token
-TK_SWAP           = TK_GET+1        ; SWAP token
-TK_BITSET         = TK_SWAP+1       ; BITSET token
-TK_BITCLR         = TK_BITSET+1     ; BITCLR token
-TK_IRQ            = TK_BITCLR+1     ; IRQ token
-TK_NMI            = TK_IRQ+1        ; NMI token
+token_END       = $80             ; END token
+token_FOR       = token_END+1        ; FOR token
+token_NEXT      = token_FOR+1        ; NEXT token
+token_DATA      = token_NEXT+1       ; DATA token
+token_INPUT     = token_DATA+1       ; INPUT token
+token_DIM       = token_INPUT+1      ; DIM token
+token_READ      = token_DIM+1        ; READ token
+token_LET       = token_READ+1       ; LET token
+token_DEC       = token_LET+1        ; DEC token
+token_GOTO      = token_DEC+1        ; GOTO token
+token_RUN       = token_GOTO+1       ; RUN token
+token_IF        = token_RUN+1        ; IF token
+token_RESTORE   = token_IF+1         ; RESTORE token
+token_GOSUB     = token_RESTORE+1    ; GOSUB token
+token_RETIRQ    = token_GOSUB+1      ; RETIRQ token
+token_RETNMI    = token_RETIRQ+1     ; RETNMI token
+token_RETURN    = token_RETNMI+1     ; RETURN token
+token_REM       = token_RETURN+1     ; REM token
+token_STOP      = token_REM+1        ; STOP token
+token_ON        = token_STOP+1       ; ON token
+token_NULL      = token_ON+1         ; NULL token
+token_INC       = token_NULL+1       ; INC token
+token_WAIT      = token_INC+1        ; WAIT token
+token_LOAD      = token_WAIT+1       ; LOAD token
+token_SAVE      = token_LOAD+1       ; SAVE token
+token_DEF       = token_SAVE+1       ; DEF token
+token_POKE      = token_DEF+1        ; POKE token
+token_DOKE      = token_POKE+1       ; DOKE token
+token_CALL      = token_DOKE+1       ; CALL token
+token_DO        = token_CALL+1       ; DO token
+token_LOOP      = token_DO+1         ; LOOP token
+token_PRINT     = token_LOOP+1       ; PRINT token
+token_CONT      = token_PRINT+1      ; CONT token
+token_LIST      = token_CONT+1       ; LIST token
+token_CLEAR     = token_LIST+1       ; CLEAR token
+token_NEW       = token_CLEAR+1      ; NEW token
+token_WIDTH     = token_NEW+1        ; WIDTH token
+token_GET       = token_WIDTH+1      ; GET token
+token_SWAP      = token_GET+1        ; SWAP token
+token_BITSET    = token_SWAP+1       ; BITSET token
+token_BITCLR    = token_BITSET+1     ; BITCLR token
+token_IRQ       = token_BITCLR+1     ; IRQ token
+token_NMI       = token_IRQ+1        ; NMI token
 
 ; secondary command tokens, can't start a statement
 
-TK_TAB            = TK_NMI+1        ; TAB token
-TK_ELSE           = TK_TAB+1        ; ELSE token
-TK_TO             = TK_ELSE+1       ; TO token
-TK_FN             = TK_TO+1         ; FN token
-TK_SPC            = TK_FN+1         ; SPC token
-TK_THEN           = TK_SPC+1        ; THEN token
-TK_NOT            = TK_THEN+1       ; NOT token
-TK_STEP           = TK_NOT+1        ; STEP token
-TK_UNTIL          = TK_STEP+1       ; UNTIL token
-TK_WHILE          = TK_UNTIL+1      ; WHILE token
-TK_OFF            = TK_WHILE+1      ; OFF token
+token_TAB            = token_NMI+1        ; TAB token
+token_ELSE           = token_TAB+1        ; ELSE token
+token_TO             = token_ELSE+1       ; TO token
+token_FN             = token_TO+1         ; FN token
+token_SPC            = token_FN+1         ; SPC token
+token_THEN           = token_SPC+1        ; THEN token
+token_NOT            = token_THEN+1       ; NOT token
+token_STEP           = token_NOT+1        ; STEP token
+token_UNTIL          = token_STEP+1       ; UNTIL token
+token_WHILE          = token_UNTIL+1      ; WHILE token
+token_OFF            = token_WHILE+1      ; OFF token
 
 ; opperator tokens
 
-TK_PLUS           = TK_OFF+1        ; + token
-TK_MINUS          = TK_PLUS+1       ; - token
-TK_MUL            = TK_MINUS+1      ; * token
-TK_DIV            = TK_MUL+1        ; / token
-TK_POWER          = TK_DIV+1        ; ^ token
-TK_AND            = TK_POWER+1      ; AND token
-TK_EOR            = TK_AND+1        ; EOR token
-TK_OR             = TK_EOR+1        ; OR token
-TK_RSHIFT         = TK_OR+1         ; RSHIFT token
-TK_LSHIFT         = TK_RSHIFT+1     ; LSHIFT token
-TK_GT             = TK_LSHIFT+1     ; > token
-TK_EQUAL          = TK_GT+1         ; = token
-TK_LT             = TK_EQUAL+1      ; < token
+token_PLUS           = token_OFF+1        ; + token
+token_MINUS          = token_PLUS+1       ; - token
+token_MUL            = token_MINUS+1      ; * token
+token_DIV            = token_MUL+1        ; / token
+token_POWER          = token_DIV+1        ; ^ token
+token_AND            = token_POWER+1      ; AND token
+token_EOR            = token_AND+1        ; EOR token
+token_OR             = token_EOR+1        ; OR token
+token_RSHIFT         = token_OR+1         ; RSHIFT token
+token_LSHIFT         = token_RSHIFT+1     ; LSHIFT token
+token_GT             = token_LSHIFT+1     ; > token
+token_EQUAL          = token_GT+1         ; = token
+token_LT             = token_EQUAL+1      ; < token
 
 ; functions tokens
 
-TK_SGN            = TK_LT+1         ; SGN token
-TK_INT            = TK_SGN+1        ; INT token
-TK_ABS            = TK_INT+1        ; ABS token
-TK_USR            = TK_ABS+1        ; USR token
-TK_FRE            = TK_USR+1        ; FRE token
-TK_POS            = TK_FRE+1        ; POS token
-TK_SQR            = TK_POS+1        ; SQR token
-TK_RND            = TK_SQR+1        ; RND token
-TK_LOG            = TK_RND+1        ; LOG token
-TK_EXP            = TK_LOG+1        ; EXP token
-TK_COS            = TK_EXP+1        ; COS token
-TK_SIN            = TK_COS+1        ; SIN token
-TK_TAN            = TK_SIN+1        ; TAN token
-TK_ATN            = TK_TAN+1        ; ATN token
-TK_PEEK           = TK_ATN+1        ; PEEK token
-TK_DEEK           = TK_PEEK+1       ; DEEK token
-TK_SADD           = TK_DEEK+1       ; SADD token
-TK_LEN            = TK_SADD+1       ; LEN token
-TK_STRS           = TK_LEN+1        ; STR$ token
-TK_VAL            = TK_STRS+1       ; VAL token
-TK_ASC            = TK_VAL+1        ; ASC token
-TK_UCASES         = TK_ASC+1        ; UCASE$ token
-TK_LCASES         = TK_UCASES+1     ; LCASE$ token
-TK_CHRS           = TK_LCASES+1     ; CHR$ token
-TK_HEXS           = TK_CHRS+1       ; HEX$ token
-TK_BINS           = TK_HEXS+1       ; BIN$ token
-TK_BITTST         = TK_BINS+1       ; BITTST token
-TK_MAX            = TK_BITTST+1     ; MAX token
-TK_MIN            = TK_MAX+1        ; MIN token
-TK_PI             = TK_MIN+1        ; PI token
-TK_TWOPI          = TK_PI+1         ; TWOPI token
-TK_VPTR           = TK_TWOPI+1      ; VARPTR token
-TK_LEFTS          = TK_VPTR+1       ; LEFT$ token
-TK_RIGHTS         = TK_LEFTS+1      ; RIGHT$ token
-TK_MIDS           = TK_RIGHTS+1     ; MID$ token
+token_SGN            = token_LT+1         ; SGN token
+token_INT            = token_SGN+1        ; INT token
+token_ABS            = token_INT+1        ; ABS token
+token_USR            = token_ABS+1        ; USR token
+token_FRE            = token_USR+1        ; FRE token
+token_POS            = token_FRE+1        ; POS token
+token_SQR            = token_POS+1        ; SQR token
+token_RND            = token_SQR+1        ; RND token
+token_LOG            = token_RND+1        ; LOG token
+token_EXP            = token_LOG+1        ; EXP token
+token_COS            = token_EXP+1        ; COS token
+token_SIN            = token_COS+1        ; SIN token
+token_TAN            = token_SIN+1        ; TAN token
+token_ATN            = token_TAN+1        ; ATN token
+token_PEEK           = token_ATN+1        ; PEEK token
+token_DEEK           = token_PEEK+1       ; DEEK token
+token_SADD           = token_DEEK+1       ; SADD token
+token_LEN            = token_SADD+1       ; LEN token
+token_STRS           = token_LEN+1        ; STR$ token
+token_VAL            = token_STRS+1       ; VAL token
+token_ASC            = token_VAL+1        ; ASC token
+token_UCASES         = token_ASC+1        ; UCASE$ token
+token_LCASES         = token_UCASES+1     ; LCASE$ token
+token_CHRS           = token_LCASES+1     ; CHR$ token
+token_HEXS           = token_CHRS+1       ; HEX$ token
+token_BINS           = token_HEXS+1       ; BIN$ token
+token_BITTST         = token_BINS+1       ; BITTST token
+token_MAX            = token_BITTST+1     ; MAX token
+token_MIN            = token_MAX+1        ; MIN token
+token_PI             = token_MIN+1        ; PI token
+token_TWOPI          = token_PI+1         ; TWOPI token
+token_VPTR           = token_TWOPI+1      ; VARPTR token
+token_LEFTS          = token_VPTR+1       ; LEFT$ token
+token_RIGHTS         = token_LEFTS+1      ; RIGHT$ token
+token_MIDS           = token_RIGHTS+1     ; MID$ token
 
 ; offsets from a base of X or Y
 
@@ -449,13 +449,13 @@ LAB_SKFE          = LAB_STAK+$FE
 LAB_SKFF          = LAB_STAK+$FF
                               ; flushed stack address
 
-; the following locations are bulk initialized from PG2_TABS at LAB_COLD
+; the following locations are bulk initialized from PG2_TABS at cold_start
 ccflag            = $0200     ; BASIC CTRL-C flag, 00 = enabled, 01 = dis
 ccbyte            = ccflag+1  ; BASIC CTRL-C byte
 ccnull            = ccbyte+1  ; BASIC CTRL-C byte timeout
 
 VEC_CC            = ccnull+1  ; ctrl c check vector
-; end bulk initialize from PG2_TABS at LAB_COLD
+; end bulk initialize from PG2_TABS at cold_start
 
 ; the following locations are bulk initialized by min_mon.asm from LAB_vec at LAB_stlp
 VEC_IN            = VEC_CC+2  ; input vector
@@ -483,12 +483,9 @@ Stack_floor       = 16        ; bytes left free on stack for background interrup
     .code
 
 ; BASIC cold start entry point
-
 ; new page 2 initialisation, copy block to ccflag on
-
-LAB_COLD
-      LDY   #PG2_TABE-PG2_TABS-1
-                              ; byte count-1
+cold_start:
+      LDY   #PG2_TABE-PG2_TABS-1    ; byte count-1
 LAB_2D13
       LDA   PG2_TABS,Y        ; get byte
       STA   ccflag,Y          ; store in page 2
@@ -535,11 +532,11 @@ TabLoop
       STA   g_step            ; save it
       LDX   #des_sk           ; descriptor stack start
       STX   next_s            ; set descriptor stack pointer
-      JSR   LAB_CRLF          ; print CR/LF
+      JSR   print_newline          ; print CR/LF
       LDA   #<LAB_MSZM        ; point to memory size message (low addr)
       LDY   #>LAB_MSZM        ; point to memory size message (high addr)
-      JSR   LAB_18C3          ; print null terminated string from memory
-      JSR   LAB_INLN          ; print "? " and get BASIC input
+      JSR   print_string          ; print null terminated string from memory
+      JSR   get_input          ; print "? " and get BASIC input
       STX   Bpntrl            ; set BASIC execute pointer low byte
       STY   Bpntrh            ; set BASIC execute pointer high byte
       JSR   LAB_GBYT          ; get last byte back
@@ -633,7 +630,7 @@ LAB_2DB6
 LAB_2E05
       .ENDIF
 
-      JSR   LAB_CRLF          ; print CR/LF
+      JSR   print_newline           ; print CR/LF
       JSR   LAB_1463          ; do "NEW" and "CLEAR"
       LDA   Ememl             ; get end of mem low byte
       SEC                     ; set carry for subtract
@@ -644,7 +641,7 @@ LAB_2E05
       JSR   LAB_295E          ; print XA as unsigned integer (bytes free)
       LDA   #<LAB_SMSG        ; point to sign-on message (low addr)
       LDY   #>LAB_SMSG        ; point to sign-on message (high addr)
-      JSR   LAB_18C3          ; print null terminated string from memory
+      JSR   print_string          ; print null terminated string from memory
       LDA   #<LAB_1274        ; warm start vector low byte
       LDY   #>LAB_1274        ; warm start vector high byte
       STA   Wrmjpl            ; save warm start vector low byte
@@ -665,7 +662,7 @@ LAB_2E05
 ; Ostrtl,Ostrth - old block start address (unchanged)
 
 LAB_11CF
-      JSR   LAB_121F          ; check available memory, "Out of memory" error if no room
+      JSR   check_avail_mem          ; check available memory, "Out of memory" error if no room
                               ; addr to check is in AY (low/high)
       STA   Earryl            ; save new array mem end low byte
       STY   Earryh            ; save new array mem end high byte
@@ -746,7 +743,7 @@ LAB_1212
 ; check available memory, "Out of memory" error if no room
 ; addr to check is in AY (low/high)
 
-LAB_121F
+check_avail_mem
       CPY   Sstorh            ; compare bottom of string mem high byte
       BCC   LAB_124B          ; if less then exit (is ok)
 
@@ -769,7 +766,7 @@ LAB_122D
       DEX                     ; decrement index
       BPL   LAB_122D          ; loop until all done
 
-      JSR   LAB_GARB          ; garbage collection routine
+      JSR   garbage_collection          ; garbage collection routine
 
                               ; restore misc numeric work area
       LDX   #$00              ; clear the index to restore bytes
@@ -804,17 +801,17 @@ LAB_OMER
 ; do error #X, then warm start
 
 LAB_XERR
-      JSR   LAB_CRLF          ; print CR/LF
+      JSR   print_newline          ; print CR/LF
 
       LDA   LAB_BAER,X        ; get error message pointer low byte
       LDY   LAB_BAER+1,X      ; get error message pointer high byte
-      JSR   LAB_18C3          ; print null terminated string from memory
+      JSR   print_string          ; print null terminated string from memory
 
       JSR   LAB_1491          ; flush stack and clear continue flag
       LDA   #<LAB_EMSG        ; point to " Error" low addr
       LDY   #>LAB_EMSG        ; point to " Error" high addr
 LAB_1269
-      JSR   LAB_18C3          ; print null terminated string from memory
+      JSR   print_string          ; print null terminated string from memory
       LDY   Clineh            ; get current line high byte
       INY                     ; increment it
       BEQ   LAB_1274          ; go do warm start (was immediate mode)
@@ -833,7 +830,7 @@ LAB_1274
       LDA   #<LAB_RMSG        ; point to "Ready" message low byte
       LDY   #>LAB_RMSG        ; point to "Ready" message high byte
 
-      JSR   LAB_18C3          ; go do print string
+      JSR   print_string          ; go do print string
 
 ; wait for Basic command (no "Ready")
 
@@ -997,7 +994,7 @@ LAB_133E
 
 ; print "? " and get BASIC input
 
-LAB_INLN
+get_input
       JSR   LAB_18E3          ; print "?" character
       JSR   LAB_18E0          ; print " "
       BNE   LAB_1357          ; call for BASIC input and return
@@ -1006,7 +1003,7 @@ LAB_INLN
 
                               ; $08 as delete key (BACKSPACE on standard keyboard)
 LAB_134B
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       DEX                     ; decrement the buffer counter (delete)
       .byte $2C               ; make LDX into BIT abs
 
@@ -1045,7 +1042,7 @@ LAB_1378
       STA   Ibuffs,X          ; else store in buffer
       INX                     ; increment pointer
 LAB_137F
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       BNE   LAB_1359          ; always loop for next character
 
 LAB_1384
@@ -1158,14 +1155,14 @@ LAB_13EC
       BEQ   LAB_13FF          ; branch if it was ":" (is now $00)
 
                               ; A now holds token-$3A
-      CMP   #TK_DATA-$3A      ; compare with DATA token - $3A
+      CMP   #token_DATA-$3A      ; compare with DATA token - $3A
       BNE   LAB_1401          ; branch if not DATA
 
                               ; token was : or DATA
 LAB_13FF
-      STA   Oquote            ; save token-$3A (clear for ":", TK_DATA-$3A for DATA)
+      STA   Oquote            ; save token-$3A (clear for ":", token_DATA-$3A for DATA)
 LAB_1401
-      EOR   #TK_REM-$3A       ; effectively subtract REM token offset
+      EOR   #token_REM-$3A       ; effectively subtract REM token offset
       BNE   LAB_13AC          ; If wasn't REM then go crunch rest of line
 
       STA   Asrch             ; else was REM so set search for [EOL]
@@ -1353,7 +1350,7 @@ LAB_LIST
 
       BEQ   LAB_14BD          ; branch if next character [NULL] (LIST)
 
-      CMP   #TK_MINUS         ; compare with token for -
+      CMP   #token_MINUS         ; compare with token for -
       BNE   LAB_14A6          ; exit if not - (LIST -m)
 
                               ; LIST [[n][-m]]
@@ -1366,7 +1363,7 @@ LAB_14BD
       BEQ   LAB_14D4          ; branch if no more characters
 
                               ; this bit checks the - is present
-      CMP   #TK_MINUS         ; compare with token for -
+      CMP   #token_MINUS         ; compare with token for -
       BNE   LAB_1460          ; return if not "-" (will be Syntax error)
 
                               ; LIST [n]-m
@@ -1386,7 +1383,7 @@ LAB_14D4
 LAB_14E2
       LDY   #$01              ; set index for line
       STY   Oquote            ; clear open quote flag
-      JSR   LAB_CRLF          ; print CR/LF
+      JSR   print_newline          ; print CR/LF
       LDA   (Baslnl),Y        ; get next line pointer high byte
                               ; pointer initially set by search at LAB_14BD
       BEQ   LAB_152B          ; if null all done so exit
@@ -1414,7 +1411,7 @@ LAB_1508
       LDY   Tidx1             ; get index for line
       AND   #$7F              ; mask top out bit of character
 LAB_150C
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       CMP   #$22              ; was it " character
       BNE   LAB_1519          ; branch if not
 
@@ -1469,7 +1466,7 @@ LAB_1530
       DEX                     ; decrement length
       BEQ   LAB_1508          ; if no more characters exit and print
 
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       INY                     ; increment index
       LDA   (ut2_pl),Y        ; get keyword address low byte
       PHA                     ; save it for now
@@ -1484,7 +1481,7 @@ LAB_1540
       DEX                     ; decrement character count
       BEQ   LAB_1508          ; if last character exit and print
 
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       INY                     ; increment index
       BNE   LAB_1540          ; loop for next character
 
@@ -1510,7 +1507,7 @@ LAB_FOR
       PHA                     ; push onto stack
       LDA   Clinel            ; get current line low byte
       PHA                     ; push onto stack
-      LDA   #TK_TO            ; get "TO" token
+      LDA   #token_TO            ; get "TO" token
       JSR   LAB_SCCA          ; scan for CHR$(A) , else do syntax error then warm start
       JSR   LAB_CTNM          ; check if source is numeric, else do type mismatch
       JSR   LAB_EVNM          ; evaluate expression and check is numeric,
@@ -1534,7 +1531,7 @@ LAB_159F
       LDY   #>LAB_259C        ; set 1 pointer high addr
       JSR   LAB_UFAC          ; unpack memory (AY) into FAC1
       JSR   LAB_GBYT          ; scan memory
-      CMP   #TK_STEP          ; compare with STEP token
+      CMP   #token_STEP          ; compare with STEP token
       BNE   LAB_15B3          ; jump if not "STEP"
 
                               ;.was step so ..
@@ -1562,7 +1559,7 @@ LAB_15B3
       PHA                     ; push on stack
       LDA   Frnxtl            ; get var pointer for FOR/NEXT low byte
       PHA                     ; push on stack
-      LDA   #TK_FOR           ; get FOR token
+      LDA   #token_FOR           ; get FOR token
       PHA                     ; push on stack
 
 ; interpreter inner loop
@@ -1632,7 +1629,7 @@ LAB_1602
       JMP   LAB_LET           ; else go do implied LET
 
 LAB_1609
-      CMP   #(TK_TAB-$80)*2   ; compare normalised token * 2 with TAB
+      CMP   #(token_TAB-$80)*2   ; compare normalised token * 2 with TAB
       BCS   LAB_15D9          ; branch if A>=TAB (do syntax error then warm start)
                               ; only tokens before TAB can start a line
       TAY                     ; copy to index
@@ -1779,9 +1776,9 @@ LAB_CONT
 
                               ; we can continue so ..
 LAB_166C
-      LDA   #TK_ON            ; set token for ON
+      LDA   #token_ON            ; set token for ON
       JSR   LAB_IRQ           ; set IRQ flags
-      LDA   #TK_ON            ; set token for ON
+      LDA   #token_ON            ; set token for ON
       JSR   LAB_NMI           ; set NMI flags
 
       STY   Bpntrh            ; save BASIC execute pointer high byte
@@ -1819,7 +1816,7 @@ LAB_DO
       PHA                     ; push on stack
       LDA   Clinel            ; get current line low byte
       PHA                     ; push on stack
-      LDA   #TK_DO            ; token for DO
+      LDA   #token_DO            ; token for DO
       PHA                     ; push on stack
       JSR   LAB_GBYT          ; scan memory
       JMP   LAB_15C2          ; go do interpreter inner loop
@@ -1837,7 +1834,7 @@ LAB_GOSUB
       PHA                     ; push on stack
       LDA   Clinel            ; get current line low byte
       PHA                     ; push on stack
-      LDA   #TK_GOSUB         ; token for GOSUB
+      LDA   #token_GOSUB         ; token for GOSUB
       PHA                     ; push on stack
 LAB_16B0
       JSR   LAB_GBYT          ; scan memory
@@ -1896,7 +1893,7 @@ LAB_LOOP
       TAY                     ; save following token
       TSX                     ; copy stack pointer
       LDA   LAB_STAK+3,X      ; get token byte from stack
-      CMP   #TK_DO            ; compare with DO token
+      CMP   #token_DO            ; compare with DO token
       BNE   LAB_DONOK         ; branch if no matching DO
 
       INX                     ; dump calling routine return address
@@ -1909,7 +1906,7 @@ LAB_LOOP
       CMP   #':'              ; could be ':'
       BEQ   LoopAlways        ; if :... loop forever
 
-      SBC   #TK_UNTIL         ; subtract token for UNTIL, we know carry is set here
+      SBC   #token_UNTIL         ; subtract token for UNTIL, we know carry is set here
       TAX                     ; copy to X (if it was UNTIL then Y will be correct)
       BEQ   DoRest            ; branch if was UNTIL
 
@@ -1973,7 +1970,7 @@ LAB_16E8
       PLA                     ; dump calling routine return address
       PLA                     ; dump calling routine return address
       PLA                     ; pull token
-      CMP   #TK_GOSUB         ; compare with GOSUB token
+      CMP   #token_GOSUB         ; compare with GOSUB token
       BNE   LAB_16F4          ; branch if no matching GOSUB
 
 LAB_16FF
@@ -2047,11 +2044,11 @@ LAB_172D
 LAB_IF
       JSR   LAB_EVEX          ; evaluate the expression
       JSR   LAB_GBYT          ; scan memory
-      CMP   #TK_THEN          ; compare with THEN token
+      CMP   #token_THEN          ; compare with THEN token
       BEQ   LAB_174B          ; if it was THEN go do IF
 
                               ; wasn't IF .. THEN so must be IF .. GOTO
-      CMP   #TK_GOTO          ; compare with GOTO token
+      CMP   #token_GOTO          ; compare with GOTO token
       BNE   LAB_16FC          ; if it wasn't GOTO go do syntax error
 
       LDX   Bpntrl            ; save the basic pointer low byte
@@ -2075,7 +2072,7 @@ LAB_174C
 LAB_174D
 ; *** patch       allow NEXT, LOOP & RETURN to find FOR, DO or GOSUB structure on stack
 ; *** replace
-;      CMP   #TK_RETURN        ; compare the byte with the token for RETURN
+;      CMP   #token_RETURN        ; compare the byte with the token for RETURN
 ;      BNE   LAB_174G          ; if it wasn't RETURN go interpret BASIC code from (Bpntrl)
 ;                              ; and return to this code to process any following code
 ;
@@ -2090,7 +2087,7 @@ LAB_174D
 ;
 ;      LDY   #$00              ; clear the index
 ;      LDA   (Bpntrl),Y        ; get the next BASIC byte
-;      CMP   #TK_ELSE          ; compare it with the token for ELSE
+;      CMP   #token_ELSE          ; compare it with the token for ELSE
 ;      BEQ   LAB_DATA          ; if ELSE ignore the following statement
 ;
 ;; there was no ELSE so continue execution of IF <expr> THEN <stat> [: <stat>]. any
@@ -2109,7 +2106,7 @@ LAB_174D
 
       LDY   #$00              ; clear the index
       LDA   (Bpntrl),Y        ; get the next BASIC byte
-      CMP   #TK_ELSE          ; compare it with the token for ELSE
+      CMP   #token_ELSE          ; compare it with the token for ELSE
       BNE   LAB_no_ELSE       ; no - continue on this line
       JSR   LAB_DATA          ; yes - skip the rest of the line
 
@@ -2130,14 +2127,14 @@ LAB_1750
       LDA   (Bpntrl),Y        ; get the next BASIC byte
       BEQ   LAB_1753          ; if EOL go add the pointer and return
 
-      CMP   #TK_IF            ; compare the byte with the token for IF
+      CMP   #token_IF            ; compare the byte with the token for IF
       BNE   LAB_1752          ; if not IF token skip the depth increment
 
       INX                     ; else increment the nesting depth ..
       BNE   LAB_1750          ; .. and continue looking
 
 LAB_1752
-      CMP   #TK_ELSE          ; compare the byte with the token for ELSE
+      CMP   #token_ELSE          ; compare the byte with the token for ELSE
       BNE   LAB_1750          ; if not ELSE token continue looking
 
       DEX                     ; was ELSE so decrement the nesting depth
@@ -2177,13 +2174,13 @@ LAB_16FD
 ; perform ON
 
 LAB_ON
-      CMP   #TK_IRQ           ; was it IRQ token ?
+      CMP   #token_IRQ           ; was it IRQ token ?
       BNE   LAB_NOIN          ; if not go check NMI
 
       JMP   LAB_SIRQ          ; else go set-up IRQ
 
 LAB_NOIN
-      CMP   #TK_NMI           ; was it NMI token ?
+      CMP   #token_NMI           ; was it NMI token ?
       BNE   LAB_NONM          ; if not go do normal ON command
 
       JMP   LAB_SNMI          ; else go set-up NMI
@@ -2191,10 +2188,10 @@ LAB_NOIN
 LAB_NONM
       JSR   LAB_GTBY          ; get byte parameter
       PHA                     ; push GOTO/GOSUB token
-      CMP   #TK_GOSUB         ; compare with GOSUB token
+      CMP   #token_GOSUB         ; compare with GOSUB token
       BEQ   LAB_176B          ; branch if GOSUB
 
-      CMP   #TK_GOTO          ; compare with GOTO token
+      CMP   #token_GOTO          ; compare with GOTO token
 LAB_1767
       BNE   LAB_16FD          ; if not GOTO do syntax error then warm start
 
@@ -2308,7 +2305,7 @@ LAB_LET
       JSR   LAB_GVAR          ; get var address
       STA   Lvarpl            ; save var address low byte
       STY   Lvarph            ; save var address high byte
-      LDA   #TK_EQUAL         ; get = token
+      LDA   #token_EQUAL         ; get = token
       JSR   LAB_SCCA          ; scan for CHR$(A), else do syntax error then warm start
       LDA   Dtypef            ; get data type flag, $FF=string, $00=numeric
       PHA                     ; push data type flag
@@ -2431,28 +2428,20 @@ LAB_1829
 LAB_182C
       JSR   LAB_GBYT          ; scan memory
 
-; PRINT
-
-LAB_PRINT
-      BEQ   LAB_CRLF          ; if nothing following just print CR/LF
-
+print:
+      BEQ   print_newline          ; if nothing following just print CR/LF
 LAB_1831
-      CMP   #TK_TAB           ; compare with TAB( token
+      CMP   #token_TAB           ; compare with TAB( token
       BEQ   LAB_18A2          ; go do TAB/SPC
-
-      CMP   #TK_SPC           ; compare with SPC( token
+      CMP   #token_SPC           ; compare with SPC( token
       BEQ   LAB_18A2          ; go do TAB/SPC
-
       CMP   #','              ; compare with ","
       BEQ   LAB_188B          ; go do move to next TAB mark
-
       CMP   #';'              ; compare with ";"
       BEQ   LAB_18BD          ; if ";" continue with PRINT processing
-
       JSR   LAB_EVEX          ; evaluate expression
       BIT   Dtypef            ; test data type flag, $FF=string, $00=numeric
       BMI   LAB_1829          ; branch if string
-
       JSR   LAB_296E          ; convert FAC1 to string
       JSR   LAB_20AE          ; print " terminated string to Sutill/Sutilh
       LDY   #$00              ; clear index
@@ -2467,7 +2456,7 @@ LAB_1831
       SBC   (des_pl),Y        ; subtract string length
       BCS   LAB_185E          ; branch if less than terminal width
 
-      JSR   LAB_CRLF          ; else print CR/LF
+      JSR   print_newline          ; else print CR/LF
 LAB_185E
       JSR   LAB_18C6          ; print string from Sutill/Sutilh
       BEQ   LAB_182C          ; always go continue processing line
@@ -2480,20 +2469,18 @@ LAB_1866
       LDX   #<Ibuffs          ; set X to buffer start-1 low byte
       LDY   #>Ibuffs          ; set Y to buffer start-1 high byte
 
-; print CR/LF
-
-LAB_CRLF
+print_newline:
       LDA   #$0D              ; load [CR]
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       LDA   #$0A              ; load [LF]
-      BNE   LAB_PRNA          ; go print the character and return, branch always
+      BNE   print_a_register          ; go print the character and return, branch always
 
 LAB_188B
       LDA   TPos              ; get terminal position
       CMP   Iclim             ; compare with input column limit
       BCC   LAB_1897          ; branch if less
 
-      JSR   LAB_CRLF          ; else print CR/LF (next line)
+      JSR   print_newline          ; else print CR/LF (next line)
       BNE   LAB_18BD          ; continue with PRINT processing (branch always)
 
 LAB_1897
@@ -2514,7 +2501,7 @@ LAB_18A2
       BNE   LAB_1910          ; if not do syntax error then warm start
 
       PLA                     ; get token back
-      CMP   #TK_TAB           ; was it TAB ?
+      CMP   #token_TAB           ; was it TAB ?
       BNE   LAB_18B7          ; if not go do SPC
 
                               ; calculate TAB offset
@@ -2544,7 +2531,7 @@ LAB_18BD
 
 ; print null terminated string from memory
 
-LAB_18C3
+print_string
       JSR   LAB_20AE          ; print " terminated string to Sutill/Sutilh
 
 ; print string from Sutill/Sutilh
@@ -2558,9 +2545,8 @@ LAB_18C6
       BEQ   LAB_188C          ; exit (RTS) if null string
 
 LAB_18CD
-
       LDA   (ut1_pl),Y        ; get next byte
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       INY                     ; increment index
       DEX                     ; decrement count
       BNE   LAB_18CD          ; loop if not done yet
@@ -2584,7 +2570,7 @@ LAB_18E3
 ; also includes infinite line length code
 ; note! some routines expect this one to exit with Zb=0
 
-LAB_PRNA
+print_a_register:
       CMP   #' '              ; compare with " "
       BCC   LAB_18F9          ; branch if less (non printing)
 
@@ -2609,7 +2595,7 @@ LAB_18F0
       CMP   TPos              ; compare with terminal character position
       BNE   LAB_18F7          ; branch if not at end of line
 
-      JSR   LAB_CRLF          ; else print CR/LF
+      JSR   print_newline          ; else print CR/LF
 LAB_18F7
       INC   TPos              ; increment terminal position
       PLA                     ; get character back
@@ -2625,7 +2611,7 @@ LAB_18F9
 
       LDA   #$00              ; load [NULL]
 LAB_1880
-      JSR   LAB_PRNA          ; go print the character
+      JSR   print_a_register          ; go print the character
       DEX                     ; decrement count
       BNE   LAB_1880          ; loop if not all done
 
@@ -2655,7 +2641,7 @@ LAB_1910
 LAB_1913
       LDA   #<LAB_REDO        ; point to redo message (low addr)
       LDY   #>LAB_REDO        ; point to redo message (high addr)
-      JSR   LAB_18C3          ; print null terminated string from memory
+      JSR   print_string          ; print null terminated string from memory
       LDA   Cpntrl            ; get continue pointer low byte
       LDY   Cpntrh            ; get continue pointer high byte
       STA   Bpntrl            ; save BASIC execute pointer low byte
@@ -2676,7 +2662,7 @@ LAB_INPUT
                               ; done with prompt, now get data
 LAB_1934
       JSR   LAB_CKRN          ; check not Direct, back here if ok
-      JSR   LAB_INLN          ; print "? " and get BASIC input
+      JSR   get_input          ; print "? " and get BASIC input
       LDA   #$00              ; set mode = INPUT
       CMP   Ibuffs            ; test first byte in buffer
       BNE   LAB_1953          ; branch if not null input
@@ -2719,7 +2705,7 @@ LAB_195B
 
                               ; mode was INPUT
       JSR   LAB_18E3          ; print "?" character (double ? for extended input)
-      JSR   LAB_INLN          ; print "? " and get BASIC input
+      JSR   get_input          ; print "? " and get BASIC input
       STX   Bpntrl            ; set BASIC execute pointer low byte
       STY   Bpntrh            ; set BASIC execute pointer high byte
 LAB_1985
@@ -2807,7 +2793,7 @@ LAB_19F6
       INY                     ; increment index
       TAX                     ; copy to X
       JSR   LAB_170F          ; set BASIC execute pointer
-      CPX   #TK_DATA          ; compare with "DATA" token
+      CPX   #token_DATA          ; compare with "DATA" token
       BEQ   LAB_1985          ; was "DATA" so go do next READ
 
       BNE   LAB_19DD          ; go find next statement if not "DATA"
@@ -2834,7 +2820,7 @@ LAB_1A0E
 LAB_1A1B
       LDA   #<LAB_IMSG        ; point to extra ignored message (low addr)
       LDY   #>LAB_IMSG        ; point to extra ignored message (high addr)
-      JMP   LAB_18C3          ; print null terminated string from memory and return
+      JMP   print_string          ; print null terminated string from memory and return
 
 ; search the stack for FOR activity
 ; exit with z=1 if FOR else exit with z=0
@@ -2847,7 +2833,7 @@ LAB_11A1
       INX                     ; +4 pass calling routine return address
 LAB_11A6
       LDA   LAB_STAK+1,X      ; get token byte from stack
-      CMP   #TK_FOR           ; is it FOR token
+      CMP   #token_FOR           ; is it FOR token
       BNE   LAB_11CE          ; exit if not FOR token
 
                               ; was FOR token
@@ -3009,11 +2995,11 @@ LAB_1ADB
       JSR   LAB_GBYT          ; scan memory
 LAB_1ADE
       SEC                     ; set carry for subtract
-      SBC   #TK_GT            ; subtract token for > (lowest comparison function)
-      BCC   LAB_1AFA          ; branch if < TK_GT
+      SBC   #token_GT            ; subtract token for > (lowest comparison function)
+      BCC   LAB_1AFA          ; branch if < token_GT
 
       CMP   #$03              ; compare with ">" to "<" tokens
-      BCS   LAB_1AFA          ; branch if >= TK_SGN (highest evaluation function +1)
+      BCS   LAB_1AFA          ; branch if >= token_SGN (highest evaluation function +1)
 
                               ; was token for > = or < (A = 0, 1 or 2)
       CMP   #$01              ; compare with token for =
@@ -3037,8 +3023,8 @@ LAB_1AFA
 
       BCS   LAB_1B78          ; go do functions
 
-                              ; else was <  TK_GT so is operator or lower
-      ADC   #TK_GT-TK_PLUS    ; add # of operators (+, -, *, /, ^, AND, OR or EOR)
+                              ; else was <  token_GT so is operator or lower
+      ADC   #token_GT-token_PLUS    ; add # of operators (+, -, *, /, ^, AND, OR or EOR)
       BCC   LAB_1B78          ; branch if < + operator
 
                               ; carry was set so token was +, -, *, /, ^, AND, OR or EOR
@@ -3086,8 +3072,8 @@ LAB_1B2A
       DEC   Bpntrh            ; else decrement BASIC execute pointer high byte
 LAB_1B34
       DEC   Bpntrl            ; decrement BASIC execute pointer low byte
-TK_LT_PLUS  = TK_LT-TK_PLUS
-      LDY   #TK_LT_PLUS*3     ; set offset to last operator entry
+token_LT_PLUS  = token_LT-token_PLUS
+      LDY   #token_LT_PLUS*3     ; set offset to last operator entry
       STA   comp_f            ; save new compare function flag
       BNE   LAB_1B13          ; branch always
 
@@ -3286,19 +3272,19 @@ LAB_SNER
 ; do tokens
 
 LAB_1BD0
-      CMP   #TK_MINUS         ; compare with token for -
+      CMP   #token_MINUS         ; compare with token for -
       BEQ   LAB_1C11          ; branch if - token (do set-up for functions)
 
                               ; wasn't -n so ..
-      CMP   #TK_PLUS          ; compare with token for +
+      CMP   #token_PLUS          ; compare with token for +
       BEQ   LAB_GVAL          ; branch if + token (+n = n so ignore leading +)
 
-      CMP   #TK_NOT           ; compare with token for NOT
+      CMP   #token_NOT           ; compare with token for NOT
       BNE   LAB_1BE7          ; branch if not token for NOT
 
                               ; was NOT token
-TK_EQUAL_PLUS     = TK_EQUAL-TK_PLUS
-      LDY   #TK_EQUAL_PLUS*3  ; offset to NOT function
+token_EQUAL_PLUS     = token_EQUAL-token_PLUS
+      LDY   #token_EQUAL_PLUS*3  ; offset to NOT function
       BNE   LAB_1C13          ; do set-up for function then execute (branch always)
 
 ; do = compare
@@ -3316,7 +3302,7 @@ LAB_EQUAL
 
                               ; wasn't +, -, or NOT so ..
 LAB_1BE7
-      CMP   #TK_FN            ; compare with token for FN
+      CMP   #token_FN            ; compare with token for FN
       BNE   LAB_1BEE          ; branch if not token for FN
 
       JMP   LAB_201E          ; go evaluate FNx
@@ -3325,7 +3311,7 @@ LAB_1BE7
 
                               ; wasn't +, -, NOT or FN so ..
 LAB_1BEE
-      SBC   #TK_SGN           ; subtract with token for SGN
+      SBC   #token_SGN           ; subtract with token for SGN
       BCS   LAB_1C27          ; if a function token go do it
 
       JMP   LAB_SNER          ; else do syntax error
@@ -3333,8 +3319,8 @@ LAB_1BEE
 ; set-up for functions
 
 LAB_1C11
-TK_GT_PLUS  = TK_GT-TK_PLUS
-      LDY   #TK_GT_PLUS*3     ; set offset from base to > operator
+token_GT_PLUS  = token_GT-token_PLUS
+      LDY   #token_GT_PLUS*3     ; set offset from base to > operator
 LAB_1C13
       PLA                     ; dump return address low byte
 ; *** begin patch  2.22p5.4  concatenate MINUS or NOT() crashes EhBASIC  ***
@@ -4073,7 +4059,7 @@ LAB_1E8D
 LAB_1EA1
       JSR   LAB_1DE6          ; set-up array pointer (Adatal/h) to first element in array
                               ; (Astrtl,Astrth points to start of array)
-      JSR   LAB_121F          ; check available memory, "Out of memory" error if no room
+      JSR   check_avail_mem          ; check available memory, "Out of memory" error if no room
                               ; addr to check is in AY (low/high)
       LDY   #$00              ; clear Y (don't need to clear A)
       STY   Aspth             ; clear array data size high byte
@@ -4129,7 +4115,7 @@ LAB_1ED0
 
                               ; set-up mostly complete, now zero the array
 LAB_1EF3
-      JSR   LAB_121F          ; check available memory, "Out of memory" error if no room
+      JSR   check_avail_mem          ; check available memory, "Out of memory" error if no room
                               ; addr to check is in AY (low/high)
       STA   Earryl            ; save array mem end low byte
       STY   Earryh            ; save array mem end high byte
@@ -4287,7 +4273,7 @@ LAB_FRE
 
                               ; FRE(n) was numeric so do this
 LAB_1FB4
-      JSR   LAB_GARB          ; go do garbage collection
+      JSR   garbage_collection          ; go do garbage collection
       SEC                     ; set carry for subtract
       LDA   Sstorl            ; get bottom of string space low byte
       SBC   Earryl            ; subtract array mem end low byte
@@ -4306,7 +4292,7 @@ LAB_AYFC
 
 ; perform POS()
 
-LAB_POS
+basic_POS
       LDY   TPos              ; get terminal position
 
 ; convert Y to byte in FAC1
@@ -4341,7 +4327,7 @@ LAB_DEF
       JSR   LAB_GVAR          ; get (var) address
       JSR   LAB_CTNM          ; check if source is numeric, else do type mismatch
       JSR   LAB_1BFB          ; scan for ")" , else do syntax error then warm start
-      LDA   #TK_EQUAL         ; get = token
+      LDA   #token_EQUAL         ; get = token
       JSR   LAB_SCCA          ; scan for CHR$(A), else do syntax error then warm start
       LDA   Cvarah            ; get current var address high byte
       PHA                     ; push it
@@ -4358,7 +4344,7 @@ LAB_DEF
 ; check FNx syntax
 
 LAB_200B
-      LDA   #TK_FN            ; get FN" token
+      LDA   #token_FN            ; get FN" token
       JSR   LAB_SCCA          ; scan for CHR$(A) , else do syntax error then warm start
                               ; return character after A
       ORA   #$80              ; set FN flag bit
@@ -4585,7 +4571,7 @@ LAB_20F8
 ; return X=Sutill=ptr low byte, Y=Sutill=ptr high byte
 
 LAB_2115
-      LSR   Gclctd            ; clear garbage collected flag (b7)
+      LSR   clear_gc_flag            ; clear garbage collected flag (b7)
 
                               ; make space for string A long
 LAB_2117
@@ -4617,18 +4603,18 @@ LAB_212C
 
 LAB_2137
       LDX   #$0C              ; error code $0C ("Out of memory" error)
-      LDA   Gclctd            ; get garbage collected flag
+      LDA   clear_gc_flag            ; get garbage collected flag
       BMI   LAB_20F5          ; if set then do error code X
 
-      JSR   LAB_GARB          ; else go do garbage collection
+      JSR   garbage_collection          ; else go do garbage collection
       LDA   #$80              ; flag for garbage collected
-      STA   Gclctd            ; set garbage collected flag
+      STA   clear_gc_flag            ; set garbage collected flag
       PLA                     ; pull length
       BNE   LAB_2117          ; go try again (loop always, length should never be = $00)
 
 ; garbage collection routine
 
-LAB_GARB
+garbage_collection
       LDX   Ememl             ; get end of mem low byte
       LDA   Ememh             ; get end of mem high byte
 
@@ -4672,7 +4658,7 @@ LAB_2176
       BEQ   LAB_2183          ; branch if = var mem end
 
 LAB_217E
-      JSR   LAB_21D1          ; go garbage collect strings
+      JSR   gc_strings          ; go garbage collect strings
       BEQ   LAB_2176          ; loop always
 
                               ; done string vars, now do string arrays
@@ -4729,7 +4715,7 @@ LAB_21CC
 ; enter with XA = variable pointer
 ; return with XA = next variable pointer
 
-LAB_21D1
+gc_strings:
       INY                     ; increment index (Y was $00)
       LDA   (ut1_pl),Y        ; get var name byte 2
       BPL   LAB_2206          ; if not string, step pointer to next var and return
@@ -6227,7 +6213,7 @@ LAB_27D7
 
 ; perform SGN()
 
-LAB_SGN
+basic_SGN
       JSR   LAB_27CA          ; get FAC1 sign
                               ; return A=$FF/-ve A=$01/+ve
 ; save A as integer byte
@@ -6450,13 +6436,13 @@ LAB_28A3
       JSR   LAB_IGBY          ; increment and scan memory
       BCC   LAB_28C7          ; branch if numeric character
 
-      CMP   #TK_MINUS         ; else compare with token for -
+      CMP   #token_MINUS         ; else compare with token for -
       BEQ   LAB_28C2          ; branch if token for -
 
       CMP   #'-'              ; else compare with "-"
       BEQ   LAB_28C2          ; branch if "-"
 
-      CMP   #TK_PLUS          ; else compare with token for +
+      CMP   #token_PLUS          ; else compare with token for +
       BEQ   LAB_28C4          ; branch if token for +
 
       CMP   #'+'              ; else compare with "+"
@@ -6579,7 +6565,7 @@ LAB_2942
 LAB_2953
       LDA   #<LAB_LMSG        ; point to " in line " message low byte
       LDY   #>LAB_LMSG        ; point to " in line " message high byte
-      JSR   LAB_18C3          ; print null terminated string from memory
+      JSR   print_string          ; print null terminated string from memory
 
                               ; print Basic line #
       LDA   Clineh            ; get current line high byte
@@ -6596,7 +6582,7 @@ LAB_295E
       LDY   #$00              ; clear index
       TYA                     ; clear A
       JSR   LAB_297B          ; convert FAC1 to string, skip sign character save
-      JMP   LAB_18C3          ; print null terminated string from memory and return
+      JMP   print_string          ; print null terminated string from memory and return
 
 ; convert FAC1 to ASCII string result in (AY)
 ; not any more, moved scratchpad to page 0
@@ -7476,7 +7462,7 @@ LAB_CKIN
       PHA                     ; push on stack
       LDA   Clinel            ; get current line low byte
       PHA                     ; push on stack
-      LDA   #TK_GOSUB         ; token for GOSUB
+      LDA   #token_GOSUB         ; token for GOSUB
       PHA                     ; push on stack
 
       LDA   PLUS_1,Y          ; get interrupt code pointer low byte
@@ -7520,13 +7506,13 @@ LAB_IRQ
 
 LAB_NMI
       LDX   #NmiBase          ; set pointer to NMI values
-      CMP   #TK_ON            ; compare with token for ON
+      CMP   #token_ON            ; compare with token for ON
       BEQ   LAB_INON          ; go turn on interrupt
 
-      CMP   #TK_OFF           ; compare with token for OFF
+      CMP   #token_OFF           ; compare with token for OFF
       BEQ   LAB_IOFF          ; go turn off interrupt
 
-      EOR   #TK_CLEAR         ; compare with token for CLEAR, A = $00 if = TK_CLEAR
+      EOR   #token_CLEAR         ; compare with token for CLEAR, A = $00 if = token_CLEAR
       BEQ   LAB_INEX          ; go clear interrupt flags and return
 
       JMP   LAB_SNER          ; do syntax error then warm start
@@ -7960,7 +7946,7 @@ LAB_2CEE
 
 LAB_2CF4
       LDA   $FFFF             ; get byte to scan (addr set by call routine)
-      CMP   #TK_ELSE          ; compare with the token for ELSE
+      CMP   #token_ELSE          ; compare with the token for ELSE
       BEQ   LAB_2D05          ; exit if ELSE, not numeric, carry set
 
       CMP   #':'              ; compare with ":"
@@ -7981,7 +7967,7 @@ LAB_2D05
 
 StrTab
       .byte $4C               ; JMP opcode
-      .word LAB_COLD          ; initial warm start vector (cold start)
+      .word cold_start          ; initial warm start vector (cold start)
 
       .byte $00               ; these bytes are not used by BASIC
       .word $0000             ; 
@@ -8152,7 +8138,7 @@ LAB_CTBL
       .word LAB_CALL-1        ; CALL            new command
       .word LAB_DO-1          ; DO              new command
       .word LAB_LOOP-1        ; LOOP            new command
-      .word LAB_PRINT-1       ; PRINT
+      .word print-1       ; PRINT
       .word LAB_CONT-1        ; CONT
       .word LAB_LIST-1        ; LIST
       .word LAB_CLEAR-1       ; CLEAR
@@ -8209,12 +8195,12 @@ LAB_FTPM    = LAB_FTPL+$01
 
 LAB_FTBL
 LAB_FTBM    = LAB_FTBL+$01
-      .word LAB_SGN-1         ; SGN()
+      .word basic_SGN-1         ; SGN()
       .word LAB_INT-1         ; INT()
       .word LAB_ABS-1         ; ABS()
       .word LAB_USR-1         ; USR()
       .word LAB_FRE-1         ; FRE()
-      .word LAB_POS-1         ; POS()
+      .word basic_POS-1         ; POS()
       .word LAB_SQR-1         ; SQR()
       .word LAB_RND-1         ; RND()           modified function
       .word LAB_LOG-1         ; LOG()
@@ -8352,258 +8338,258 @@ TAB_CHRT
 ; end marker (#$00)
 
 TAB_STAR
-      .byte TK_MUL,$00        ; *
+      .byte token_MUL,$00        ; *
 TAB_PLUS
-      .byte TK_PLUS,$00       ; +
+      .byte token_PLUS,$00       ; +
 TAB_MNUS
-      .byte TK_MINUS,$00      ; -
+      .byte token_MINUS,$00      ; -
 TAB_SLAS
-      .byte TK_DIV,$00        ; /
+      .byte token_DIV,$00        ; /
 TAB_LESS
 LBB_LSHIFT
-      .byte "<",TK_LSHIFT     ; <<  note - "<<" must come before "<"
-      .byte TK_LT             ; <
+      .byte "<",token_LSHIFT     ; <<  note - "<<" must come before "<"
+      .byte token_LT             ; <
       .byte $00
 TAB_EQUL
-      .byte TK_EQUAL,$00      ; =
+      .byte token_EQUAL,$00      ; =
 TAB_MORE
 LBB_RSHIFT
-      .byte ">",TK_RSHIFT     ; >>  note - ">>" must come before ">"
-      .byte TK_GT             ; >
+      .byte ">",token_RSHIFT     ; >>  note - ">>" must come before ">"
+      .byte token_GT             ; >
       .byte $00
 TAB_QEST
-      .byte TK_PRINT,$00      ; ?
+      .byte token_PRINT,$00      ; ?
 TAB_ASCA
 LBB_ABS
-      .byte "BS(",TK_ABS      ; ABS(
+      .byte "BS(",token_ABS      ; ABS(
 LBB_AND
-      .byte "ND",TK_AND       ; AND
+      .byte "ND",token_AND       ; AND
 LBB_ASC
-      .byte "SC(",TK_ASC      ; ASC(
+      .byte "SC(",token_ASC      ; ASC(
 LBB_ATN
-      .byte "TN(",TK_ATN      ; ATN(
+      .byte "TN(",token_ATN      ; ATN(
       .byte $00
 TAB_ASCB
 LBB_BINS
-      .byte "IN$(",TK_BINS    ; BIN$(
+      .byte "IN$(",token_BINS    ; BIN$(
 LBB_BITCLR
-      .byte "ITCLR",TK_BITCLR ; BITCLR
+      .byte "ITCLR",token_BITCLR ; BITCLR
 LBB_BITSET
-      .byte "ITSET",TK_BITSET ; BITSET
+      .byte "ITSET",token_BITSET ; BITSET
 LBB_BITTST
-      .byte "ITTST(",TK_BITTST
+      .byte "ITTST(",token_BITTST
                               ; BITTST(
       .byte $00
 TAB_ASCC
 LBB_CALL
-      .byte "ALL",TK_CALL     ; CALL
+      .byte "ALL",token_CALL     ; CALL
 LBB_CHRS
-      .byte "HR$(",TK_CHRS    ; CHR$(
+      .byte "HR$(",token_CHRS    ; CHR$(
 LBB_CLEAR
-      .byte "LEAR",TK_CLEAR   ; CLEAR
+      .byte "LEAR",token_CLEAR   ; CLEAR
 LBB_CONT
-      .byte "ONT",TK_CONT     ; CONT
+      .byte "ONT",token_CONT     ; CONT
 LBB_COS
-      .byte "OS(",TK_COS      ; COS(
+      .byte "OS(",token_COS      ; COS(
       .byte $00
 TAB_ASCD
 LBB_DATA
-      .byte "ATA",TK_DATA     ; DATA
+      .byte "ATA",token_DATA     ; DATA
 LBB_DEC
-      .byte "EC",TK_DEC       ; DEC
+      .byte "EC",token_DEC       ; DEC
 LBB_DEEK
-      .byte "EEK(",TK_DEEK    ; DEEK(
+      .byte "EEK(",token_DEEK    ; DEEK(
 LBB_DEF
-      .byte "EF",TK_DEF       ; DEF
+      .byte "EF",token_DEF       ; DEF
 LBB_DIM
-      .byte "IM",TK_DIM       ; DIM
+      .byte "IM",token_DIM       ; DIM
 LBB_DOKE
-      .byte "OKE",TK_DOKE     ; DOKE note - "DOKE" must come before "DO"
+      .byte "OKE",token_DOKE     ; DOKE note - "DOKE" must come before "DO"
 LBB_DO
-      .byte "O",TK_DO         ; DO
+      .byte "O",token_DO         ; DO
       .byte $00
 TAB_ASCE
 LBB_ELSE
-      .byte "LSE",TK_ELSE     ; ELSE
+      .byte "LSE",token_ELSE     ; ELSE
 LBB_END
-      .byte "ND",TK_END       ; END
+      .byte "ND",token_END       ; END
 LBB_EOR
-      .byte "OR",TK_EOR       ; EOR
+      .byte "OR",token_EOR       ; EOR
 LBB_EXP
-      .byte "XP(",TK_EXP      ; EXP(
+      .byte "XP(",token_EXP      ; EXP(
       .byte $00
 TAB_ASCF
 LBB_FN
-      .byte "N",TK_FN         ; FN
+      .byte "N",token_FN         ; FN
 LBB_FOR
-      .byte "OR",TK_FOR       ; FOR
+      .byte "OR",token_FOR       ; FOR
 LBB_FRE
-      .byte "RE(",TK_FRE      ; FRE(
+      .byte "RE(",token_FRE      ; FRE(
       .byte $00
 TAB_ASCG
 LBB_GET
-      .byte "ET",TK_GET       ; GET
+      .byte "ET",token_GET       ; GET
 LBB_GOSUB
-      .byte "OSUB",TK_GOSUB   ; GOSUB
+      .byte "OSUB",token_GOSUB   ; GOSUB
 LBB_GOTO
-      .byte "OTO",TK_GOTO     ; GOTO
+      .byte "OTO",token_GOTO     ; GOTO
       .byte $00
 TAB_ASCH
 LBB_HEXS
-      .byte "EX$(",TK_HEXS    ; HEX$(
+      .byte "EX$(",token_HEXS    ; HEX$(
       .byte $00
 TAB_ASCI
 LBB_IF
-      .byte "F",TK_IF         ; IF
+      .byte "F",token_IF         ; IF
 LBB_INC
-      .byte "NC",TK_INC       ; INC
+      .byte "NC",token_INC       ; INC
 LBB_INPUT
-      .byte "NPUT",TK_INPUT   ; INPUT
+      .byte "NPUT",token_INPUT   ; INPUT
 LBB_INT
-      .byte "NT(",TK_INT      ; INT(
+      .byte "NT(",token_INT      ; INT(
 LBB_IRQ
-      .byte "RQ",TK_IRQ       ; IRQ
+      .byte "RQ",token_IRQ       ; IRQ
       .byte $00
 TAB_ASCL
 LBB_LCASES
-      .byte "CASE$(",TK_LCASES
+      .byte "CASE$(",token_LCASES
                               ; LCASE$(
 LBB_LEFTS
-      .byte "EFT$(",TK_LEFTS  ; LEFT$(
+      .byte "EFT$(",token_LEFTS  ; LEFT$(
 LBB_LEN
-      .byte "EN(",TK_LEN      ; LEN(
+      .byte "EN(",token_LEN      ; LEN(
 LBB_LET
-      .byte "ET",TK_LET       ; LET
+      .byte "ET",token_LET       ; LET
 LBB_LIST
-      .byte "IST",TK_LIST     ; LIST
+      .byte "IST",token_LIST     ; LIST
 LBB_LOAD
-      .byte "OAD",TK_LOAD     ; LOAD
+      .byte "OAD",token_LOAD     ; LOAD
 LBB_LOG
-      .byte "OG(",TK_LOG      ; LOG(
+      .byte "OG(",token_LOG      ; LOG(
 LBB_LOOP
-      .byte "OOP",TK_LOOP     ; LOOP
+      .byte "OOP",token_LOOP     ; LOOP
       .byte $00
 TAB_ASCM
 LBB_MAX
-      .byte "AX(",TK_MAX      ; MAX(
+      .byte "AX(",token_MAX      ; MAX(
 LBB_MIDS
-      .byte "ID$(",TK_MIDS    ; MID$(
+      .byte "ID$(",token_MIDS    ; MID$(
 LBB_MIN
-      .byte "IN(",TK_MIN      ; MIN(
+      .byte "IN(",token_MIN      ; MIN(
       .byte $00
 TAB_ASCN
 LBB_NEW
-      .byte "EW",TK_NEW       ; NEW
+      .byte "EW",token_NEW       ; NEW
 LBB_NEXT
-      .byte "EXT",TK_NEXT     ; NEXT
+      .byte "EXT",token_NEXT     ; NEXT
 LBB_NMI
-      .byte "MI",TK_NMI       ; NMI
+      .byte "MI",token_NMI       ; NMI
 LBB_NOT
-      .byte "OT",TK_NOT       ; NOT
+      .byte "OT",token_NOT       ; NOT
 LBB_NULL
-      .byte "ULL",TK_NULL     ; NULL
+      .byte "ULL",token_NULL     ; NULL
       .byte $00
 TAB_ASCO
 LBB_OFF
-      .byte "FF",TK_OFF       ; OFF
+      .byte "FF",token_OFF       ; OFF
 LBB_ON
-      .byte "N",TK_ON         ; ON
+      .byte "N",token_ON         ; ON
 LBB_OR
-      .byte "R",TK_OR         ; OR
+      .byte "R",token_OR         ; OR
       .byte $00
 TAB_ASCP
 LBB_PEEK
-      .byte "EEK(",TK_PEEK    ; PEEK(
+      .byte "EEK(",token_PEEK    ; PEEK(
 LBB_PI
-      .byte "I",TK_PI         ; PI
+      .byte "I",token_PI         ; PI
 LBB_POKE
-      .byte "OKE",TK_POKE     ; POKE
+      .byte "OKE",token_POKE     ; POKE
 LBB_POS
-      .byte "OS(",TK_POS      ; POS(
+      .byte "OS(",token_POS      ; POS(
 LBB_PRINT
-      .byte "RINT",TK_PRINT   ; PRINT
+      .byte "RINT",token_PRINT   ; PRINT
       .byte $00
 TAB_ASCR
 LBB_READ
-      .byte "EAD",TK_READ     ; READ
+      .byte "EAD",token_READ     ; READ
 LBB_REM
-      .byte "EM",TK_REM       ; REM
+      .byte "EM",token_REM       ; REM
 LBB_RESTORE
-      .byte "ESTORE",TK_RESTORE
+      .byte "ESTORE",token_RESTORE
                               ; RESTORE
 LBB_RETIRQ
-      .byte "ETIRQ",TK_RETIRQ ; RETIRQ
+      .byte "ETIRQ",token_RETIRQ ; RETIRQ
 LBB_RETNMI
-      .byte "ETNMI",TK_RETNMI ; RETNMI
+      .byte "ETNMI",token_RETNMI ; RETNMI
 LBB_RETURN
-      .byte "ETURN",TK_RETURN ; RETURN
+      .byte "ETURN",token_RETURN ; RETURN
 LBB_RIGHTS
-      .byte "IGHT$(",TK_RIGHTS
+      .byte "IGHT$(",token_RIGHTS
                               ; RIGHT$(
 LBB_RND
-      .byte "ND(",TK_RND      ; RND(
+      .byte "ND(",token_RND      ; RND(
 LBB_RUN
-      .byte "UN",TK_RUN       ; RUN
+      .byte "UN",token_RUN       ; RUN
       .byte $00
 TAB_ASCS
 LBB_SADD
-      .byte "ADD(",TK_SADD    ; SADD(
+      .byte "ADD(",token_SADD    ; SADD(
 LBB_SAVE
-      .byte "AVE",TK_SAVE     ; SAVE
+      .byte "AVE",token_SAVE     ; SAVE
 LBB_SGN
-      .byte "GN(",TK_SGN      ; SGN(
+      .byte "GN(",token_SGN      ; SGN(
 LBB_SIN
-      .byte "IN(",TK_SIN      ; SIN(
+      .byte "IN(",token_SIN      ; SIN(
 LBB_SPC
-      .byte "PC(",TK_SPC      ; SPC(
+      .byte "PC(",token_SPC      ; SPC(
 LBB_SQR
-      .byte "QR(",TK_SQR      ; SQR(
+      .byte "QR(",token_SQR      ; SQR(
 LBB_STEP
-      .byte "TEP",TK_STEP     ; STEP
+      .byte "TEP",token_STEP     ; STEP
 LBB_STOP
-      .byte "TOP",TK_STOP     ; STOP
+      .byte "TOP",token_STOP     ; STOP
 LBB_STRS
-      .byte "TR$(",TK_STRS    ; STR$(
+      .byte "TR$(",token_STRS    ; STR$(
 LBB_SWAP
-      .byte "WAP",TK_SWAP     ; SWAP
+      .byte "WAP",token_SWAP     ; SWAP
       .byte $00
 TAB_ASCT
 LBB_TAB
-      .byte "AB(",TK_TAB      ; TAB(
+      .byte "AB(",token_TAB      ; TAB(
 LBB_TAN
-      .byte "AN(",TK_TAN      ; TAN(
+      .byte "AN(",token_TAN      ; TAN(
 LBB_THEN
-      .byte "HEN",TK_THEN     ; THEN
+      .byte "HEN",token_THEN     ; THEN
 LBB_TO
-      .byte "O",TK_TO         ; TO
+      .byte "O",token_TO         ; TO
 LBB_TWOPI
-      .byte "WOPI",TK_TWOPI   ; TWOPI
+      .byte "WOPI",token_TWOPI   ; TWOPI
       .byte $00
 TAB_ASCU
 LBB_UCASES
-      .byte "CASE$(",TK_UCASES
+      .byte "CASE$(",token_UCASES
                               ; UCASE$(
 LBB_UNTIL
-      .byte "NTIL",TK_UNTIL   ; UNTIL
+      .byte "NTIL",token_UNTIL   ; UNTIL
 LBB_USR
-      .byte "SR(",TK_USR      ; USR(
+      .byte "SR(",token_USR      ; USR(
       .byte $00
 TAB_ASCV
 LBB_VAL
-      .byte "AL(",TK_VAL      ; VAL(
+      .byte "AL(",token_VAL      ; VAL(
 LBB_VPTR
-      .byte "ARPTR(",TK_VPTR  ; VARPTR(
+      .byte "ARPTR(",token_VPTR  ; VARPTR(
       .byte $00
 TAB_ASCW
 LBB_WAIT
-      .byte "AIT",TK_WAIT     ; WAIT
+      .byte "AIT",token_WAIT     ; WAIT
 LBB_WHILE
-      .byte "HILE",TK_WHILE   ; WHILE
+      .byte "HILE",token_WHILE   ; WHILE
 LBB_WIDTH
-      .byte "IDTH",TK_WIDTH   ; WIDTH
+      .byte "IDTH",token_WIDTH   ; WIDTH
       .byte $00
 TAB_POWR
-      .byte TK_POWER,$00      ; ^
+      .byte token_POWER,$00      ; ^
 
 ; new decode table for LIST
 ; Table is ..
