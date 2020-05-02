@@ -627,11 +627,11 @@ LAB_2DB6
       INC   Smeml             ; increment start of mem low byte
 
 ; these two lines are only needed if Ram_base is $xxFF
-;      .IF   Ram_base&$FF==$FF
-;      BNE   LAB_2E05          ; branch if no rollover
-;      INC   Smemh             ; increment start of mem high byte
-;LAB_2E05
-;      .ENDIF
+      .IF   Ram_base&$FF=$FF
+      BNE   LAB_2E05          ; branch if no rollover
+      INC   Smemh             ; increment start of mem high byte
+LAB_2E05
+      .ENDIF
 
       JSR   LAB_CRLF          ; print CR/LF
       JSR   LAB_1463          ; do "NEW" and "CLEAR"
@@ -1215,12 +1215,12 @@ LAB_142A
       INY                     ; adjust for line copy
 ; *** begin patch for when Ibuffs is $xx00 - Daryl Rictor ***
 ; *** insert
-;      .IF   Ibuffs&$FF==0
-;      LDA   Bpntrl            ; test for $00
-;      BNE   LAB_142P          ; not $00
-;      DEC   Bpntrh            ; allow for increment when $xx00
-;LAB_142P
-;      .ENDIF
+      .IF   Ibuffs&$FF=0
+      LDA   Bpntrl            ; test for $00
+      BNE   LAB_142P          ; not $00
+      DEC   Bpntrh            ; allow for increment when $xx00
+LAB_142P
+      .ENDIF
 ; *** end   patch for when Ibuffs is $xx00 - Daryl Rictor ***
 ; end of patch
       DEC   Bpntrl            ; allow for increment
