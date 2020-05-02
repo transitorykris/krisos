@@ -30,4 +30,12 @@ _PRINT_INC_ = 1
 .macro print string
     JSR primm
     .asciiz string
+.endmacro
+
+.macro printdbg string
+    .ifdef CFG_DEBUG
+        print string
+    .endif
+.endmacro
+
 .endif

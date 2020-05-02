@@ -11,6 +11,9 @@ _LIB_PRIMM_ = 1
     .setcpu "6502"
     .psc02                      ; Enable 65c02 opcodes
 
+    .importzp primm_lo
+    .importzp primm_hi
+
     .import acia_put_char
 
     .export primm

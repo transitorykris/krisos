@@ -27,6 +27,7 @@ _LIB_ZEROPAGE_ = 1
     .include "term/term_zp.s"
     .include "term/commands_zp.s"
     .include "util/memtest_zp.s"
+    .include "util/print_zp.s"
     .include "xmodem/xmodem_zp.s"
     .include "kernel_zp.s"
 

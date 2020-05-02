@@ -30,6 +30,7 @@
     .include "io/lcd.inc"
     .include "term/command.inc"
     .include "io/via.inc"
+    .include "util/print.inc"
     .include "util/toolbox.inc"
     .include "config.inc"
 
@@ -78,83 +79,88 @@ main:
     TXS
 
     JSR acia_init               ; Set up the serial port
-    writeln init_acia_msg
+    ; We can't print to the serial port until the above completed
+    print "Disabled interrupts"
+    print "Disabled BCD mode"
+    print "Initialized stack"
+    print "Initialized 6551 ACIA"
 
-    writeln init_terminal_msg
+    print "Initializing terminal...\n\r"
     JSR setup_term              ; Pretty up the user's terminal
 
 init_via1:
-    writeln init_via_msg
+    print "Initializing 6522 VIA1..."
     JSR test_via1               ; See if the via works!
     BCS test_via1_failed
     LDA #%11100001              ; LCD signals + 1 pin for LED
     LDX #%11111111              ; LCD databus lines
-    writeln init_done_msg
+    print "Done\n\r"
     JMP init_via2
 test_via1_failed:
-    writeln init_failed_msg
+    print "FAILED\n\r"
 init_via2:
-    writeln init_via_msg
+    print "Initializing 6522 VIA2..."
     JSR test_via2
     BCS test_via2_failed
     JSR via1_init_ports         ; Initialize VIA
     LDA #%00000000
     LDX #%00000000
     JSR via2_init_ports
-    writeln init_done_msg
+    print "Done\n\r"
     JMP init_vias_done
 test_via2_failed:
-    writeln init_failed_msg
+    print "FAILED\n\r"
 init_vias_done:
 
 .ifdef CFG_SN76489
-    writeln init_sound_msg
+    print "Initializing SN76489A Sound..."
     JSR sound_init
     JSR startup_sound
-    writeln init_done_msg
+    print "Done\n\r"
 .endif
 
 .ifdef CFG_LCD
-    writeln init_lcd_msg
+    print "Initializing Hitachi LCD...."
     JSR lcd_init                ; Set up the LCD display
     writeln_lcd krisos_lcd_message
-    writeln init_done_msg
+    print "Done\n\r"
 .endif
 
 .ifdef CFG_USER_MEMTEST
-    writeln init_test_user_memory_msg
+    print "Testing user space memory..."
     JSR memtest_user
     BCC memory_passed
-    writeln init_failed_msg
+    print "FAILED\n\r"
     JMP memory_test_done
 memory_passed:
-    writeln init_done_msg
+    print "Done\n\r"
 memory_test_done:
 .endif
 
-    writeln init_clear_userspace_msg
+    print "Clearing userspace memory..."
     LDA #$10                    ; The page to clear
     JSR clear_page
-    writeln init_done_msg
+    print "Done\n\r"
 
-    writeln init_default_interrupt_handlers
+    print "Re-enabling interrupts..."
     JSR set_interrupt_handlers
-    writeln init_done_msg
-    writeln init_reenable_irq_msg
+    print "Done\n\r"
+
+    print "Re-enabling interrupts..."
     CLI                         ; Re-enable interrupts
-    writeln init_done_msg
+    print "Done\n\r"
 
-    writeln build_time_msg
+    print "Build time "
     write_hex_dword build_time
-    writeln new_line
+    print "\n\r"
 
-    writeln assembler_version_msg
+    print "Assembler version ca65 "
     write_hex_word assembler_version
-    writeln new_line
+    print "\n\r"
 
 .ifdef CFG_CLOCK
     ; We start the clock late because it's wired into NMI
-    writeln init_clock_msg
+    print "Starting the system clock..."
     STZ16 uptime                ; Reset our uptime to zero
     LDA #%01000000              ; T1 continuous interrupts, PB7 disabled
     STA VIA1_ACR
@@ -164,14 +170,14 @@ memory_test_done:
     STA VIA1_T1CL               ; Low byte of interval counter
     LDA #>TICK
     STA VIA1_T1CH               ; High byte of interval counter
-    writeln init_done_msg
+    print "Done\n\r"
 .endif
 
-    writeln init_start_cli_msg
-    writeln welcome_msg
+    print "Starting command line...\n\r"
+    print "Welcome to KrisOS on the K64\n\r"
 
 repl:                           ; Not really a repl but I don't have a better name
-    write_debug start_of_repl_msg
+    printdbg "Start of CLI\n\r"
     JSR reset_user_input        ; Show a fresh prompt
     writeln prompt              ;
     JSR read                    ; Read command
@@ -196,23 +202,23 @@ load_program:
     JSR XModemRcv
     PHA                         ; Save our 16-bit return
     PHX                         ;
-    writeln exited_msg
+    printdbg "\n\rExited with code: "
     PLA                         ; binhex takes the argument in the A register
     JSR binhex
     STA char_ptr
     JSR write_char              ; Display XModem's return value
-    writeln new_line
+    print "\n\r"
     JMP repl
 
 run_program:
     .ifdef CFG_DEBUG
         JSR dump_stack
     .endif
-    writeln calling_msg         ; Indicate that we're starting the user's code
+    printdbg "Starting\n\n\r"  ; Indicate that we're starting the user's code
     JSR user_code_segment       ; Start it!
     PHA                         ; Save our 16-bit return
     PHX                         ;
-    writeln exited_msg
+    printdbg "Exited\n\r"
     PLA                         ; binhex takes the argument in the A register
     JSR binhex
     STA char_ptr
@@ -225,18 +231,18 @@ run_program:
     JSR write_char
     STX char_ptr
     JSR write_char              ; Display the low order byte
-    writeln new_line
+    printdbg "\n\r"
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
-    write_debug handlers_reset_msg
     .ifdef CFG_DEBUG
         JSR dump_stack
     .endif
+    printdbg "Interrupt handlers reset\n\r"
     LDX $FF                     ; Reset our stack because cc65 isn't cooperating yet
     TXS
     JMP repl
 
 error:
-    writeln bad_command_msg
+    print "Unknown command, type help for help\n\r"
     RTS
 
 help:
@@ -246,11 +252,11 @@ help:
     RTS
 
 shutdown:
-    writeln shutdown_msg
+    print "Shutting down...\n\r"
     STP                         ; We do not return from this, ever.
 
 uptime_ticker:
-    writeln uptime_msg
+    print "Uptime: "
     LDA uptime+1                ; High order byte of uptime
     JSR binhex
     STA char_ptr
@@ -263,7 +269,7 @@ uptime_ticker:
     JSR write_char
     STX char_ptr
     JSR write_char
-    writeln new_line
+    print "\n\r"
     RTS
 
 soft_irq:
@@ -291,6 +297,8 @@ uptime_handler:
     INC16 uptime
     JMP (nmi_ptr)               ; Call the user's NMI handler
 default_nmi:                    ; Do nothing
+    ; You probably don't want to print this if the clock is ticking
+    ;printdbg "Default NMI handler called\n\r"
     PLY
     PLX
     PLA
@@ -304,9 +312,7 @@ irq:
 default_irq:
     JMP (bios_jmp_table,X)
 return_from_bios_call:
-.ifdef CFG_DEBUG
-    writeln default_irq_msg
-.endif
+    printdbg "Default IRQ handler called\n\r"
     RTI
 
 bios_jmp_table:
