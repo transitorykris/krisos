@@ -218,20 +218,22 @@ run_program:
     JSR user_code_segment       ; Start it!
     PHA                         ; Save our 16-bit return
     PHX                         ;
-    printdbg "Exited\n\r"
-    PLA                         ; binhex takes the argument in the A register
-    JSR binhex
-    STA char_ptr
-    JSR write_char              ; Display the high order byte
-    STX char_ptr
-    JSR write_char
-    PLA
-    JSR binhex
-    STA char_ptr
-    JSR write_char
-    STX char_ptr
-    JSR write_char              ; Display the low order byte
-    printdbg "\n\r"
+    .ifdef CFG_DEBUG
+        printdbg "Exited\n\r"
+        PLA                     ; binhex takes the argument in the A register
+        JSR binhex
+        STA char_ptr
+        JSR write_char          ; Display the high order byte
+        STX char_ptr
+        JSR write_char
+        PLA
+        JSR binhex
+        STA char_ptr
+        JSR write_char
+        STX char_ptr
+        JSR write_char          ; Display the low order byte
+        printdbg "\n\r"
+    .endif
     JSR set_interrupt_handlers  ; Reset our default interrupt handlers
     .ifdef CFG_DEBUG
         JSR dump_stack
