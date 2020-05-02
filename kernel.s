@@ -44,14 +44,10 @@
     .import XModemRcv
     .import setup_term
     .import read
-    .import write
     .import write_char
     .import dump
-    .import panic
     .import reset_user_input
     .import parse_command
-    .import ACIA_DATA
-    .import ACIA_STATUS
     .import lcd_init
     .import via1_init_ports
     .import via2_init_ports
