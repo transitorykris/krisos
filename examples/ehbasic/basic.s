@@ -419,15 +419,14 @@ LAB_SKFF          = LAB_STAK+$FF
                               ; flushed stack address
 
 ; the following locations are bulk initialized from PG2_TABS at cold_start
-ccflag            = $0200     ; BASIC CTRL-C flag, 00 = enabled, 01 = dis
-ccbyte            = ccflag+1  ; BASIC CTRL-C byte
-ccnull            = ccbyte+1  ; BASIC CTRL-C byte timeout
-
-VEC_CC            = ccnull+1  ; ctrl c check vector
+ctrl_c_flag     = $0200             ; BASIC CTRL-C flag, 00 = enabled, 01 = dis
+ctrl_c_byte     = ctrl_c_flag+1     ; BASIC CTRL-C byte
+ctrl_c_timeout  = ctrl_c_byte+1     ; BASIC CTRL-C byte timeout
+ctrl_c_vector            = ctrl_c_timeout+1  ; ctrl c check vector
 ; end bulk initialize from PG2_TABS at cold_start
 
 ; the following locations are bulk initialized by min_mon.asm from LAB_vec at LAB_stlp
-VEC_IN            = VEC_CC+2  ; input vector
+VEC_IN            = ctrl_c_vector+2  ; input vector
 VEC_OUT           = VEC_IN+2  ; output vector
 VEC_LD            = VEC_OUT+2 ; load vector
 VEC_SV            = VEC_LD+2  ; save vector
@@ -452,12 +451,12 @@ Stack_floor       = 16        ; bytes left free on stack for background interrup
     .code
 
 ; BASIC cold start entry point
-; new page 2 initialisation, copy block to ccflag on
+; new page 2 initialisation, copy block to ctrl_c_flag on
 cold_start:
       LDY   #PG2_TABE-PG2_TABS-1    ; byte count-1
 LAB_2D13
       LDA   PG2_TABS,Y        ; get byte
-      STA   ccflag,Y          ; store in page 2
+      STA   ctrl_c_flag,Y          ; store in page 2
       DEY                     ; decrement count
       BPL   LAB_2D13          ; loop if not done
 
@@ -1613,7 +1612,7 @@ LAB_1609
 ; key press is detected.
 
 LAB_1629
-      JMP   (VEC_CC)          ; ctrl c check vector
+      JMP   (ctrl_c_vector)          ; ctrl c check vector
 
 ; if there was a key press it gets back here ..
 
@@ -7376,22 +7375,22 @@ LAB_EXCH
 ; now also the code that checks to see if an interrupt has occurred
 
 CTRLC
-      LDA   ccflag            ; get [CTRL-C] check flag
+      LDA   ctrl_c_flag            ; get [CTRL-C] check flag
       BNE   LAB_FBA2          ; exit if inhibited
 
       JSR   V_INPT            ; scan input device
       BCC   LAB_FBA0          ; exit if buffer empty
 
-      STA   ccbyte            ; save received byte
+      STA   ctrl_c_byte            ; save received byte
       LDX   #$20              ; "life" timer for bytes
-      STX   ccnull            ; set countdown
+      STX   ctrl_c_timeout            ; set countdown
       JMP   LAB_1636          ; return to BASIC
 
 LAB_FBA0
-      LDX   ccnull            ; get countdown byte
+      LDX   ctrl_c_timeout            ; get countdown byte
       BEQ   LAB_FBA2          ; exit if finished
 
-      DEC   ccnull            ; else decrement countdown
+      DEC   ctrl_c_timeout            ; else decrement countdown
 LAB_FBA2
       LDX   #NmiBase          ; set pointer to NMI values
       JSR   LAB_CKIN          ; go check interrupt
@@ -7451,14 +7450,14 @@ INGET
       JSR   V_INPT            ; call scan input device
       BCS   LAB_FB95          ; if byte go reset timer
 
-      LDA   ccnull            ; get countdown
+      LDA   ctrl_c_timeout            ; get countdown
       BEQ   LAB_FB96          ; exit if empty
 
-      LDA   ccbyte            ; get last received byte
+      LDA   ctrl_c_byte            ; get last received byte
       SEC                     ; flag we got a byte
 LAB_FB95
       LDX   #$00              ; clear X
-      STX   ccnull            ; clear timer because we got a byte
+      STX   ctrl_c_timeout            ; clear timer because we got a byte
 LAB_FB96
       RTS
 
