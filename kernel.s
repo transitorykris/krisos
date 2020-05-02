@@ -174,7 +174,7 @@ memory_test_done:
 .endif
 
     print "Starting command line...\n\r"
-    print "Welcome to KrisOS on the K64\n\r"
+    print "\nWelcome to KrisOS on the K64\n\n\r"
 
 repl:                           ; Not really a repl but I don't have a better name
     printdbg "Start of CLI\n\r"
