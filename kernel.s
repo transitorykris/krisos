@@ -65,6 +65,7 @@
     .import dump_stack
     .import bios_get_char
     .import bios_put_char
+    .import memtest_user
 
     .export return_from_bios_call
 
@@ -120,30 +121,35 @@ init_vias_done:
 .endif
 
 .ifdef CFG_USER_MEMTEST
-    ;writeln init_test_user_memory_msg
-    ;JSR memtest_user
-    ;writeln init_done_msg
+    writeln init_test_user_memory_msg
+    JSR memtest_user
+    BCC memory_passed
+    writeln init_failed_msg
+    JMP memory_test_done
+memory_passed:
+    writeln init_done_msg
+memory_test_done:
 .endif
 
-    writeln init_clear_userspace_msg
+    ;writeln init_clear_userspace_msg
     ; TODO
     ; LDA #$00
     ; JSR memset
-    LDA #$00
-    LDX #$00
-clear_page:                     ; Give the user's code clean space to run in
-    STA user_code_segment,X
-    CMP user_code_segment,X
-    BNE clear_failed
-    CPX #$FF
-    BEQ clear_done
-    INX
-    JMP clear_page
-clear_failed:
-    writeln init_failed_msg
-    STP                         ; Well, let's give up!
-clear_done:
-    writeln init_done_msg
+    ;LDA #$00
+    ;LDX #$00
+;clear_page:                     ; Give the user's code clean space to run in
+    ;STA user_code_segment,X
+    ;CMP user_code_segment,X
+    ;BNE clear_failed
+    ;CPX #$FF
+    ;BEQ clear_done
+    ;INX
+    ;JMP clear_page
+;clear_failed:
+    ;writeln init_failed_msg
+    ;STP                         ; Well, let's give up!
+;clear_done:
+    ;writeln init_done_msg
 
     writeln init_default_interrupt_handlers
     JSR set_interrupt_handlers

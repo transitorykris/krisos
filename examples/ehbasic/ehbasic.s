@@ -18,349 +18,8 @@
 ; 2.22 fixed RND() breaking the get byte routine
 ;
 ; Ported to ca65
-;
-; zero page use ..
 
-LAB_WARM    = $00               ; BASIC warm start entry point
-Wrmjpl      = LAB_WARM+1        ; BASIC warm start vector jump low byte
-Wrmjph      = LAB_WARM+2        ; BASIC warm start vector jump high byte
-Usrjmp      = $0A               ; USR function JMP address
-Usrjpl      = Usrjmp+1          ; USR function JMP vector low byte
-Usrjph      = Usrjmp+2          ; USR function JMP vector high byte
-Nullct      = $0D               ; nulls output after each line
-TPos        = $0E               ; BASIC terminal position byte
-TWidth      = $0F               ; BASIC terminal width byte
-Iclim       = $10               ; input column limit
-Itempl      = $11               ; temporary integer low byte
-Itemph      = Itempl+1          ; temporary integer high byte
-nums_1      = Itempl            ; number to bin/hex string convert MSB
-nums_2      = nums_1+1          ; number to bin/hex string convert
-nums_3      = nums_1+2          ; number to bin/hex string convert LSB
-Srchc       = $5B               ; search character
-Temp3       = Srchc             ; temp byte used in number routines
-Scnquo      = $5C               ; scan-between-quotes flag
-Asrch       = Scnquo            ; alt search character
-XOAw_l      = Srchc             ; eXclusive OR, OR and AND word low byte
-XOAw_h      = Scnquo            ; eXclusive OR, OR and AND word high byte
-Ibptr       = $5D               ; input buffer pointer
-Dimcnt      = Ibptr             ; # of dimensions
-Tindx       = Ibptr             ; token index
-Defdim      = $5E               ; default DIM flag
-Dtypef      = $5F               ; data type flag, $FF=string, $00=numeric
-Oquote      = $60               ; open quote flag (b7) (Flag: DATA scan; LIST quote; memory)
-Gclctd      = $60               ; garbage collected flag
-Sufnxf      = $61               ; subscript/FNX flag, 1xxx xxx = FN(0xxx xxx)
-Imode       = $62               ; input mode flag, $00=INPUT, $80=READ
-Cflag       = $63               ; comparison evaluation flag
-TabSiz      = $64               ; TAB step size (was input flag)
-next_s      = $65               ; next descriptor stack address
-
-; these two bytes form a word pointer to the item
-; currently on top of the descriptor stack
-last_sl     = $66               ; last descriptor stack address low byte
-last_sh     = $67               ; last descriptor stack address high byte (always $00)
-des_sk      = $68               ; descriptor stack start address (temp strings)
-;           = $70               ; End of descriptor stack
-ut1_pl      = $71               ; utility pointer 1 low byte
-ut1_ph      = ut1_pl+1          ; utility pointer 1 high byte
-ut2_pl      = $73               ; utility pointer 2 low byte
-ut2_ph      = ut2_pl+1          ; utility pointer 2 high byte
-Temp_2      = ut1_pl            ; temp byte for block move 
-FACt_1      = $75               ; FAC temp mantissa1
-FACt_2      = FACt_1+1          ; FAC temp mantissa2
-FACt_3      = FACt_2+1          ; FAC temp mantissa3
-dims_l = FACt_2                 ; array dimension size low byte
-dims_h = FACt_3 ; array dimension size high byte
-TempB = $78 ; temp page 0 byte
-Smeml = $79 ; start of mem low byte (Start-of-Basic)
-Smemh = Smeml+1 ; start of mem high byte (Start-of-Basic)
-Svarl = $7B ; start of vars low byte (Start-of-Variables)
-Svarh = Svarl+1 ; start of vars high byte (Start-of-Variables)
-Sarryl = $7D ; var mem end low byte (Start-of-Arrays)
-Sarryh = Sarryl+1 ; var mem end high byte (Start-of-Arrays)
-Earryl = $7F ; array mem end low byte (End-of-Arrays)
-Earryh = Earryl+1 ; array mem end high byte (End-of-Arrays)
-Sstorl = $81 ; string storage low byte (String storage (moving down))
-Sstorh = Sstorl+1 ; string storage high byte (String storage (moving down))
-Sutill = $83 ; string utility ptr low byte
-Sutilh = Sutill+1 ; string utility ptr high byte
-Ememl = $85 ; end of mem low byte (Limit-of-memory)
-Ememh = Ememl+1 ; end of mem high byte (Limit-of-memory)
-Clinel = $87 ; current line low byte (Basic line number)
-Clineh = Clinel+1 ; current line high byte (Basic line number)
-Blinel = $89 ; break line low byte (Previous Basic line number)
-Blineh = Blinel+1 ; break line high byte (Previous Basic line number)
-Cpntrl = $8B ; continue pointer low byte
-Cpntrh = Cpntrl+1 ; continue pointer high byte
-Dlinel = $8D ; current DATA line low byte
-Dlineh = Dlinel+1 ; current DATA line high byte
-Dptrl = $8F ; DATA pointer low byte
-Dptrh = Dptrl+1 ; DATA pointer high byte
-Rdptrl = $91 ; read pointer low byte
-Rdptrh = Rdptrl+1 ; read pointer high byte
-Varnm1 = $93 ; current var name 1st byte
-Varnm2 = Varnm1+1 ; current var name 2nd byte
-Cvaral = $95 ; current var address low byte
-Cvarah = Cvaral+1 ; current var address high byte
-Frnxtl = $97 ; var pointer for FOR/NEXT low byte
-Frnxth = Frnxtl+1 ; var pointer for FOR/NEXT high byte
-Tidx1 = Frnxtl ; temp line index
-Lvarpl = Frnxtl ; let var pointer low byte
-Lvarph = Frnxth ; let var pointer high byte
-prstk = $99 ; precedence stacked flag
-comp_f = $9B ; compare function flag, bits 0,1 and 2 used
-    ; bit 2 set if >
-    ; bit 1 set if =
-    ; bit 0 set if <
-func_l = $9C ; function pointer low byte
-func_h = func_l+1 ; function pointer high byte
-garb_l = func_l ; garbage collection working pointer low byte
-garb_h = func_h ; garbage collection working pointer high byte
-des_2l = $9E ; string descriptor_2 pointer low byte
-des_2h = des_2l+1 ; string descriptor_2 pointer high byte
-g_step = $A0 ; garbage collect step size
-Fnxjmp = $A1 ; jump vector for functions
-Fnxjpl = Fnxjmp+1 ; functions jump vector low byte
-Fnxjph = Fnxjmp+2 ; functions jump vector high byte
-g_indx = Fnxjpl ; garbage collect temp index
-FAC2_r = $A3 ; FAC2 rounding byte
-Adatal = $A4 ; array data pointer low byte
-Adatah = Adatal+1 ; array data pointer high byte
-Nbendl = Adatal ; new block end pointer low byte
-Nbendh = Adatah ; new block end pointer high byte
-Obendl = $A6 ; old block end pointer low byte
-Obendh = Obendl+1 ; old block end pointer high byte
-numexp = $A8 ; string to float number exponent count
-expcnt = $A9 ; string to float exponent count
-numbit = numexp ; bit count for array element calculations
-numdpf = $AA ; string to float decimal point flag
-expneg = $AB ; string to float eval exponent -ve flag
-Astrtl = numdpf ; array start pointer low byte
-Astrth = expneg ; array start pointer high byte
-Histrl = numdpf ; highest string low byte
-Histrh = expneg ; highest string high byte
-Baslnl = numdpf ; BASIC search line pointer low byte
-Baslnh = expneg ; BASIC search line pointer high byte
-Fvar_l = numdpf ; find/found variable pointer low byte
-Fvar_h = expneg ; find/found variable pointer high byte
-Ostrtl = numdpf ; old block start pointer low byte
-Ostrth = expneg ; old block start pointer high byte
-Vrschl = numdpf ; variable search pointer low byte
-Vrschh = expneg ; variable search pointer high byte
-FAC1_e = $AC ; FAC1 exponent
-FAC1_1 = FAC1_e+1 ; FAC1 mantissa1
-FAC1_2 = FAC1_e+2 ; FAC1 mantissa2
-FAC1_3 = FAC1_e+3 ; FAC1 mantissa3
-FAC1_s = FAC1_e+4 ; FAC1 sign (b7)
-str_ln = FAC1_e ; string length
-str_pl = FAC1_1 ; string pointer low byte
-str_ph = FAC1_2 ; string pointer high byte
-des_pl = FAC1_2 ; string descriptor pointer low byte
-des_ph = FAC1_3 ; string descriptor pointer high byte
-mids_l = FAC1_3 ; MID$ string temp length byte
-negnum = $B1 ; string to float eval -ve flag
-numcon = $B1 ; series evaluation constant count
-FAC1_o = $B2 ; FAC1 overflow byte
-FAC2_e = $B3 ; FAC2 exponent
-FAC2_1 = FAC2_e+1 ; FAC2 mantissa1
-FAC2_2 = FAC2_e+2 ; FAC2 mantissa2
-FAC2_3 = FAC2_e+3 ; FAC2 mantissa3
-FAC2_s = FAC2_e+4 ; FAC2 sign (b7)
-FAC_sc = $B8 ; FAC sign comparison, Acc#1 vs #2
-FAC1_r = $B9 ; FAC1 rounding byte
-ssptr_l = FAC_sc ; string start pointer low byte
-ssptr_h = FAC1_r ; string start pointer high byte
-sdescr = FAC_sc ; string descriptor pointer
-csidx = $BA ; line crunch save index
-Asptl = csidx ; array size/pointer low byte
-Aspth = $BB ; array size/pointer high byte
-Btmpl = Asptl ; BASIC pointer temp low byte
-Btmph = Aspth ; BASIC pointer temp low byte
-Cptrl = Asptl ; BASIC pointer temp low byte
-Cptrh = Aspth ; BASIC pointer temp low byte
-Sendl = Asptl ; BASIC pointer temp low byte
-Sendh = Aspth ; BASIC pointer temp low byte
-LAB_IGBY = $BC ; get next BASIC byte subroutine
-LAB_GBYT = $C2 ; get current BASIC byte subroutine
-Bpntrl = $C3 ; BASIC execute (get byte) pointer low byte
-Bpntrh = Bpntrl+1 ; BASIC execute (get byte) pointer high byte
-; = $D7 ; end of get BASIC char subroutine
-Rbyte4 = $D8 ; extra PRNG byte
-Rbyte1 = Rbyte4+1 ; most significant PRNG byte
-Rbyte2 = Rbyte4+2 ; middle PRNG byte
-Rbyte3 = Rbyte4+3 ; least significant PRNG byte
-NmiBase = $DC ; NMI handler enabled/setup/triggered flags
-    ; bit function
-    ; === ========
-    ; 7 interrupt enabled
-    ; 6 interrupt setup
-    ; 5 interrupt happened
-; = $DD ; NMI handler addr low byte
-; = $DE ; NMI handler addr high byte
-IrqBase = $DF ; IRQ handler enabled/setup/triggered flags
-; = $E0 ; IRQ handler addr low byte
-; = $E1 ; IRQ handler addr high byte
-; = $DE ; unused
-; = $DF ; unused
-; = $E0 ; unused
-; = $E1 ; unused
-; = $E2 ; unused
-; = $E3 ; unused
-; = $E4 ; unused
-; = $E5 ; unused
-; = $E6 ; unused
-; = $E7 ; unused
-; = $E8 ; unused
-; = $E9 ; unused
-; = $EA ; unused
-; = $EB ; unused
-; = $EC ; unused
-; = $ED ; unused
-; = $EE ; unused
-Decss = $EF ; number to decimal string start
-Decssp1 = Decss+1 ; number to decimal string start
-; = $FF ; decimal string end
-
-; token values needed for BASIC
-; primary command tokens (can start a statement)
-TK_END = $80 ; END token
-TK_FOR = TK_END+1 ; FOR token
-TK_NEXT = TK_FOR+1 ; NEXT token
-TK_DATA = TK_NEXT+1 ; DATA token
-TK_INPUT = TK_DATA+1 ; INPUT token
-TK_DIM = TK_INPUT+1 ; DIM token
-TK_READ = TK_DIM+1 ; READ token
-TK_LET = TK_READ+1 ; LET token
-TK_DEC = TK_LET+1 ; DEC token
-TK_GOTO = TK_DEC+1 ; GOTO token
-TK_RUN = TK_GOTO+1 ; RUN token
-TK_IF = TK_RUN+1 ; IF token
-TK_RESTORE = TK_IF+1 ; RESTORE token
-TK_GOSUB = TK_RESTORE+1 ; GOSUB token
-TK_RETIRQ = TK_GOSUB+1 ; RETIRQ token
-TK_RETNMI = TK_RETIRQ+1 ; RETNMI token
-TK_RETURN = TK_RETNMI+1 ; RETURN token
-TK_REM = TK_RETURN+1 ; REM token
-TK_STOP = TK_REM+1 ; STOP token
-TK_ON = TK_STOP+1 ; ON token
-TK_NULL = TK_ON+1 ; NULL token
-TK_INC = TK_NULL+1 ; INC token
-TK_WAIT = TK_INC+1 ; WAIT token
-TK_LOAD = TK_WAIT+1 ; LOAD token
-TK_SAVE = TK_LOAD+1 ; SAVE token
-TK_DEF = TK_SAVE+1 ; DEF token
-TK_POKE = TK_DEF+1 ; POKE token
-TK_DOKE = TK_POKE+1 ; DOKE token
-TK_CALL = TK_DOKE+1 ; CALL token
-TK_DO = TK_CALL+1 ; DO token
-TK_LOOP = TK_DO+1 ; LOOP token
-TK_PRINT = TK_LOOP+1 ; PRINT token
-TK_CONT = TK_PRINT+1 ; CONT token
-TK_LIST = TK_CONT+1 ; LIST token
-TK_CLEAR = TK_LIST+1 ; CLEAR token
-TK_NEW = TK_CLEAR+1 ; NEW token
-TK_WIDTH = TK_NEW+1 ; WIDTH token
-TK_GET = TK_WIDTH+1 ; GET token
-TK_SWAP = TK_GET+1 ; SWAP token
-TK_BITSET = TK_SWAP+1 ; BITSET token
-TK_BITCLR = TK_BITSET+1 ; BITCLR token
-TK_IRQ = TK_BITCLR+1 ; IRQ token
-TK_NMI = TK_IRQ+1 ; NMI token
-
-; secondary command tokens, can't start a statement
-TK_TAB = TK_NMI+1 ; TAB token
-TK_ELSE = TK_TAB+1 ; ELSE token
-TK_TO = TK_ELSE+1 ; TO token
-TK_FN = TK_TO+1 ; FN token
-TK_SPC = TK_FN+1 ; SPC token
-TK_THEN = TK_SPC+1 ; THEN token
-TK_NOT = TK_THEN+1 ; NOT token
-TK_STEP = TK_NOT+1 ; STEP token
-TK_UNTIL = TK_STEP+1 ; UNTIL token
-TK_WHILE = TK_UNTIL+1 ; WHILE token
-TK_OFF = TK_WHILE+1 ; OFF token
-
-; opperator tokens
-TK_PLUS = TK_OFF+1 ; + token
-TK_MINUS = TK_PLUS+1 ; - token
-TK_MUL = TK_MINUS+1 ; * token
-TK_DIV = TK_MUL+1 ; / token
-TK_POWER = TK_DIV+1 ; ^ token
-TK_AND = TK_POWER+1 ; AND token
-TK_EOR = TK_AND+1 ; EOR token
-TK_OR = TK_EOR+1 ; OR token
-TK_RSHIFT = TK_OR+1 ; RSHIFT token
-TK_LSHIFT = TK_RSHIFT+1 ; LSHIFT token
-TK_GT = TK_LSHIFT+1 ; > token
-TK_EQUAL = TK_GT+1 ; = token
-TK_LT = TK_EQUAL+1 ; < token
-
-; functions tokens
-TK_SGN = TK_LT+1 ; SGN token
-TK_INT = TK_SGN+1 ; INT token
-TK_ABS = TK_INT+1 ; ABS token
-TK_USR = TK_ABS+1 ; USR token
-TK_FRE = TK_USR+1 ; FRE token
-TK_POS = TK_FRE+1 ; POS token
-TK_SQR = TK_POS+1 ; SQR token
-TK_RND = TK_SQR+1 ; RND token
-TK_LOG = TK_RND+1 ; LOG token
-TK_EXP = TK_LOG+1 ; EXP token
-TK_COS = TK_EXP+1 ; COS token
-TK_SIN = TK_COS+1 ; SIN token
-TK_TAN = TK_SIN+1 ; TAN token
-TK_ATN = TK_TAN+1 ; ATN token
-TK_PEEK = TK_ATN+1 ; PEEK token
-TK_DEEK = TK_PEEK+1 ; DEEK token
-TK_SADD = TK_DEEK+1 ; SADD token
-TK_LEN = TK_SADD+1 ; LEN token
-TK_STRS = TK_LEN+1 ; STR$ token
-TK_VAL = TK_STRS+1 ; VAL token
-TK_ASC = TK_VAL+1 ; ASC token
-TK_UCASES = TK_ASC+1 ; UCASE$ token
-TK_LCASES = TK_UCASES+1 ; LCASE$ token
-TK_CHRS = TK_LCASES+1 ; CHR$ token
-TK_HEXS = TK_CHRS+1 ; HEX$ token
-TK_BINS = TK_HEXS+1 ; BIN$ token
-TK_BITTST = TK_BINS+1 ; BITTST token
-TK_MAX = TK_BITTST+1 ; MAX token
-TK_MIN = TK_MAX+1 ; MIN token
-TK_PI = TK_MIN+1 ; PI token
-TK_TWOPI = TK_PI+1 ; TWOPI token
-TK_VPTR = TK_TWOPI+1 ; VARPTR token
-TK_LEFTS = TK_VPTR+1 ; LEFT$ token
-TK_RIGHTS = TK_LEFTS+1 ; RIGHT$ token
-TK_MIDS = TK_RIGHTS+1 ; MID$ token
-
-; offsets from a base of X or Y
-PLUS_0 = $00 ; X or Y plus 0
-PLUS_1 = $01 ; X or Y plus 1
-PLUS_2 = $02 ; X or Y plus 2
-PLUS_3 = $03 ; X or Y plus 3
-LAB_STAK = $0100 ; stack bottom, no offset
-LAB_SKFE = LAB_STAK+$FE
-    ; flushed stack address
-LAB_SKFF = LAB_STAK+$FF
-    ; flushed stack address
-ccflag = $0300 ; BASIC CTRL-C flag, 00 = enabled, 01 = dis
-ccbyte = ccflag+1 ; BASIC CTRL-C byte
-ccnull = ccbyte+1 ; BASIC CTRL-C byte timeout
-VEC_CC = ccnull+1 ; ctrl c check vector
-VEC_IN = VEC_CC+2 ; input vector
-VEC_OUT = VEC_IN+2 ; output vector
-VEC_LD = VEC_OUT+2 ; load vector
-VEC_SV = VEC_LD+2 ; save vector
-
-; Ibuffs can now be anywhere in RAM, ensure that the max length is < $80
-Ibuffs = IRQ_vec+$14
-    ; start of input buffer after IRQ/NMI code
-Ibuffe = Ibuffs+$47; end of input buffer
-Ram_base = $0400 ; start of user RAM (set as needed, should be page aligned)
-Ram_top = $5000 ; end of user RAM+1 (set as needed, should be page aligned)
-
-; This start can be changed to suit your system
-
-    .org $5000
+    .code
 
 ; For convenience, put jump here to reset location so it can be
 ; run from the load address.
@@ -368,9 +27,7 @@ Ram_top = $5000 ; end of user RAM+1 (set as needed, should be page aligned)
 JMP RES_vec
     
 ; BASIC cold start entry point
-
 ; new page 2 initialisation, copy block to ccflag on
-
 LAB_COLD
     LDY #PG2_TABE-PG2_TABS-1
     ; byte count-1
@@ -628,18 +285,18 @@ LAB_121F
 
     ; addr is > string storage ptr (oops!)
 LAB_1229
-    PHA ; push addr low byte
-    LDX #$08 ; set index to save Adatal to expneg inclusive
-    TYA ; copy addr high byte (to push on stack)
+    PHA                         ; push addr low byte
+    LDX #$08                    ; set index to save Adatal to expneg inclusive
+    TYA                         ; copy addr high byte (to push on stack)
 
     ; save misc numeric work area
 LAB_122D
-    PHA ; push byte
-    LDA Adatal-1,X ; get byte from Adatal to expneg ( ,$00 not pushed)
-    DEX ; decrement index
-    BPL LAB_122D ; loop until all done
+    PHA                         ; push byte
+    LDA Adatal-1,X              ; get byte from Adatal to expneg ( ,$00 not pushed)
+    DEX                         ; decrement index
+    BPL LAB_122D                ; loop until all done
 
-    JSR LAB_GARB ; garbage collection routine
+    JSR LAB_GARB                ; garbage collection routine
 
     ; restore misc numeric work area
     LDX #$00 ; clear the index to restore bytes
@@ -7331,13 +6988,11 @@ LAB_RETNMI
     JMP LAB_16E8 ; go do rest of RETURN
 
 ; MAX() MIN() pre process
-
 LAB_MMPP
     JSR LAB_EVEZ ; process expression
     JMP LAB_CTNM ; check if source is numeric, else do type mismatch
 
 ; perform MAX()
-
 LAB_MAX
     JSR LAB_PHFA ; push FAC1, evaluate expression,
     ; pull FAC2 and compare with FAC1
@@ -7350,7 +7005,6 @@ LAB_MAX
     BEQ LAB_MAX ; go do next (branch always)
 
 ; perform MIN()
-
 LAB_MIN
     JSR LAB_PHFA ; push FAC1, evaluate expression,
     ; pull FAC2 and compare with FAC1
@@ -7718,13 +7372,6 @@ StrTab
     .word Ram_base ; start of user RAM
 EndTab
 
-LAB_MSZM
-    .byte $0D,$0A,"Memory size ",$00
-
-LAB_SMSG
-    .byte " Bytes free",$0D,$0A,$0A
-    .byte "Enhanced BASIC 2.22",$0A,$00
-
 ; numeric constants and series
 
     ; constants and series for LOG(n)
@@ -8072,26 +7719,19 @@ TAB_CHRT
 ; [keyword,token]]
 ; end marker (#$00)
 
-TAB_STAR
-    .byte TK_MUL,$00 ; *
-TAB_PLUS
-    .byte TK_PLUS,$00 ; +
-TAB_MNUS
-    .byte TK_MINUS,$00 ; -
-TAB_SLAS
-    .byte TK_DIV,$00 ; /
-TAB_LESS
-LBB_LSHIFT
-    .byte "<",TK_LSHIFT ; << note - "<<" must come before "<"
-    .byte TK_LT ; <
-    .byte $00
-TAB_EQUL
-    .byte TK_EQUAL,$00 ; =
-TAB_MORE
-LBB_RSHIFT
-    .byte ">",TK_RSHIFT ; >> note - ">>" must come before ">"
-    .byte TK_GT ; >
-    .byte $00
+TAB_STAR:   .byte TK_MUL,$00    ; *
+TAB_PLUS:   .byte TK_PLUS,$00   ; +
+TAB_MNUS:   .byte TK_MINUS,$00 ; -
+TAB_SLAS:   .byte TK_DIV,$00 ; /
+TAB_LESS:
+LBB_LSHIFT: .byte "<",TK_LSHIFT ; << note - "<<" must come before "<"
+            .byte TK_LT ; <
+            .byte $00
+TAB_EQUL:   .byte TK_EQUAL,$00 ; =
+TAB_MORE:
+LBB_RSHIFT: .byte ">",TK_RSHIFT ; >> note - ">>" must come before ">"
+            .byte TK_GT ; >
+            .byte $00
 TAB_QEST
     .byte TK_PRINT,$00 ; ?
 TAB_ASCA
@@ -8547,69 +8187,5 @@ LAB_KEYT
     .word LBB_RIGHTS ; RIGHT$
     .byte 5,'M' ;
     .word LBB_MIDS ; MID$
-
-; BASIC messages, mostly error messages
-
-LAB_BAER
-    .word ERR_NF ;$00 NEXT without FOR
-    .word ERR_SN ;$02 syntax
-    .word ERR_RG ;$04 RETURN without GOSUB
-    .word ERR_OD ;$06 out of data
-    .word ERR_FC ;$08 function call
-    .word ERR_OV ;$0A overflow
-    .word ERR_OM ;$0C out of memory
-    .word ERR_US ;$0E undefined statement
-    .word ERR_BS ;$10 array bounds
-    .word ERR_DD ;$12 double dimension array
-    .word ERR_D0 ;$14 divide by 0
-    .word ERR_ID ;$16 illegal direct
-    .word ERR_TM ;$18 type mismatch
-    .word ERR_LS ;$1A long string
-    .word ERR_ST ;$1C string too complex
-    .word ERR_CN ;$1E continue error
-    .word ERR_UF ;$20 undefined function
-    .word ERR_LD ;$22 LOOP without DO
-
-; I may implement these two errors to force definition of variables and
-; dimensioning of arrays before use.
-
-; .word ERR_UV ;$24 undefined variable
-
-; the above error has been tested and works (see code and comments below LAB_1D8B)
-
-; .word ERR_UA ;$26 undimensioned array
-
-ERR_NF .asciiz "NEXT without FOR"
-ERR_SN .asciiz "Syntax"
-ERR_RG .asciiz "RETURN without GOSUB"
-ERR_OD .asciiz "Out of DATA"
-ERR_FC .asciiz "Function call"
-ERR_OV .asciiz "Overflow"
-ERR_OM .asciiz "Out of memory"
-ERR_US .asciiz "Undefined statement"
-ERR_BS .asciiz "Array bounds"
-ERR_DD .asciiz "Double dimension"
-ERR_D0 .asciiz "Divide by zero"
-ERR_ID .asciiz "Illegal direct"
-ERR_TM .asciiz "Type mismatch"
-ERR_LS .asciiz "String too long"
-ERR_ST .asciiz "String too complex"
-ERR_CN .asciiz "Can't continue"
-ERR_UF .asciiz "Undefined function"
-ERR_LD .asciiz "LOOP without DO"
-
-;ERR_UV .asciiz "Undefined variable"
-
-; the above error has been tested and works (see code and comments below LAB_1D8B)
-
-;ERR_UA .asciiz "Undimensioned array"
-
-LAB_BMSG .byte $0D,$0A,"Break",$00
-LAB_EMSG .asciiz " Error"
-LAB_LMSG .asciiz " in line "
-LAB_RMSG .byte $0D,$0A,"Ready",$0D,$0A,$00
-
-LAB_IMSG .byte " Extra ignored",$0D,$0A,$00
-LAB_REDO .byte " Redo from start",$0D,$0A,$00
 
 AA_end_basic

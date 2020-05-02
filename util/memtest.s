@@ -26,52 +26,74 @@ _MEM_TEST_ = 1
     .psc02                      ; Enable 65c02 opcodes
 
     .importzp memset_addr
+    
+    .export memtest_user
 
 ; This is a desctructive test
 ; Test all memory in the user space as defined in the linker config
 ; TODO...
 memtest_user:
+    LDA #$00
+    STA memset_addr
+    LDA #$10
+memtest_user_loop:
+    STA memset_addr+1
     JSR memtest
+    BCS memtest_user_failed
+    CMP #$70
+    BEQ memtest_user_success
+    INC
+    JMP memtest_user_loop
+memtest_user_failed:
+    SEC
+    RTS
+memtest_user_success:
+    CLC
     RTS
 
 ; This is a destructive test on a page
 ; Carry set for failure, carry clear for success
 memtest:
+    PHA
 memtest_pattern_a5:             ; First pattern #$A5
-    LDA #%10101010
+    LDA #$A5
     JSR memset
-    LDY #$FF
+    LDY #$00
 memtest_a5_loop:
-    CMP memset_addr,Y           ; Compare memory location to #$A5
+    CMP (memset_addr),Y           ; Compare memory location to #$A5
     BNE memtest_fail
     DEY
     BEQ memtest_pattern_5a
     JMP memtest_a5_loop
 memtest_pattern_5a:             ; Second pattern #$5A
-    LDA #%01010101
+    LDA #$5A
     JSR memset
-    LDY #$FF
+    LDY #$00
 memtest_5a_loop:
-    CMP memset_addr,Y           ; Compare memory location to #$5A
+    CMP (memset_addr),Y           ; Compare memory location to #$5A
     BNE memtest_fail
     DEY
     BEQ memtest_success
     JMP memtest_5a_loop
 memtest_success:
     CLC                         ; Success
+    PLA
     RTS
 memtest_fail:
     SEC                         ; Fail
+    PLA
     RTS
 
 ; Sets all bytes in a page to the value in the A register
 ; Page must be set at memset_addr in the zero page
 memset:
-    LDX #$FF
+    PHY
+    LDY #$00
 memset_loop:
-    STA memset_addr,X
-    DEX
+    STA (memset_addr),Y
+    DEY
     BNE memset_loop
+    PLY
     RTS
 
 .endif
