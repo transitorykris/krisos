@@ -44,6 +44,7 @@
     .import XModemRcv
     .import setup_term
     .import read
+    .import write
     .import write_char
     .import dump
     .import reset_user_input
@@ -64,6 +65,7 @@
     .import bios_put_char
     .import memtest_user
     .import clear_page
+    .import sid_init
 
     .export return_from_bios_call
 
@@ -112,6 +114,12 @@ init_vias_done:
     print "Initializing SN76489A Sound..."
     JSR sound_init
     JSR startup_sound
+    print "Done\n\r"
+.endif
+
+.ifdef CFG_SID
+    print "Initializing SID Sound..."
+    JSR sid_init
     print "Done\n\r"
 .endif
 

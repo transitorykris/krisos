@@ -1,4 +1,4 @@
-; KrisOS Configuration
+; KrisOS Sound Library
 ;
 ; Copyright 2020 Kris Foster
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,25 +19,37 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ; SOFTWARE.
 
-; This system uses a WDC 6551 ACIA which has a transmit bug
-; http://forum.6502.org/viewtopic.php?f=4&t=2543&start=30#p29795
-; Leave unset for AMI or Rockwell 6551s
-;CFG_WDC_ACIA = 1
+.ifndef _LIB_SID_
+_LIB_SID_ = 1
 
-; Use the LCD module
-;CFG_LCD = 1
+    .setcpu "6502"
+    .psc02                      ; Enable 65c02 opcodes
 
-; Use the SN76489 sound generator
-;CFG_SN76489 = 1
+    .include "sid.inc"
 
-; Use a Commodore SID sound interface device
-CFG_SID = 1
+    .export sid_init
 
-; Generate periodic interrupts for the system clock
-;CFG_CLOCK = 1
+sid_init:
+    JSR sid_test
+    RTS
 
-; Enable debug output
-;CFG_DEBUG = 1
+sid_test:
+    LDA #$09
+    STA SID_VOICE1_AD
+    LDA #$8A
+    STA SID_VOICE1_SR
+    LDA #$0f
+    STA SID_FILTER_MV
+    LDA #$20
+    STA SID_VOICE1_CTRL_REG
+    LDA #$00
+    STA SID_FILTER_MV
+    LDA #>c5n
+    STA SID_VOICE1_FREQ_HI
+    LDA #<c5n
+    STA SID_VOICE1_FREQ_LO
+    LDA #$21
+    STA SID_VOICE1_CTRL_REG
+    RTS
 
-; Test user space memory
-;CFG_USER_MEMTEST = 1
+.endif
