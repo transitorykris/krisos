@@ -31,7 +31,7 @@
 ;CFG_SN76489 = 1
 
 ; Use a Commodore SID sound interface device
-CFG_SID = 1
+;CFG_SID = 1
 
 ; Generate periodic interrupts for the system clock
 ;CFG_CLOCK = 1
@@ -40,4 +40,4 @@ CFG_SID = 1
 ;CFG_DEBUG = 1
 
 ; Test user space memory
-;CFG_USER_MEMTEST = 1
+CFG_USER_MEMTEST = 1

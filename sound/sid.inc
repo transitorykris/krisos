@@ -51,8 +51,8 @@ _SID_H_ = 1
 
     SID_FILTER_FC_LO
     SID_FILTER_FC_HI
-    SID_FILTER_RS
-    SID_FILTER_MV
+    SID_FILTER_RS               ; Res/Filt
+    SID_FILTER_MV               ; Mode/Volume
 
     SID_MISC_POTX
     SID_MISC_POTY

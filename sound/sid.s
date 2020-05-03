@@ -36,20 +36,36 @@ sid_init:
 sid_test:
     LDA #$09
     STA SID_VOICE1_AD
+    
     LDA #$8A
     STA SID_VOICE1_SR
-    LDA #$0f
+    
+    LDA #%00001111
     STA SID_FILTER_MV
-    LDA #$20
+
+    LDA #%00000000              ; Voice 1 direct at audio out, no filter
+    STA SID_FILTER_RS
+    
+    LDA #%00010000
     STA SID_VOICE1_CTRL_REG
-    LDA #$00
-    STA SID_FILTER_MV
-    LDA #>c5n
+        
+    LDA #$FF
+    STA SID_VOICE1_PW_HI
+    LDA #$0F
+    STA SID_VOICE1_PW_LO
+
+    ;LDA #$00
+;tone:
+    LDA #$44
     STA SID_VOICE1_FREQ_HI
-    LDA #<c5n
+    LDA #$44
     STA SID_VOICE1_FREQ_LO
-    LDA #$21
+
+    LDA #%00010001
     STA SID_VOICE1_CTRL_REG
+pause:
+;    INC
+    JMP pause
     RTS
 
 .endif
