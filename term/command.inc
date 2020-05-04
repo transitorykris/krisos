@@ -38,6 +38,8 @@ _COMMAND_H_ = 1
     BEEP_CMD
     UPTIME_CMD
     STACK_CMD
+    PEEK_CMD
+    POKE_CMD
 .endenum
 
 FALSE   = 0
@@ -60,6 +62,8 @@ BREAK:      .asciiz "break"
 BEEP:       .asciiz "beep"
 UPTIME:     .asciiz "uptime"
 STACK:      .asciiz "stack"
+PEEK:       .asciiz "peek"
+POKE:       .asciiz "poke"
 
 help_header_msg:        ; Note: this is split up for a chance to fit in page boundaries
     .byte "Available commands in KrisOS:\n\r"
@@ -77,6 +81,8 @@ help_commands_msg:
     .byte "break - Trigger a soft IRQ\n\r"
     .byte "beep - Beeps the speaker\n\r"
     .byte "uptime - Show the uptime in seconds of the K64\n\r"
+    .byte "peek - Show the value at a memory location\n\r"
+    .byte "poke - Set the value at a memory location\n\r"
     .byte NULL
 
 help_copyright_msg:

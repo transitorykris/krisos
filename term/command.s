@@ -59,6 +59,8 @@ parse_command:
     check_command BEEP, BEEP_CMD
     check_command UPTIME, UPTIME_CMD
     check_command STACK, STACK_CMD
+    check_command PEEK, PEEK_CMD
+    check_command POKE, POKE_CMD
 error:
     LDA #ERROR_CMD
     RTS

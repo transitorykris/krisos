@@ -44,6 +44,7 @@
     .import XModemRcv
     .import setup_term
     .import read
+    .import write
     .import write_char
     .import dump
     .import reset_user_input
@@ -64,6 +65,8 @@
     .import bios_put_char
     .import memtest_user
     .import clear_page
+    .import peek
+    .import poke
 
     .export return_from_bios_call
 
@@ -191,6 +194,8 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #BEEP_CMD,     beep
     case_command #UPTIME_CMD,   uptime_ticker
     case_command #STACK_CMD,    dump_stack
+    case_command #PEEK_CMD,     peek
+    case_command #POKE_CMD,     poke
 repl_done:
     JMP repl                    ; Do it all again!
 
