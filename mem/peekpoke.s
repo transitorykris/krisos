@@ -1,4 +1,4 @@
-; KrisOS Zeropage globals
+; KrisOS peek and poke
 ;
 ; Copyright 2020 Kris Foster
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,16 +19,23 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ; SOFTWARE.
 
-.ifndef _LIB_ZEROPAGE_
-_LIB_ZEROPAGE_ = 1
+.ifndef _LIB_PEEKPOKE_
+_LIB_PEEKPOKE_ = 1
 
-    .ZEROPAGE
+    .setcpu "6502"
+    .psc02                      ; Enable 65c02 opcodes
 
-    .include "term/term_zp.s"
-    .include "term/commands_zp.s"
-    .include "mem/memtest_zp.s"
-    .include "util/print_zp.s"
-    .include "xmodem/xmodem_zp.s"
-    .include "kernel_zp.s"
+    .export peek
+    .export poke
+
+    .include "../util/print.inc"
+
+peek:
+    print "Not yet implemented\n\r"
+    RTS
+
+poke:
+    print "Not yet implemented\n\r"
+    RTS
 
 .endif
