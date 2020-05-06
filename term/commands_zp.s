@@ -28,4 +28,7 @@ _COMMANDS_ZP_ = 1
 strcmp_first_ptr:   .res 2
 strcmp_second_ptr:  .res 2
 
+args_1:             .res 1
+args_2:             .res 1
+
 .endif
