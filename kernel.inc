@@ -40,7 +40,7 @@ assembler_version: .word .version   ; .version is provided by ca65
     CMP command
     BNE skip
     JSR routine
-    JMP repl_done
+    JMP command_line
 skip:
 .endmacro
 

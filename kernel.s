@@ -182,7 +182,7 @@ memory_test_done:
     print "Starting command line...\n\r"
     print "\nWelcome to KrisOS on the K64\n\n\r"
 
-repl:                           ; Not really a repl but I don't have a better name
+command_line:
     printdbg "Start of CLI\n\r"
     JSR reset_user_input        ; Show a fresh prompt
     writeln prompt              ;
@@ -203,8 +203,8 @@ repl:                           ; Not really a repl but I don't have a better na
     case_command #STACK_CMD,    dump_stack
     case_command #PEEK_CMD,     peek
     case_command #POKE_CMD,     poke
-repl_done:
-    JMP repl                    ; Do it all again!
+command_line_done:
+    JMP command_line                    ; Do it all again!
 
 load_program:
     JSR XModemRcv
@@ -216,7 +216,7 @@ load_program:
     STA char_ptr
     JSR write_char              ; Display XModem's return value
     print "\n\r"
-    JMP repl
+    JMP command_line
 
 run_program:
     .ifdef CFG_DEBUG
@@ -249,7 +249,7 @@ run_program:
     printdbg "Interrupt handlers reset\n\r"
     LDX $FF                     ; Reset our stack because cc65 isn't cooperating yet
     TXS
-    JMP repl
+    JMP command_line
 
 error:
     print "Unknown command, type help for help\n\r"
