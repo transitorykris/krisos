@@ -1,4 +1,4 @@
-; KrisOS Configuration
+; KrisOS Sound Library
 ;
 ; Copyright 2020 Kris Foster
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,25 +19,53 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ; SOFTWARE.
 
-; This system uses a WDC 6551 ACIA which has a transmit bug
-; http://forum.6502.org/viewtopic.php?f=4&t=2543&start=30#p29795
-; Leave unset for AMI or Rockwell 6551s
-;CFG_WDC_ACIA = 1
+.ifndef _LIB_SID_
+_LIB_SID_ = 1
 
-; Use the LCD module
-;CFG_LCD = 1
+    .setcpu "6502"
+    .psc02                      ; Enable 65c02 opcodes
 
-; Use the SN76489 sound generator
-;CFG_SN76489 = 1
+    .include "sid.inc"
 
-; Use a Commodore SID sound interface device
-;CFG_SID = 1
+    .export sid_init
 
-; Generate periodic interrupts for the system clock
-;CFG_CLOCK = 1
+sid_init:
+    JSR sid_test
+    RTS
 
-; Enable debug output
-;CFG_DEBUG = 1
+sid_test:
+    LDA #$09
+    STA SID_VOICE1_AD
+    
+    LDA #$8A
+    STA SID_VOICE1_SR
+    
+    LDA #%00001111
+    STA SID_FILTER_MV
 
-; Test user space memory
-CFG_USER_MEMTEST = 1
+    LDA #%00000000              ; Voice 1 direct at audio out, no filter
+    STA SID_FILTER_RS
+    
+    LDA #%00010000
+    STA SID_VOICE1_CTRL_REG
+        
+    LDA #$FF
+    STA SID_VOICE1_PW_HI
+    LDA #$0F
+    STA SID_VOICE1_PW_LO
+
+    ;LDA #$00
+;tone:
+    LDA #$44
+    STA SID_VOICE1_FREQ_HI
+    LDA #$44
+    STA SID_VOICE1_FREQ_LO
+
+    LDA #%00010001
+    STA SID_VOICE1_CTRL_REG
+pause:
+;    INC
+    JMP pause
+    RTS
+
+.endif

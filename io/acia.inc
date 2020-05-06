@@ -25,10 +25,12 @@ _ACIA_H_ = 1
     .import __ACIA_START__
 
 ; 6551 ACIA
-ACIA_DATA       = __ACIA_START__ + $0
-ACIA_STATUS     = __ACIA_START__ + $1
-ACIA_COMMAND    = __ACIA_START__ + $2
-ACIA_CONTROL    = __ACIA_START__ + $3
+.enum
+    ACIA_DATA       = __ACIA_START__
+    ACIA_STATUS
+    ACIA_COMMAND
+    ACIA_CONTROL
+.endenum
 
 ; Control Register
 ACIA_1_STOP_BIT     = %00000000

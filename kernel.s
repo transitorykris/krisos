@@ -67,6 +67,7 @@
     .import clear_page
     .import peek
     .import poke
+    .import sid_init
 
     .export return_from_bios_call
 
@@ -115,6 +116,12 @@ init_vias_done:
     print "Initializing SN76489A Sound..."
     JSR sound_init
     JSR startup_sound
+    print "Done\n\r"
+.endif
+
+.ifdef CFG_SID
+    print "Initializing SID Sound..."
+    JSR sid_init
     print "Done\n\r"
 .endif
 

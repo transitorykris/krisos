@@ -13,6 +13,7 @@ OBJS =  zeropage.o \
 	kernel.o \
 	io/via.o \
 	sound/sound.o \
+	sound/sid.o \
 	io/lcd.o \
 	io/acia.o \
 	util/binhex.o \
