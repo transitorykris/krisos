@@ -5,25 +5,28 @@ A list of things for a rainy day
 * VIA routines for the LCD and SN76489 are destructive of pins on the VIA that could be used for other things
 * The LCD routines are not great
 * There is only one routine in the standard library, and no way to update memory locations for users of it
-* ~A bunch of CA65 commands are available, can use them to make code clearer~
 * Commands should accept parameters, like dump could dump any arbitrary page
 * Loading user programs shouldn't rely on $1000 -- Xmodem assumes this, and the binaries need to be formated to include that locations
 * Rewrite a bunch of the borrowed code
 * Could conditionally assemble for instructions for non-WDC 6502 chips, but, meh?
 * Go digging for hardcoded constants and make those go away
-* ~Make configuration for other systems even easier~
 * Create macros to be a little more DRY
-* ~Write an example in C using cc65~
 * Add more constants for VT100, xterm, etc
 * Make user input more robust (e.g. arrow keys shouldn't do a thing)
 * Add additional commands: `peek`, `poke`, VIA pin control?
 * Get EhBasic running as an example
-* ~Fix whatever bug I introduced into Microchess~
 * Display more information on the LCD -- Running program? Uptime?
-* ~Set a timer on one of the VIAs to calculate ticks~
 * Get the clock speed estimation code working
 * Handle IRQs from different sources
 * Create a simple text editor example
-* Create a RAM test procedure
 * Create system tests?
 * How do you even unit test?
+
+# Done
+
+* ~Set a timer on one of the VIAs to calculate ticks~
+* ~Fix whatever bug I introduced into Microchess~
+* ~Write an example in C using cc65~
+* ~Make configuration for other systems even easier~
+* ~A bunch of CA65 commands are available, can use them to make code clearer~
+* ~Create a RAM test procedure~
