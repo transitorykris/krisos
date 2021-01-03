@@ -4,7 +4,7 @@ Hi all! This project comes up from time to time in the [Ben Eater Reddit](https:
 
 If you're looking for an active project I'd suggest looking at [Dawid Buchwald's DB6502 and OS1](https://github.com/dbuchwald/6502).
 
-For now, I'm exploring the Motorola 68010 with a [Rosco-m68k](https://rosco-m68k.com/) and hacking my way through a pre-emptive multitasking kernel and hopefully eventually a proper OS.
+For now, I'm exploring the Motorola 68010 with a [Rosco-m68k](https://rosco-m68k.com/) and hacking my way through a [pre-emptive multitasking kernel](https://github.com/transitorykris/kris68k) and hopefully eventually a proper OS.
 
 # KrisOS
 
