@@ -1,3 +1,11 @@
+# Not under active development
+
+Hi all! This project comes up from time to time in the [Ben Eater Reddit](https://www.reddit.com/r/beneater/). I'd love to provide support, but my time is limited.
+
+If you're looking for an active project I'd suggest looking at [Dawid Buchwald's DB6502 and OS1](https://github.com/dbuchwald/6502).
+
+For now, I'm exploring the Motorola 68010 with a [Rosco-m68k](https://rosco-m68k.com/) and hacking my way through a pre-emptive multitasking kernel and hopefully eventually a proper OS.
+
 # KrisOS
 
 An operating system for the K64
